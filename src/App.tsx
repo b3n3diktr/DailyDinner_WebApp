@@ -1,8 +1,7 @@
 import React from "react";
 import logo from './logo.svg';
 import './App.css';
-// @ts-ignore
-import Link from "./components/Link.tsx";
+import Link from "./components/Link";
 
 function App() {
   return (

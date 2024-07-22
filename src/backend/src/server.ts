@@ -1,16 +1,27 @@
-// backend/src/server.ts
-import express from 'express';
+import express, {Request, Response} from 'express';
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
+import cors from 'cors';
 import authRoutes from './routes/auth';
+import envRoutes from './routes/env';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
-app.use(bodyParser.json());
+const PORT = process.env.PORT;
+const MONGO_URI = process.env.MONGO_URI;
+if(!MONGO_URI) {
+    throw new Error('MongoDB URI is required.');
+}
 
-mongoose.connect('mongodb://localhost:27017/dailydinner');
-
+app.use(cors());
+app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/env', envRoutes);
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

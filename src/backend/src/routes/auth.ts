@@ -1,41 +1,45 @@
-// backend/src/routes/auth.ts
-import express from 'express';
-import bcrypt from 'bcryptjs';
+import { Router } from 'express';
+import User from '../models/User';
 import jwt from 'jsonwebtoken';
-import User, { IUser } from '../models/User';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const router = express.Router();
-const secret = 'your_jwt_secret';
+const router = Router();
+const key = process.env.JWT_KEY;
+if (!key) {
+    throw new Error('JWT_KEY is not set');
+}
 
-//...
-
-// Benutzerregistrierung
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-        const user = new User({ username, email, password: hashedPassword });
+        const user = new User({ username, email, password });
         await user.save();
-        res.status(201).json(user);
-    } catch (err: any) { // Add type annotation for err
-        res.status(500).json({ error: err.message });
+        res.status(201).send('User registered successfully.');
+    } catch (error) {
+        res.status(400).send('Error registering user.');
     }
 });
 
-// Benutzeranmeldung
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+
     try {
-        const user = await User.findOne({ email }) as IUser;
-        if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
-            res.json({ token });
-        } else {
-            res.status(401).json({ error: 'Invalid credentials' });
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).send('Invalid email or password.');
         }
-    } catch (err: any) { // Add type annotation for err
-        res.status(500).json({ error: err.message });
+
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(400).send('Invalid email or password.');
+        }
+
+        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        res.status(500).send('Server error.');
     }
 });
 

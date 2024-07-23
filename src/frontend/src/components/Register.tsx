@@ -7,13 +7,17 @@ const Register: React.FC = () => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
+
     const handleRegister = async () => {
         try {
             await register(username, email, password);
             setMessage('Registration successful. You can now log in.');
-        } catch (error) {
-            // @ts-ignore
-            setMessage('Registration failed. Please try again.: ' + error.message);
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                setMessage(`Registration failed. ${error.response.data}`);
+            } else {
+                setMessage('Registration failed. Please try again.');
+            }
         }
     };
 

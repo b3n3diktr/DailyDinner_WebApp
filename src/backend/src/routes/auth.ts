@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const router = Router();
 const key = process.env.JWT_KEY;
 if (!key) {
@@ -12,6 +13,14 @@ if (!key) {
 
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
+    if (!emailRegex.test(email)) {
+        return res.status(400).send('Invalid email address.');
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).send('Email address already registered.');
+    }
 
     try {
         const user = new User({ username, email, password });

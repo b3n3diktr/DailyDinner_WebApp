@@ -10,8 +10,12 @@ const Login: React.FC = () => {
         try {
             await login(email, password);
             setMessage("Login successful.");
-        } catch (error) {
-            setMessage('Login failed. Please try again.');
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                setMessage(`Login failed. ${error.response.data}`);
+            } else {
+                setMessage('Login failed. Please try again.');
+            }
         }
     };
 

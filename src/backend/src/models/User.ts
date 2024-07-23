@@ -5,13 +5,17 @@ export interface IUser extends Document {
     username: string;
     email: string;
     password: string;
+    isActive: boolean;
+    activationToken: string;
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const UserSchema = new Schema<IUser>({
-    username: { type: String, required: true },
+    username: { type: String, required: true , unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    isActive: { type: Boolean, default: false },
+    activationToken: { type: String, required: false, unique: true },
 });
 
 UserSchema.pre('save', async function (next) {

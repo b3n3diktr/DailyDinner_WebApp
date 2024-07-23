@@ -13,7 +13,7 @@
 
 # Dependencies for Backend:
 1. `npm install express mongoose bcryptjs jsonwebtoken cors dotenv`
-2. `npm install --save-dev @types/express @types/bcryptjs @types/jsonwebtoken @types/cors @types/node typescript`
+2. `npm install --save-dev @types/express @types/bcryptjs @types/jsonwebtoken @types/cors @types/node typescript @types/nodemailer`
 
 
 # Dependencies for Frontend:

@@ -11,9 +11,15 @@ const key = process.env.JWT_KEY;
 if (!key) {
     throw new Error('JWT_KEY is not set');
 }
-const frontendUrl = process.env.frontendUrl || 'http://localhost:4000/register';
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4000';
 
-//Register User
+const encodeQueryParams = (params: { [key: string]: string }) => {
+    return Object.keys(params)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .join('&');
+};
+
+// Register User
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
     if (!emailRegex.test(email)) {
@@ -48,76 +54,92 @@ router.post('/register', async (req, res) => {
             res.status(201).json({ message: 'Registration successful. Check your email to activate your account.' });
         } catch (error) {
             console.error('Error sending email:', error);
-            // Rollback: Delete the user if email sending fails
             await User.findByIdAndDelete(user._id);
-            return res.status(501).send('Error sending activation email. Please try again.');
+            const params = encodeQueryParams({
+                errorCode: '501',
+                message: 'Error sending activation email. Please try again.',
+                header: 'Error'
+            });
+            res.redirect(`${frontendUrl}/fallback?${params}`);
         }
-    } catch (error:any ) {
-        res.status(502).send(`Error registering user. Error: ${error.message}`);
-    }
-});
-
-//Login User
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(411).send('Invalid email or password.');
-        }
-
-        if (!user.isActive) {
-            return res.status(412).send('Account is not activated. Please check your email for activation link.');
-        }
-
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(413).send('Invalid email or password.');
-        }
-
-        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
-        res.json({ token });
     } catch (error: any) {
-        res.status(5003).send(`Couldn't login: Internal server error. Error: ${error.message}`);
+        const params = encodeQueryParams({
+            errorCode: '502',
+            message: 'Error registering user.',
+            header: 'Error'
+        });
+        res.redirect(`${frontendUrl}/fallback?${params}`);
     }
 });
 
-//Activate User
+// Activate User
 router.get('/activate/:token', async (req, res) => {
     const { token } = req.params;
     try {
         const decoded = jwt.verify(token, key) as { email: string };
         const email = decoded.email;
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
 
         if (!user) {
-            res.redirect(frontendUrl);
-            return res.redirect(frontendUrl);
+            const params = encodeQueryParams({
+                errorCode: '412',
+                message: 'Invalid token.',
+                header: 'Error'
+            });
+            res.redirect(`${frontendUrl}/fallback?${params}`);
+            return;
         }
-        if (user.isActive) {
-            return res.redirect(frontendUrl);
+        if(user.isActive){
+            const params = encodeQueryParams({
+                errorCode: '413',
+                message: 'Account already active.',
+                header: 'Error'
+            });
+            return res.redirect(`${frontendUrl}/fallback?${params}`);
         }
 
         user.isActive = true;
         user.activationToken = '';
         try {
-            await user.save({ validateBeforeSave: false });
+            await user.save({ validateBeforeSave: true });
         } catch (error: any) {
-            res.redirect(frontendUrl);
-            res.status(504).send(`Internal server error. Error: ${error.message}`);
+            const params = encodeQueryParams({
+                errorCode: '504',
+                message: 'Internal server error.',
+                header: 'Error'
+            });
+            res.redirect(`${frontendUrl}/fallback?${params}`);
+            return;
         }
 
-        res.status(202).send('Account activated successfully');
-        res.redirect(frontendUrl);
+        const params = encodeQueryParams({
+            errorCode: '202',
+            message: 'Account activated successfully.',
+            header: 'Success'
+        });
+        res.redirect(`${frontendUrl}/fallback?${params}`);
     } catch (error: any) {
+        let params;
         if (error.name === 'TokenExpiredError') {
-            res.status(505).send(`Token has expired. Error: ${error.message}`);
+            params = encodeQueryParams({
+                errorCode: '505',
+                message: 'Token has expired.',
+                header: 'Error'
+            });
         } else if (error.name === 'JsonWebTokenError') {
-            res.status(506).send(`Invalid token. Error: ${error.message}`);
+            params = encodeQueryParams({
+                errorCode: '506',
+                message: 'Invalid web token.',
+                header: 'Error'
+            });
         } else {
-            res.status(507).send(`Internal server error. Error: ${error.message}`);
+            params = encodeQueryParams({
+                errorCode: '507',
+                message: 'Internal server error.',
+                header: 'Error'
+            });
         }
+        res.redirect(`${frontendUrl}/fallback?${params}`);
     }
 });
 

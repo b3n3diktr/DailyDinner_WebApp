@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
+import FallbackPage from "./components/FallbackPage";
 
 const App: React.FC = () => {
     return (
@@ -21,6 +22,8 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/fallback" element={<FallbackPage />} />
+                    <Route element={<FallbackPage />} />
                 </Routes>
             </div>
         </Router>

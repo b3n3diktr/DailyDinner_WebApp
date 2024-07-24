@@ -22,6 +22,10 @@ const encodeQueryParams = (params: { [key: string]: string }) => {
 // Register User
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
+    if(username.length < 1) {
+        return res.status(434).send('You need to enter an username.');
+    }
+
     if (!emailRegex.test(email)) {
         return res.status(431).send('Invalid email address.');
     }
@@ -34,6 +38,10 @@ router.post('/register', async (req, res) => {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
         return res.status(433).send('Username already exists.');
+    }
+
+    if(password.length <= 8) {
+        return res.status(435).send('Password must be at least 8 characters.');
     }
 
     try {

@@ -11,7 +11,7 @@ const Register: React.FC = () => {
     const handleRegister = async () => {
         try {
             await register(username, email, password);
-            setMessage('Registration successful. You can now log in.');
+            setMessage('Registration successful. Check your email to activate your account.');
         } catch (error: any) {
             if (error.response && error.response.data) {
                 setMessage(`Registration failed. ${error.response.data}`);

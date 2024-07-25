@@ -147,7 +147,16 @@ router.get('/activate/:token', async (req, res) => {
     } catch (error: any) {
         let params;
         if (error.name === 'TokenExpiredError') {
-            return logRedirect(req, res, '400', 'Token has expired.', 'Error');
+            const decoded = jwt.decode(token) as { email: string };
+            const user = await User.findOne({ email: decoded.email });
+            if (user) {
+                try {
+                    await sendActivationEmail(user);
+                    return logRedirect(req, res, '400', 'Token has expired. A new activation link has been sent to your email.', 'Error');
+                } catch (sendError) {
+                    return logRedirect(req, res, '500', 'Error resending activation email. Please try again.', 'Error');
+                }
+            }
         } else if (error.name === 'JsonWebTokenError') {
             return logRedirect(req, res, '400', 'Invalid web token.', 'Error');
         } else {

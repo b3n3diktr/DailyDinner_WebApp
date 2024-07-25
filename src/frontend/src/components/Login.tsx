@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import {login, register} from '../api/api';
+import './Login.css';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [success, setSuccess] = useState(false);
 
     const handleLogin = async () => {
         try {
-            await login(email, password);
-            setMessage("Login successful.");
+            const response = await login(email, password);
+            setMessage(`${response.message}`);
+            setSuccess(true);
         } catch (error: any) {
-            if (error.response && error.response.data) {
-                setMessage(`Login failed. ${error.response.data}`);
-            } else {
-                setMessage('Login failed. Please try again.');
-            }
+            setMessage(`Login failed. ${error.response.data.message}`);
+            setSuccess(false);
         }
     };
 
@@ -26,16 +26,18 @@ const Login: React.FC = () => {
                 type="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
+                onChange={(e) => setEmail(e.target.value)}/>
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+                onChange={(e) => setPassword(e.target.value)}/>
             <button onClick={handleLogin}>Login</button>
-            <p>{message}</p>
+            <p>                {message && (
+                <p className={`message ${success ? 'success' : 'error'}`}>
+                    {message}
+                </p>
+            )}</p>
         </div>
     );
 };

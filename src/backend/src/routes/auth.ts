@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import User from '../models/User';
+import User, {IUser} from '../models/User';
 import jwt from 'jsonwebtoken';
 import { sendEmail } from '../utils/emailSender';
 import * as dotenv from 'dotenv';
+import { validatePassword } from "../utils/passwordValidator";
+import mongoose from "mongoose";
 dotenv.config();
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -19,29 +21,54 @@ const encodeQueryParams = (params: { [key: string]: string }) => {
         .join('&');
 };
 
+const logStatus = (res: any, status: number, message: string) => {
+    console.log(`HTTP Response: ${status}, Message: ${message}`);
+    res.status(status).json({ message });
+};
+
+const logRedirect = (req: any, res: any, errorCode: string, message: string, header: string) => {
+    const params = encodeQueryParams({
+        errorCode,
+        message,
+        header
+    });
+    console.log(`Redirected from: ${frontendUrl}${req.originalUrl} , to ${frontendUrl}/fallback?${params}`);
+    res.redirect(`${frontendUrl}/fallback?${params}`);
+}
+
+const sendActivationEmail = async (user: mongoose.Document) => {
+    const activationToken = jwt.sign({ email: (user as IUser).email }, key, { expiresIn: '1d' });
+    (user as IUser).activationToken = activationToken;
+    await (user as IUser).save();
+
+    const activationLink = `${process.env.API_URL}/auth/activate/${activationToken}`;
+    await sendEmail((user as IUser).email, 'Account Activation', `Click the following link to activate your account: ${activationLink}`);
+};
+
 // Register User
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
-    if(username.length < 1) {
-        return res.status(434).send('You need to enter an username.');
+    if (username.length < 1) {
+        return logStatus(res, 400, 'You need to enter a username.');
     }
 
     if (!emailRegex.test(email)) {
-        return res.status(431).send('Invalid email address.');
+        return logStatus(res, 400, 'Invalid email address.');
     }
 
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-        return res.status(432).send('Email address already registered.');
+        return logStatus(res, 409, 'Email address already registered.');
     }
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-        return res.status(433).send('Username already exists.');
+        return logStatus(res, 409, 'Username already exists.');
     }
 
-    if(password.length <= 8) {
-        return res.status(435).send('Password must be at least 8 characters.');
+    const { valid, message } = validatePassword(password);
+    if (!valid) {
+        return logStatus(res, 400, message);
     }
 
     try {
@@ -55,28 +82,41 @@ router.post('/register', async (req, res) => {
         });
         await user.save();
 
-        // Send activation email
-        const activationLink = `${process.env.API_URL}/auth/activate/${activationToken}`;
         try {
-            await sendEmail(email, 'Account Activation', `Click the following link to activate your account: ${activationLink}`);
-            res.status(201).json({ message: 'Registration successful. Check your email to activate your account.' });
+            await sendActivationEmail(user);
+            return logStatus(res, 201, 'Registration successful. Check your email to activate your account.');
         } catch (error) {
-            console.error('Error sending email:', error);
             await User.findByIdAndDelete(user._id);
-            const params = encodeQueryParams({
-                errorCode: '501',
-                message: 'Error sending activation email. Please try again.',
-                header: 'Error'
-            });
-            res.redirect(`${frontendUrl}/fallback?${params}`);
+            return logRedirect(req, res, '500', 'Error sending activation email. Please try again.', 'Error');
         }
     } catch (error: any) {
-        const params = encodeQueryParams({
-            errorCode: '502',
-            message: 'Error registering user.',
-            header: 'Error'
-        });
-        res.redirect(`${frontendUrl}/fallback?${params}`);
+        return logRedirect(req, res, '500', 'Error registering user.', 'Error');
+    }
+});
+
+// Login User
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return logStatus(res, 401, 'Invalid email or password.');
+        }
+
+        if (!user.isActive) {
+            return logStatus(res, 403, 'Account is not activated. Please check your emails for the activation link.');
+        }
+
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return logStatus(res, 401, 'Invalid email or password.');
+        }
+
+        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
+        return res.status(201).json({ token , message: `Successfully logged in.` });
+    } catch (error) {
+        return logStatus(res, 500, 'Server error.');
     }
 });
 
@@ -89,21 +129,10 @@ router.get('/activate/:token', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            const params = encodeQueryParams({
-                errorCode: '412',
-                message: 'Invalid token.',
-                header: 'Error'
-            });
-            res.redirect(`${frontendUrl}/fallback?${params}`);
-            return;
+            return logRedirect(req, res, '400', 'Invalid token.', 'Error');
         }
-        if(user.isActive){
-            const params = encodeQueryParams({
-                errorCode: '413',
-                message: 'Account already active.',
-                header: 'Error'
-            });
-            return res.redirect(`${frontendUrl}/fallback?${params}`);
+        if (user.isActive) {
+            return logRedirect(req, res, '409', 'Account already active.', 'Error');
         }
 
         user.isActive = true;
@@ -111,43 +140,19 @@ router.get('/activate/:token', async (req, res) => {
         try {
             await user.save({ validateBeforeSave: true });
         } catch (error: any) {
-            const params = encodeQueryParams({
-                errorCode: '504',
-                message: 'Internal server error.',
-                header: 'Error'
-            });
-            res.redirect(`${frontendUrl}/fallback?${params}`);
-            return;
+            return logRedirect(req, res, '500', 'Internal server error.', 'Error');
         }
 
-        const params = encodeQueryParams({
-            errorCode: '202',
-            message: 'Account activated successfully.',
-            header: 'Success'
-        });
-        res.redirect(`${frontendUrl}/fallback?${params}`);
+        return logRedirect(req, res, '201', 'Account activated successfully.', 'Success');
     } catch (error: any) {
         let params;
         if (error.name === 'TokenExpiredError') {
-            params = encodeQueryParams({
-                errorCode: '505',
-                message: 'Token has expired.',
-                header: 'Error'
-            });
+            return logRedirect(req, res, '400', 'Token has expired.', 'Error');
         } else if (error.name === 'JsonWebTokenError') {
-            params = encodeQueryParams({
-                errorCode: '506',
-                message: 'Invalid web token.',
-                header: 'Error'
-            });
+            return logRedirect(req, res, '400', 'Invalid web token.', 'Error');
         } else {
-            params = encodeQueryParams({
-                errorCode: '507',
-                message: 'Internal server error.',
-                header: 'Error'
-            });
+            return logRedirect(req, res, '500', 'Internal server error.', 'Error');
         }
-        res.redirect(`${frontendUrl}/fallback?${params}`);
     }
 });
 

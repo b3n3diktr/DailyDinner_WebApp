@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
+import FallbackPage from "./components/FallbackPage";
+import './app.css';
 
 const App: React.FC = () => {
     return (
         <Router>
-            <div>
+            <div className="container"> {/* Add the container class */}
                 <h1>Daily Dinner</h1>
                 <nav>
                     <ul>
@@ -21,6 +23,8 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/fallback" element={<FallbackPage />} />
+                    <Route element={<FallbackPage />} />
                 </Routes>
             </div>
         </Router>

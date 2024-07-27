@@ -1,6 +1,6 @@
 import React from 'react';
 import zxcvbn from 'zxcvbn';
-import './Register.css';  // Correct import statement
+import '../../style.css';
 
 interface PasswordStrengthMeterProps {
     password: string;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PasswordStrengthMeter from './PasswordStrengthMeter';
-import './Register.css';
-import { register } from "../api/api";
+import '../../style.css';
+import { register } from "../../api/api";
 
 const Register: React.FC = () => {
     const [username, setUsername] = useState('');

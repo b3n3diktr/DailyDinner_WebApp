@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './FallbackPage.css';
+import '../../style.css';
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);

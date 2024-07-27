@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {login, register} from '../api/api';
-import './Login.css';
+import {login, register} from '../../api/api';
+import '../../style.css';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');

@@ -1,45 +1,69 @@
-.register-container {
-    max-width: 400px;
-    margin: 32px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+:root {
+    --max-width-container: 400px;
+    --margin-container: 32px auto;
+    --padding-container: 20px;
+    --border: 1px solid #ccc;
+    --border-radius: 5px;
+    --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    --bg-color: #ffffff;
+    --font-family: Tahoma, Geneva, sans-serif;
+    --font-size: 18px;
+    --font-color: #494949FF;
+    --font-weight: 400;
+    --primary-color: #28a745;
+    --primary-hover-color: #218838;
+    --secondary-bg-color: #cbcbcb;
+    --link-color: #494949;
+    --link-hover-color: #ffffff;
+    --fallback-bg-color: #4CAF50;
+    --fallback-hover-color: #3e8e41;
+    --auth-max-width: 200px;
+    --auth-border-radius: 12px;
 }
 
-.register-container h2 {
+/* Common Styles */
+.container {
+    max-width: var(--max-width-container);
+    margin: var(--margin-container);
+    padding: var(--padding-container);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.container h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.register-container form {
+.container form {
     display: flex;
     flex-direction: column;
 }
 
-.register-container label {
+.container label {
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.register-container input {
+.container input {
     margin-bottom: 15px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: var(--border);
     border-radius: 3px;
 }
 
-.register-container button {
+.container button {
     padding: 10px;
-    background-color: #28a745;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 3px;
     cursor: pointer;
 }
 
-.register-container button:hover {
-    background-color: #218838;
+.container button:hover {
+    background-color: var(--primary-hover-color);
 }
 
 .message {
@@ -55,6 +79,20 @@
     color: red;
 }
 
+/* Specific Container Styles */
+.register-container {}
+
+.auth-container {
+    max-width: var(--auth-max-width);
+    padding: 16px;
+    border-radius: var(--auth-border-radius);
+}
+
+.auth-container h2 {
+    margin-bottom: 32px;
+}
+
+/* Password Strength Meter */
 .password-strength-meter {
     margin-bottom: 15px;
 }
@@ -71,52 +109,14 @@
     font-size: 0.9em;
 }
 
-.auth-container {
-    max-width: 200px;
-    margin: 32px auto;
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.auth-container h2 {
-    text-align: center;
-    margin-bottom: 32px;
-}
-
-.auth-container input {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-.auth-container button {
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.auth-container button:hover {
-    background-color: #218838;
-}
-
-.auth-container p {
-    margin-bottom: 15px;
-    text-align: center;
-}
-
+/* Fallback Styles */
 .fallback-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     height: auto;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: var(--bg-color);
 }
 
 .fallback-header {
@@ -141,7 +141,7 @@
 
 .fallback-button {
     padding: 15px 25px;
-    background-color: #4CAF50;
+    background-color: var(--fallback-bg-color);
     color: #fff;
     font-size: 16px;
     font-weight: bold;
@@ -152,17 +152,18 @@
 }
 
 .fallback-button:hover {
-    background-color: #3e8e41;
+    background-color: var(--fallback-hover-color);
 }
 
-.app-container  {
+/* App Container */
+.app-container {
     max-width: 100vw;
     padding: 16px;
     background-color: #868686;
 }
 
 .app-container body {
-    margin: 0 ;
+    margin: 0;
     padding: 0;
 }
 
@@ -173,45 +174,61 @@
 }
 
 .app-container nav {
-    background-color: #f0f0f0;
-    padding: 16px;
-    text-align: right;
-    display: flex;
-    justify-content: flex-end;
+    background-color: var(--secondary-bg-color);
+    padding: 12px;
 }
 
 .app-container nav ul {
-    list-style: none;
-    margin: 4px;
     display: flex;
+    justify-content: space-between;
 }
 
 .app-container nav li {
-    margin-right: 24px;
+    margin-right: 36px;
 }
 
 .app-container nav a {
     text-decoration: none;
-    color: #494949;
+    color: var(--link-color);
 }
 
 .app-container nav a:hover {
-    color: #ffffff;
+    color: var(--link-hover-color);
 }
 
+/* Font Styles */
 #font {
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 18px;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
     letter-spacing: -0.4px;
     word-spacing: 0.8px;
-    color: #000000;
-    font-weight: 400;
+    color: var(--font-color);
+    font-weight: var(--font-weight);
     text-decoration: none solid rgb(68, 68, 68);
     font-style: normal;
     font-variant: normal;
     text-transform: none;
 }
 
+/* Layout and Positioning */
+.left-side {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.right-side {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.right-side:hover svg {
+    color: white;
+}
+
+/* Account Menu */
 .account-icon {
     position: relative;
     cursor: pointer;
@@ -221,20 +238,13 @@
 .account-menu {
     position: absolute;
     top: 100%;
-    left: 0;
-    background-color: #fff;
+    right: 0;
+    background-color: var(--bg-color);
     border: 1px solid #ddd;
     padding: 8px;
     transition: transform 0.3s ease;
-    transform-origin: top left;
-}
-
-.account-menu.right {
-    left: auto;
-    right: 0;
     transform-origin: top right;
 }
-
 
 .account-menu li {
     display: block;
@@ -249,7 +259,7 @@
     padding: 10px;
     border: none;
     border-radius: 3px;
-    background-color: #28a745;
+    background-color: var(--primary-color);
     color: white;
     cursor: pointer;
     margin-top: 8px;
@@ -257,5 +267,5 @@
 }
 
 .account-menu li a:hover {
-    background-color: #218838;
+    background-color: var(--primary-hover-color);
 }

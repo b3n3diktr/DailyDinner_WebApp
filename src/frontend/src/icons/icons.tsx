@@ -10,7 +10,7 @@ export const AccountIcon = () => {
             strokeWidth="1.5"
             width="24"
             height="24"
-            style={{ color: '#000000' }}
+            style={{ color: '#494949FF' }}
         >
             <defs>
                 <style>

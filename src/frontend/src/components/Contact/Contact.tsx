@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Contact: React.FC = () => {
 
     return(
         <div>
-
+            <h1>Contact</h1>
         </div>
     );
 }

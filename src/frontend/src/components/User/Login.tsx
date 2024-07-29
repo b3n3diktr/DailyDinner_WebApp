@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {login, register} from '../../api/api';
 import '../../style.css';
+import {PasswordIcon} from "../../icons/icons";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         try {
             const response = await login(email, password);
-            setMessage(`${response.message}`);
+            setMessage(`TesT: ${response.message}`);
             setSuccess(true);
         } catch (error: any) {
             setMessage(`Login failed. ${error.response.data.message}`);
@@ -20,24 +21,27 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="auth-container">
-            <h2>Login</h2>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}/>
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}/>
-            <button onClick={handleLogin}>Login</button>
-            <p>                {message && (
-                <p className={`message ${success ? 'success' : 'error'}`}>
-                    {message}
-                </p>
-            )}</p>
+        <div className="wrapper">
+            <h1>Login</h1>
+            <p className={success ? 'correct-message' : 'error-message'}>{message || 'Error: unknown error'}</p>
+            <form id={"form"}>
+                <div>
+                    <label htmlFor={"email-input"}>
+                        <span>@</span>
+                    </label>
+                    <input type="email" placeholder="Email" value={email} id={"email-input"}
+                           onChange={(e) => setEmail(e.target.value)}/>
+                </div>
+                <div>
+                    <label htmlFor={"password-input"}>
+                        {PasswordIcon()}
+                    </label>
+                    <input type="password" placeholder="Password" value={password}
+                           onChange={(e) => setPassword(e.target.value)}/>
+                </div>
+                <button onClick={handleLogin}>Login</button>
+            </form>
+            <p>New here? <a href={"/register"}>Create an Account</a></p>
         </div>
     );
 };

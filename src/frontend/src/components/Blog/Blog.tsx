@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const About: React.FC = () => {
+const Blog: React.FC = () => {
 
     return(
         <div>
-            <h1> About </h1>
+            <h1> Blog </h1>
         </div>
     );
 }
 
-export default About;
+export default Blog;
 

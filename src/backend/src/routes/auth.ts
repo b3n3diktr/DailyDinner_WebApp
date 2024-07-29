@@ -5,6 +5,7 @@ import { sendEmail } from '../utils/emailSender';
 import * as dotenv from 'dotenv';
 import { validatePassword } from "../utils/passwordValidator";
 import mongoose from "mongoose";
+
 dotenv.config();
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

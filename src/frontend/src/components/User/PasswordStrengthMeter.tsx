@@ -1,6 +1,6 @@
 import React from 'react';
 import zxcvbn from 'zxcvbn';
-import './Register.css';  // Correct import statement
+import '../../style.css';
 
 interface PasswordStrengthMeterProps {
     password: string;
@@ -32,13 +32,13 @@ const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ password 
             case 0:
                 return '#828282';
             case 1:
-                return '#EA1111';
+                return '#f06272';
             case 2:
-                return '#FFAD00';
+                return '#ffc55e';
             case 3:
                 return '#9bdeac';
             case 4:
-                return '#00b500';
+                return '#7EFF9CFF';
             default:
                 return 'none';
         }
@@ -47,16 +47,12 @@ const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ password 
     const changePasswordColor = () => ({
         width: `${num}%`,
         background: progressColor(),
-        height: '7px'
+        height: '8px',
+        borderRadius: '10px 10px 10px 10px',
     });
 
     return (
-        <div className="password-strength-meter">
-            <progress
-                className="password-strength-meter-progress"
-                value={testResult.score}
-                max="4"
-            />
+        <div className="password-strengthmeter">
             <div style={changePasswordColor()} />
             <p>{createPassLabel()}</p>
         </div>

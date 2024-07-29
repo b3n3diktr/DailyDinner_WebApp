@@ -10,9 +10,9 @@ const FallbackPage: React.FC = () => {
     const navigate = useNavigate();
     const query = useQuery();
 
-    const message = query.get('message') || 'An error occurred.';
+    const message = query.get('message') ?? 'An error occurred.';
     const errorCode = query.get('errorCode');
-    const header = query.get('header') || 'Error';
+    const header = query.get('header') ?? 'Error';
 
     const handleGoBack = () => {
         navigate('/', { replace: true });

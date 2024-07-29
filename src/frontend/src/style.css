@@ -223,11 +223,11 @@ nav li:first-child {
 }
 
 
-.wrapper form.div.correct label{
+.wrapper form div.correct label{
     background-color: var(--accent-color);
 }
 
-.wrapper form.div.correct input{
+.wrapper form div.correct input{
     background-color: var(--accent-color);
 }
 
@@ -239,11 +239,11 @@ nav li:first-child {
     background-color: var(--error-color);
 }
 
-#error-message{
+.error-message{
     background-color: var(--error-color);
 }
 
-#correct-message{
+.correct-message{
     background-color: var(--accent-color);
 }
 

@@ -26,7 +26,7 @@ const Register: React.FC = () => {
             setSuccess(true);
         } catch (error: any) {
                 setSuccess(false);
-            if (error.response && error.response.data) {
+            if (error.response?.data) {
                 setMessage(`Registration failed. ${error}`);
             }else{
                 setMessage(`Registration failed. Please try again.`);
@@ -44,7 +44,7 @@ const Register: React.FC = () => {
                         type="text"
                         id="username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(e) => { setUsername(e.target.value); }}
                         required
                     />
                 </div>
@@ -54,7 +54,7 @@ const Register: React.FC = () => {
                         type="email"
                         id="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => { setEmail(e.target.value); }}
                         required
                     />
                 </div>
@@ -64,7 +64,7 @@ const Register: React.FC = () => {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => { setPassword(e.target.value); }}
                         required
                     />
                     <PasswordStrengthMeter password={password} />
@@ -75,7 +75,7 @@ const Register: React.FC = () => {
                         type="password"
                         id="confirmPassword"
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={(e) => { setConfirmPassword(e.target.value); }}
                         required
                     />
                 </div>

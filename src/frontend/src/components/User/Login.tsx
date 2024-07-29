@@ -12,7 +12,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         try {
             const response = await login(email, password);
-            setMessage(`TesT: ${response.message}`);
+            setMessage(`${response.message}`);
             setSuccess(true);
         } catch (error: any) {
             setMessage(`Login failed. ${error.response.data.message}`);
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     return (
         <div className="wrapper">
             <h1>Login</h1>
-            <p className={success ? 'correct-message' : 'error-message'}>{message || 'Error: unknown error'}</p>
+            <p className={success ? 'correct-message' : 'error-message'}>{message}</p>
             <form id={"form"}>
                 <div>
                     <label htmlFor={"email-input"}>
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
                     <input type="password" placeholder="Password" value={password}
                            onChange={(e) => setPassword(e.target.value)}/>
                 </div>
-                <button onClick={handleLogin}>Login</button>
+                <button type="button" onClick={handleLogin}>Login</button>
             </form>
             <p>New here? <a href={"/register"}>Create an Account</a></p>
         </div>

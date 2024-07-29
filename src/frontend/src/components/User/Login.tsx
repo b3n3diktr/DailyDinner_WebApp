@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {login, register} from '../../api/api';
 import '../../style.css';
-import {PasswordIcon} from "../../icons/icons";
+import {PasswordIcon, VisibilityIcon, VisibilityOff} from "../../icons/icons";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [success, setSuccess] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async () => {
         try {
@@ -20,24 +21,30 @@ const Login: React.FC = () => {
         }
     };
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <div className="wrapper">
             <h1>Login</h1>
             <p className={success ? 'correct-message' : 'error-message'}>{message}</p>
             <form id={"form"}>
                 <div>
-                    <label htmlFor={"email-input"}>
+                    <label>
                         <span>@</span>
                     </label>
-                    <input type="email" placeholder="Email" value={email} id={"email-input"}
-                           onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="email" placeholder="Email" value={email} id={"email-input"} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
-                <div>
-                    <label htmlFor={"password-input"}>
+                <div className="password-input-wrapper">
+                    <label>
                         {PasswordIcon()}
                     </label>
-                    <input type="password" placeholder="Password" value={password}
+                    <input type={showPassword ? "text" : "password"} placeholder="Password" value={password}
                            onChange={(e) => setPassword(e.target.value)}/>
+                    <button type="button" className="password-toggle-button" onClick={toggleShowPassword}>
+                        {showPassword ? VisibilityOff() : VisibilityIcon()}
+                    </button>
                 </div>
                 <button type="button" onClick={handleLogin}>Login</button>
             </form>

@@ -1,9 +1,9 @@
-:root{
-    --accent-color: #7EFF9CFF;
+:root {
+    --accent-color: #69d582;
     --base-color: white;
     --text-color: #397347;
     --input-color: rgba(243, 240, 255, 0.73);
-    --error-color: #f06272
+    --error-color: #f06272;
 }
 
 * {
@@ -105,11 +105,8 @@ nav li:first-child {
     }
 }
 
-
 /* Login */
-
-
-.wrapper{
+.wrapper {
     box-sizing: border-box;
     background-color: var(--base-color);
     height: 100vh;
@@ -122,14 +119,18 @@ nav li:first-child {
     justify-content: center;
 }
 
-.wrapper h1{
+.wrapper h1 {
     font-size: 3rem;
     font-weight: 900;
     text-transform: uppercase;
 }
 
-.wrapper form{
-    width:  min(400px, 100%);
+.wrapper p {
+    text-align: center;
+}
+
+.wrapper form {
+    width: min(400px, 100%);
     margin-top: 20px;
     margin-bottom: 50px;
     display: flex;
@@ -138,13 +139,14 @@ nav li:first-child {
     gap: 10px;
 }
 
-.wrapper form > div{
+.wrapper form > div {
     width: 100%;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
-.wrapper form label{
+.wrapper form label {
     flex-shrink: 0;
     height: 50px;
     width: 50px;
@@ -159,7 +161,7 @@ nav li:first-child {
     font-weight: 500;
 }
 
-.wrapper form input{
+.wrapper form input {
     box-sizing: border-box;
     flex-grow: 1;
     min-width: 0;
@@ -173,28 +175,29 @@ nav li:first-child {
     transition: 150ms ease;
 }
 
-.wrapper form input:hover{
+.wrapper form input:hover {
     border-color: var(--accent-color);
+    background-color: #fff;
 }
 
-.wrapper form input:focus{
+.wrapper form input:focus {
     outline: none;
-    border-color: var(--accent-color);
+    border-color: var(--text-color);
 }
 
-.wrapper div:has(input:focus) > label{
+.wrapper div:has(input:focus) > label {
     background-color: var(--text-color);
 }
 
-.wrapper form input::placeholder{
+.wrapper form input::placeholder {
     color: var(--text-color);
 }
 
-.wrapper form button{
+.wrapper form button {
     margin-top: 10px;
     border: none;
     border-radius: 1000px;
-    padding: .85em 4em;
+    padding: 0.85em 4em;
     background-color: var(--accent-color);
     color: var(--base-color);
     font: inherit;
@@ -204,53 +207,93 @@ nav li:first-child {
     transition: 150ms ease;
 }
 
-.wrapper form button:hover{
+.wrapper form button:hover {
     background-color: var(--text-color);
 }
 
-.wrapper form button:focus{
+.wrapper form button:focus {
     outline: none;
     background-color: var(--text-color);
 }
 
-.wrapper a{
+.wrapper a {
     text-decoration: none;
     color: var(--accent-color);
 }
 
-.wrapper a:hover{
-    text-decoration: none;
-}
-
-
-.wrapper form div.correct label{
+.wrapper form div.correct label {
     background-color: var(--accent-color);
 }
 
-.wrapper form div.correct input{
+.wrapper form div.correct input {
     background-color: var(--accent-color);
 }
 
-.wrapper form div.incorrect label{
+.wrapper form div.incorrect label {
     background-color: var(--error-color);
 }
 
-.wrapper form div.incorrect input{
+.wrapper form div.incorrect input {
     background-color: var(--error-color);
 }
 
-.error-message{
-    background-color: var(--error-color);
+.error-message {
+    margin-top: 8px;
+    color: var(--error-color);
 }
 
-.correct-message{
-    background-color: var(--accent-color);
+.correct-message {
+    margin-top: 8px;
+    color: var(--accent-color);
 }
 
 @media (max-width: 1100px) {
-    .wrapper{
+    .wrapper {
         width: min(600px, 100%);
         border-radius: 0;
     }
+}
+
+/* Passwordstrength */
+.password-strengthmeter {
+    margin-bottom: 0.25rem;
+    width: 200px;
+    border-radius: 10px 10px 10px 10px;
+    font: inherit;
+}
+
+.password-strengthmeter div {
+    height: 12px;
+    transition: width 0.5s;
+}
+
+.password-strengthmeter p {
+    text-align: center;
+    margin: 0;
+    font-size: 0.8em;
+    border-radius: 10px 10px 10px 10px;
+}
+
+/* Password toggle button */
+
+.password-input-wrapper .password-toggle-button {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 10px 10px 0;
+    padding: 0;
+    margin: 0;
+}
+
+.password-input-wrapper .password-toggle-button button:hover {
+    background-color: var(--text-color);
+    fill: white;
 }
 

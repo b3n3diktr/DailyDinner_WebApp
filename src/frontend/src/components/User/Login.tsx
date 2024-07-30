@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {login, register} from '../../api/api';
+import {login} from '../../api/api';
 import '../../style.css';
 import {PasswordIcon, VisibilityIcon, VisibilityOff} from "../../icons/icons";
+import {redirect} from "@remix-run/router";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -10,14 +11,18 @@ const Login: React.FC = () => {
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = async () => {
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             const response = await login(email, password);
-            setMessage(`${response.message}`);
-            setSuccess(true);
+            if (response && response.message) {
+                setMessage(response.message);
+                redirect('/');
+            } else {
+                setMessage('Login failed. Please try again.');
+            }
         } catch (error: any) {
-            setMessage(`Login failed. ${error.response.data.message}`);
-            setSuccess(false);
+            setMessage(`Login failed: ${error.message || 'Please try again.'}`);
         }
     };
 

@@ -196,7 +196,7 @@ nav li:first-child {
 /* Login */
 .wrapper-auth {
     box-sizing: border-box;
-    background-color: var(--base-color);
+    background-color: var(--base-color-variant);
     height: 100vh;
     width: max(40%, 600px);
     padding: 10px;

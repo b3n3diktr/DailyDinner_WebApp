@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import User, {IUser} from '../models/User';
+import User, { IUser } from '../models/User';
 import jwt from 'jsonwebtoken';
 import { sendEmail } from '../utils/emailSender';
 import * as dotenv from 'dotenv';
@@ -98,7 +98,6 @@ router.post('/register', async (req, res) => {
 // Login User
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -114,8 +113,9 @@ router.post('/login', async (req, res) => {
             return logStatus(res, 401, 'Invalid email or password.');
         }
 
-        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
-        return res.status(201).json({ token , message: `Successfully logged in.` });
+        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '7d' }); // 7 days expiry
+        res.cookie('authToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 7 * 24 * 60 * 60 * 1000 }); // 7 days in milliseconds
+        return res.status(200).json({ message: `Successfully logged in.` });
     } catch (error) {
         return logStatus(res, 500, 'Server error.');
     }
@@ -144,9 +144,8 @@ router.get('/activate/:token', async (req, res) => {
             return logRedirect(req, res, '500', 'Internal server error.', 'Error');
         }
 
-        return logRedirect(req, res, '201', 'Account activated successfully.', 'Success');
+        return logRedirect(req, res, '200', 'Account activated successfully.', 'Success');
     } catch (error: any) {
-        let params;
         if (error.name === 'TokenExpiredError') {
             const decoded = jwt.decode(token) as { email: string };
             const user = await User.findOne({ email: decoded.email });

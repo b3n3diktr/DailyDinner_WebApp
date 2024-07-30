@@ -9,13 +9,37 @@ import About from "./components/About/About";
 import Blog from "./components/Blog/Blog";
 import {handleDarkmode} from "./components/Darkmode/Darkmode";
 import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode} from "./icons/icons";
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import {apiUrl} from "./api/api";
+import {redirect} from "@remix-run/router";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
     const sidebarRef = useRef<HTMLUListElement>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const showSidebar = () => setSidebarVisible(true);
     const hideSidebar = () => setSidebarVisible(false);
+
+
+    useEffect(() => {
+        const token = Cookies.get('authToken');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await axios.post(`${apiUrl}/auth/logout`, {}, { withCredentials: true });
+            Cookies.remove('authToken');
+            setIsLoggedIn(false);
+            redirect('/login');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -55,7 +79,11 @@ const App: React.FC = () => {
                         <li className={"hideOnMobile"}><Link to="/blog">Blog</Link></li>
                         <li className={"hideOnMobile"}><Link to="/about">About</Link></li>
                         <li className={"hideOnMobile"}><Link to="/contact">Contact</Link></li>
-                        <li className={"hideOnMobile"}><Link to="/login">Login</Link></li>
+                        {isLoggedIn ? (
+                            <li className={"hideOnMobile"}><Link to="/logout" onClick={handleLogout}>Logout</Link></li>
+                        ) : (
+                            <li className={"hideOnMobile"}><Link to="/login">Login</Link></li>
+                        )}
                         <li className={"menu-button"}>
                             <a onClick={showSidebar}>
                                 {HamMenu()}

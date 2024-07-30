@@ -4,6 +4,8 @@ import cors from 'cors';
 import authRoutes from './routes/auth';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+
 dotenv.config();
 
 const app = express();
@@ -21,8 +23,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 

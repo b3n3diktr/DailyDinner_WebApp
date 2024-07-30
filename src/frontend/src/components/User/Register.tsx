@@ -15,7 +15,9 @@ const Register: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const handleRegister = async () => {
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (password !== confirmPassword) {
             setMessage('Passwords do not match.');
             setSuccess(false);
@@ -23,11 +25,16 @@ const Register: React.FC = () => {
         }
         try {
             const response = await register(username, email, password);
-            setMessage(`${response.message}`);
-            setSuccess(true);
+            if (response && response.message) {
+                setMessage(response.message);
+                setSuccess(true);
+                navigate('/login');
+            } else {
+                setMessage('Registration failed. Please try again.');
+            }
         } catch (error: any) {
             setSuccess(false);
-            setMessage(`${error.response.data.message}`);
+            setMessage(`Registration failed. ${error.message || 'Please try again.'}`);
         }
     };
 

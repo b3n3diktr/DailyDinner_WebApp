@@ -34,7 +34,7 @@ const Register: React.FC = () => {
             }
         } catch (error: any) {
             setSuccess(false);
-            setMessage(`Registration failed. ${error.message || 'Please try again.'}`);
+            setMessage(`Registration failed. ${error.response?.data?.message || 'Please try again.'}`);
         }
     };
 

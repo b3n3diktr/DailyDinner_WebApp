@@ -22,7 +22,7 @@ const Login: React.FC = () => {
                 setMessage('Login failed. Please try again.');
             }
         } catch (error: any) {
-            setMessage(`Login failed: ${error.message || 'Please try again.'}`);
+            setMessage(`Login failed: ${error.response?.data?.message || 'Please try again.'}`);
         }
     };
 

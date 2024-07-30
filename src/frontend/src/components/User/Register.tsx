@@ -36,7 +36,7 @@ const Register: React.FC = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className="wrapper-auth">
             <h1>Register</h1>
             <p className={success ? 'correct-message' : 'error-message'}>{message}</p>
             <form id="form">

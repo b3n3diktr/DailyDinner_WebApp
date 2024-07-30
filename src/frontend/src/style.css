@@ -1,9 +1,24 @@
 :root {
     --accent-color: #69d582;
     --base-color: white;
-    --text-color: #397347;
-    --input-color: rgba(243, 240, 255, 0.73);
+    --base-color-variant: #e8e9ed;
+    --focus-text-color: #397347;
+    --input-color: rgba(243, 240, 255, 0.7);
     --error-color: #f06272;
+    --text-color: black;
+    --theme-icon: #070b1e;
+
+}
+
+.darkmode{
+    --accent-color: #69d582;
+    --base-color: #070b1d;
+    --base-color-variant: #101425;
+    --focus-text-color: #397347;
+    --input-color: rgba(243, 240, 255, 0.7);
+    --error-color: #f06272;
+    --text-color: white;
+    --theme-icon: white;
 }
 
 * {
@@ -22,7 +37,7 @@ body {
 }
 
 nav {
-    background-color: white;
+    background-color: var(--base-color);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
     position: relative;
 }
@@ -45,7 +60,7 @@ nav a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: black;
+    color: var(--text-color);
 }
 
 nav a:hover {
@@ -105,8 +120,80 @@ nav li:first-child {
     }
 }
 
-/* Login */
+
+/* Theme Modes */
+#theme-switch {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--base-color-variant);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+}
+
+#theme-switch svg{
+    fill: var(--theme-icon);
+}
+
+#theme-switch svg:last-child{
+    display: none;
+}
+
+.darkmode #theme-switch svg:first-child{
+    display: none;
+}
+
+.darkmode #theme-switch svg:last-child{
+    display: block;
+}
+
+
+
+/* Wrapper */
 .wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/* Footer*/
+.wrapper-footer {
+    box-sizing: border-box;
+    background-color: var(--base-color);
+    height: 25vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    font-size: 12px;
+    color: var(--text-color);
+    position: relative;
+    margin-top: auto;
+}
+
+.wrapper-footer h1{
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+.wrapper-footer li{
+    font-size: 1rem;
+}
+
+
+
+/* Login */
+.wrapper-auth {
     box-sizing: border-box;
     background-color: var(--base-color);
     height: 100vh;
@@ -117,19 +204,26 @@ nav li:first-child {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
 }
 
-.wrapper h1 {
+.wrapper-auth h1 {
     font-size: 3rem;
     font-weight: 900;
     text-transform: uppercase;
+    color: var(--text-color);
 }
 
-.wrapper p {
+.wrapper-auth span{
+    color: white;
+}
+
+.wrapper-auth p {
     text-align: center;
+    color: var(--text-color);
 }
 
-.wrapper form {
+.wrapper-auth form {
     width: min(400px, 100%);
     margin-top: 20px;
     margin-bottom: 50px;
@@ -139,14 +233,14 @@ nav li:first-child {
     gap: 10px;
 }
 
-.wrapper form > div {
+.wrapper-auth form > div {
     width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
 }
 
-.wrapper form label {
+.wrapper-auth form label {
     flex-shrink: 0;
     height: 50px;
     width: 50px;
@@ -161,7 +255,7 @@ nav li:first-child {
     font-weight: 500;
 }
 
-.wrapper form input {
+.wrapper-auth form input {
     box-sizing: border-box;
     flex-grow: 1;
     min-width: 0;
@@ -175,31 +269,31 @@ nav li:first-child {
     transition: 150ms ease;
 }
 
-.wrapper form input:hover {
+.wrapper-auth form input:hover {
     border-color: var(--accent-color);
     background-color: #fff;
 }
 
-.wrapper form input:focus {
+.wrapper-auth form input:focus {
     outline: none;
-    border-color: var(--text-color);
+    border-color: var(--focus-text-color);
 }
 
-.wrapper div:has(input:focus) > label {
-    background-color: var(--text-color);
+.wrapper-auth div:has(input:focus) > label {
+    background-color: var(--focus-text-color);
 }
 
-.wrapper form input::placeholder {
-    color: var(--text-color);
+.wrapper-auth form input::placeholder {
+    color: var(--focus-text-color);
 }
 
-.wrapper form button {
+.wrapper-auth form button {
     margin-top: 10px;
     border: none;
     border-radius: 1000px;
     padding: 0.85em 4em;
     background-color: var(--accent-color);
-    color: var(--base-color);
+    color: white;
     font: inherit;
     font-weight: 600;
     text-transform: uppercase;
@@ -207,33 +301,33 @@ nav li:first-child {
     transition: 150ms ease;
 }
 
-.wrapper form button:hover {
-    background-color: var(--text-color);
+.wrapper-auth form button:hover {
+    background-color: var(--focus-text-color);
 }
 
-.wrapper form button:focus {
+.wrapper-auth form button:focus {
     outline: none;
-    background-color: var(--text-color);
+    background-color: var(--focus-text-color);
 }
 
-.wrapper a {
+.wrapper-auth a {
     text-decoration: none;
     color: var(--accent-color);
 }
 
-.wrapper form div.correct label {
+.wrapper-auth form div.correct label {
     background-color: var(--accent-color);
 }
 
-.wrapper form div.correct input {
+.wrapper-auth form div.correct input {
     background-color: var(--accent-color);
 }
 
-.wrapper form div.incorrect label {
+.wrapper-auth form div.incorrect label {
     background-color: var(--error-color);
 }
 
-.wrapper form div.incorrect input {
+.wrapper-auth form div.incorrect input {
     background-color: var(--error-color);
 }
 
@@ -248,11 +342,13 @@ nav li:first-child {
 }
 
 @media (max-width: 1100px) {
-    .wrapper {
+    .wrapper-auth {
         width: min(600px, 100%);
         border-radius: 0;
     }
 }
+
+
 
 /* Passwordstrength */
 .password-strengthmeter {
@@ -274,8 +370,9 @@ nav li:first-child {
     border-radius: 10px 10px 10px 10px;
 }
 
-/* Password toggle button */
 
+
+/* Password toggle button */
 .password-input-wrapper .password-toggle-button {
     position: absolute;
     right: 0;
@@ -293,7 +390,7 @@ nav li:first-child {
 }
 
 .password-input-wrapper .password-toggle-button button:hover {
-    background-color: var(--text-color);
+    background-color: var(--focus-text-color);
     fill: white;
 }
 

@@ -7,7 +7,8 @@ import Contact from "./components/Contact/Contact";
 import './style.css';
 import About from "./components/About/About";
 import Blog from "./components/Blog/Blog";
-import { HamMenu, Close } from "./icons/icons";
+import {handleDarkmode} from "./components/Darkmode/Darkmode";
+import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode} from "./icons/icons";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -29,7 +30,14 @@ const App: React.FC = () => {
 
     return (
         <Router>
+            <body>
             <div>
+                <button id="theme-switch" onClick={handleDarkmode}>
+                    {DarkMode()}
+                    {LightMode()}
+                </button>
+            </div>
+            <div className="wrapper">
                 <nav>
                     <ul ref={sidebarRef} className={`sidebar ${isSidebarVisible ? 'visible' : 'hidden'}`}>
                         <li>
@@ -56,15 +64,44 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/fallback" element={<FallbackPage />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route element={<FallbackPage />} />
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
+                    <Route path="/fallback" element={<FallbackPage/>}/>
+                    <Route path="/contact" element={<Contact/>}/>
+                    <Route path="/about" element={<About/>}/>
+                    <Route path="/blog" element={<Blog/>}/>
+                    <Route element={<FallbackPage/>}/>
                 </Routes>
             </div>
+            <div className="wrapper-footer">
+                <ul>
+                    <h1>Users</h1>
+                    <li>Support</li>
+                    <li>FAQ</li>
+                    <li>Contact</li>
+                </ul>
+                <ul>
+                    <h1>Daily Dinner</h1>
+                    <li>Home</li>
+                    <li>Product</li>
+                    <li>What's new</li>
+                    <li>About us</li>
+                </ul>
+                <ul>
+                    <h1>Resources</h1>
+                    <li>Cookie Management</li>
+                    <li>Privacy Policy</li>
+                    <li>Imprint</li>
+                </ul>
+                <ul>
+                    <h1>Social</h1>
+                    <li>{XLogo()}</li>
+                    <li>{InstagramLogo()}</li>
+                    <li>{YoutubeLogo()}</li>
+                    <li>{GitHubLogo()}</li>
+                </ul>
+            </div>
+            </body>
         </Router>
     );
 };

@@ -127,6 +127,7 @@ nav li:first-child {
     width: 50px;
     padding: 0;
     border-radius: 50%;
+    border-color: var(--base-color);
     background-color: var(--base-color-variant);
     display: flex;
     justify-content: center;

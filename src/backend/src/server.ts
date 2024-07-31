@@ -24,7 +24,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: ["http://192.168.178.156", "http://localhost"],
     credentials: true
 }));
 app.use(express.json());

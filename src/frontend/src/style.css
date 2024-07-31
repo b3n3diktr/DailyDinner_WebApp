@@ -1,14 +1,14 @@
-:root {
-    --accent-color: #69d582;
-    --base-color: white;
-    --base-color-variant: #e8e9ed;
-    --focus-text-color: #397347;
-    --input-color: rgba(243, 240, 255, 0.7);
-    --error-color: #f06272;
-    --text-color: black;
-    --theme-icon: #070b1e;
+root {
+       --accent-color: #69d582;
+       --base-color: white;
+       --base-color-variant: #e8e9ed;
+       --focus-text-color: #397347;
+       --input-color: rgba(243, 240, 255, 0.7);
+       --error-color: #f06272;
+       --text-color: black;
+       --theme-icon: #070b1e;
 
-}
+   }
 
 .darkmode{
     --accent-color: #69d582;
@@ -27,11 +27,11 @@
 }
 
 body {
-    min-height: 100vh;
     background-image: url('./pictures/placeholder.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed; /* add this line */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
 }
@@ -40,6 +40,7 @@ nav {
     background-color: var(--base-color);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
     position: relative;
+    opacity: 0.99;
 }
 
 nav ul {
@@ -64,7 +65,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #f0f0f0;
+    background-color: var(--base-color-variant);
 }
 
 nav li:first-child {
@@ -78,7 +79,7 @@ nav li:first-child {
     height: 100vh;
     width: 250px;
     z-index: 999;
-    background-color: rgb(255, 255, 255, 0.5);
+    background-color: var(--base-color);
     backdrop-filter: blur(10px);
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
@@ -165,8 +166,23 @@ nav li:first-child {
 
 
 
+/* Wrapper Home */
+.wrapper-main {
+    background-color: var(--base-color-variant);
+    margin: 20vh 8vw 0 8vw;
+    padding: 10vh;
+    min-height: 90vh;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px 20px 0 0;
+}
+
+
+
 /* Footer*/
-.wrapper-footer {
+.footer {
     box-sizing: border-box;
     background-color: var(--base-color);
     height: 25vh;
@@ -180,14 +196,15 @@ nav li:first-child {
     color: var(--text-color);
     position: relative;
     margin-top: auto;
+
 }
 
-.wrapper-footer h1{
+.footer h1{
     font-size: 1.2rem;
     font-weight: bolder;
 }
 
-.wrapper-footer li{
+.footer li{
     font-size: 1rem;
 }
 
@@ -394,4 +411,3 @@ nav li:first-child {
     background-color: var(--focus-text-color);
     fill: white;
 }
-

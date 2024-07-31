@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import Register from './components/User/Register';
 import Login from './components/User/Login';
 import FallbackPage from "./components/User/FallbackPage";
@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import {apiUrl} from "./api/api";
 import {redirect} from "@remix-run/router";
+import Home from "./components/Home/Home";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -47,7 +48,6 @@ const App: React.FC = () => {
                 hideSidebar();
             }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
@@ -75,7 +75,7 @@ const App: React.FC = () => {
                         <li><Link to="/login" onClick={hideSidebar}>Login</Link></li>
                     </ul>
                     <ul>
-                        <li><Link to="/">Daily Dinner</Link></li>
+                        <li><Link to="/home">Daily Dinner</Link></li>
                         <li className={"hideOnMobile"}><Link to="/blog">Blog</Link></li>
                         <li className={"hideOnMobile"}><Link to="/about">About</Link></li>
                         <li className={"hideOnMobile"}><Link to="/contact">Contact</Link></li>
@@ -92,6 +92,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/home" element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/fallback" element={<FallbackPage/>}/>
@@ -101,7 +102,7 @@ const App: React.FC = () => {
                     <Route element={<FallbackPage/>}/>
                 </Routes>
             </div>
-            <div className="wrapper-footer">
+            <div className="footer">
                 <ul>
                     <h1>Users</h1>
                     <li>Support</li>

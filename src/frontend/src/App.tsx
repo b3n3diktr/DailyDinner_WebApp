@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import Register from './components/User/Register';
 import Login from './components/User/Login';
 import FallbackPage from "./components/User/FallbackPage";
@@ -92,6 +92,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>

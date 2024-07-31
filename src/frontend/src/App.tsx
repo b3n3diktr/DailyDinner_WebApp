@@ -102,7 +102,7 @@ const App: React.FC = () => {
                     <Route element={<FallbackPage/>}/>
                 </Routes>
             </div>
-            <div className="footer">
+            <footer className="footer">
                 <ul>
                     <h1>Users</h1>
                     <li>Support</li>
@@ -129,6 +129,9 @@ const App: React.FC = () => {
                     <li>{YoutubeLogo()}</li>
                     <li>{GitHubLogo()}</li>
                 </ul>
+            </footer>
+            <div className="copyright">
+                <p>© Benedikt Reich. All right reserved.</p>
             </div>
         </Router>
     );

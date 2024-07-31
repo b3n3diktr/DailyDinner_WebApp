@@ -6,6 +6,7 @@
     --input-color: rgba(243, 240, 255, 0.7);
     --error-color: #f06272;
     --text-color: black;
+    --text-color-variant: #777777;
     --theme-icon: #070b1e;
 }
 
@@ -17,6 +18,7 @@
     --input-color: rgba(243, 240, 255, 0.7);
     --error-color: #f06272;
     --text-color: white;
+    --text-color-variant: #334075;
     --theme-icon: white;
 }
 
@@ -187,27 +189,46 @@ nav li:first-child {
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    gap: 64px;
+    gap: 10vw;
+    padding: 5vh;
     font-size: 12px;
-    color: var(--text-color);
+    color: var(--text-color-variant);
     position: relative;
     margin-top: auto;
-
 }
 
-.footer svg{
-    fill: var(--text-color);
+.footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.footer h1{
+.footer h1 {
     font-size: 1.2rem;
     font-weight: bolder;
+    margin-bottom: 10px;
 }
 
-.footer li{
+.footer li {
     font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.footer li svg {
+    fill: var(--text-color-variant);
+}
+
+.copyright{
+    background-color: var(--base-color);
+    color: var(--text-color-variant);
+    font-size: 12px;
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid var(--base-color-variant);
+    width: 100%;
+    margin: 0 auto;
 }
 
 

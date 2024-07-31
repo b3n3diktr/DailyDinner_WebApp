@@ -69,20 +69,20 @@ const App: React.FC = () => {
                                 {Close()}
                             </a>
                         </li>
-                        <li><Link to="/blog" onClick={hideSidebar}>Blog</Link></li>
-                        <li><Link to="/about" onClick={hideSidebar}>About</Link></li>
-                        <li><Link to="/contact" onClick={hideSidebar}>Contact</Link></li>
-                        <li><Link to="/login" onClick={hideSidebar}>Login</Link></li>
+                        <li><Link to={"/blog"} onClick={hideSidebar}>Blog</Link></li>
+                        <li><Link to={"/about"} onClick={hideSidebar}>About</Link></li>
+                        <li><Link to={"/contact"} onClick={hideSidebar}>Contact</Link></li>
+                        <li><Link to={"/login"} onClick={hideSidebar}>Login</Link></li>
                     </ul>
                     <ul>
-                        <li><Link to="/home">Daily Dinner</Link></li>
-                        <li className={"hideOnMobile"}><Link to="/blog">Blog</Link></li>
-                        <li className={"hideOnMobile"}><Link to="/about">About</Link></li>
-                        <li className={"hideOnMobile"}><Link to="/contact">Contact</Link></li>
+                        <li><Link to={"/home"}>Daily Dinner</Link></li>
+                        <li className={"hideOnMobile"}><Link to={"/blog"}>Blog</Link></li>
+                        <li className={"hideOnMobile"}><Link to={"/about"}>About</Link></li>
+                        <li className={"hideOnMobile"}><Link to={"/contact"}>Contact</Link></li>
                         {isLoggedIn ? (
-                            <li className={"hideOnMobile"}><Link to="/logout" onClick={handleLogout}>Logout</Link></li>
+                            <li className={"hideOnMobile"}><Link to={"/logout"} onClick={handleLogout}>Logout</Link></li>
                         ) : (
-                            <li className={"hideOnMobile"}><Link to="/login">Login</Link></li>
+                            <li className={"hideOnMobile"}><Link to={"/login"}>Login</Link></li>
                         )}
                         <li className={"menu-button"}>
                             <a onClick={showSidebar}>

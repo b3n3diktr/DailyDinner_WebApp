@@ -1,6 +1,6 @@
 root {
        --accent-color: #69d582;
-       --base-color: white;
+       --base-color: #ffff;
        --base-color-variant: #e8e9ed;
        --focus-text-color: #397347;
        --input-color: rgba(243, 240, 255, 0.7);
@@ -40,7 +40,6 @@ nav {
     background-color: var(--base-color);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
     position: relative;
-    opacity: 0.99;
 }
 
 nav ul {
@@ -197,6 +196,10 @@ nav li:first-child {
     position: relative;
     margin-top: auto;
 
+}
+
+.footer svg{
+    fill: var(--text-color);
 }
 
 .footer h1{

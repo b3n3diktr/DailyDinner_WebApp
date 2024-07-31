@@ -8,8 +8,8 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const success = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();

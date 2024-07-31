@@ -7,7 +7,7 @@ import Contact from "./components/Contact/Contact";
 import './style.css';
 import About from "./components/About/About";
 import Blog from "./components/Blog/Blog";
-import {handleDarkmode} from "./components/Darkmode/Darkmode";
+import {handleThemeSwitch} from "./components/Darkmode/Darkmode";
 import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode} from "./icons/icons";
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -54,9 +54,8 @@ const App: React.FC = () => {
 
     return (
         <Router>
-            <body>
             <div>
-                <button id="theme-switch" onClick={handleDarkmode}>
+                <button id="theme-switch" onClick={handleThemeSwitch}>
                     {DarkMode()}
                     {LightMode()}
                 </button>
@@ -131,7 +130,6 @@ const App: React.FC = () => {
                     <li>{GitHubLogo()}</li>
                 </ul>
             </div>
-            </body>
         </Router>
     );
 };

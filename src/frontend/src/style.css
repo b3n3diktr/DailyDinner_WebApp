@@ -1,14 +1,13 @@
-root {
-       --accent-color: #69d582;
-       --base-color: #ffff;
-       --base-color-variant: #e8e9ed;
-       --focus-text-color: #397347;
-       --input-color: rgba(243, 240, 255, 0.7);
-       --error-color: #f06272;
-       --text-color: black;
-       --theme-icon: #070b1e;
-
-   }
+.lightmode{
+    --accent-color: #69d582;
+    --base-color: #ffff;
+    --base-color-variant: #e8e9ed;
+    --focus-text-color: #397347;
+    --input-color: rgba(243, 240, 255, 0.7);
+    --error-color: #f06272;
+    --text-color: black;
+    --theme-icon: #070b1e;
+}
 
 .darkmode{
     --accent-color: #69d582;

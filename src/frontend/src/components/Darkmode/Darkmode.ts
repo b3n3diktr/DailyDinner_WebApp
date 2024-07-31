@@ -1,20 +1,33 @@
+let currentTheme = localStorage.getItem("theme");
 
-    let darkmode = localStorage.getItem("darkmode");
-    const themeSwitch = document.getElementById("theme-switch");
+const themeSwitch = document.getElementById("theme-switch");
 
-    const enableDarkMode = () => {
-        document.body.classList.add("darkmode");
-        localStorage.setItem("darkmode", "true");
+const enableDarkMode = () => {
+    document.body.classList.add("darkmode");
+    document.body.classList.remove("lightmode");
+    localStorage.setItem("theme", "dark");
+}
+
+const enableLightMode = () => {
+    document.body.classList.add("lightmode");
+    document.body.classList.remove("darkmode");
+    localStorage.setItem("theme", "light");
+}
+
+if (currentTheme === "dark") {
+    enableDarkMode();
+} else if (currentTheme === "light") {
+    enableLightMode();
+} else {
+    // Default to light mode if no theme is set
+    enableLightMode();
+}
+
+export const handleThemeSwitch = () => {
+    currentTheme = localStorage.getItem("theme");
+    if (currentTheme === "dark") {
+        enableLightMode();
+    } else {
+        enableDarkMode();
     }
-
-    const disableDarkMode = () => {
-        document.body.classList.remove("darkmode");
-        localStorage.setItem("darkmode", "false");
-    }
-
-    if(darkmode === "true") enableDarkMode();
-
-    export const handleDarkmode = () => {
-        darkmode = localStorage.getItem("darkmode");
-        darkmode !== "true" ? enableDarkMode() : disableDarkMode();
-    }
+}

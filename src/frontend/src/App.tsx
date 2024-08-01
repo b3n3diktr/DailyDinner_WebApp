@@ -63,11 +63,7 @@ const App: React.FC = () => {
             <div className="wrapper">
                 <nav>
                     <ul ref={sidebarRef} className={`sidebar ${isSidebarVisible ? 'visible' : 'hidden'}`}>
-                        <li>
-                            <a onClick={hideSidebar}>
-                                {Close()}
-                            </a>
-                        </li>
+                        <li onClick={hideSidebar}>{Close()}</li>
                         <li><Link to={"/blog"} onClick={hideSidebar}>Blog</Link></li>
                         <li><Link to={"/about"} onClick={hideSidebar}>About</Link></li>
                         <li><Link to={"/contact"} onClick={hideSidebar}>Contact</Link></li>

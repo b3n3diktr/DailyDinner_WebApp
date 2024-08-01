@@ -21,7 +21,6 @@ const FallbackPage: React.FC = () => {
     const hideErrorCode = ['201'];
 
     return (
-        <div className="wrapper">
         <div className="wrapper-main">
             <h1>{header}</h1>
             <p>{message}</p>
@@ -31,7 +30,6 @@ const FallbackPage: React.FC = () => {
             <button onClick={handleGoBack}>
                 Go Back
             </button>
-        </div>
         </div>
     );
 };

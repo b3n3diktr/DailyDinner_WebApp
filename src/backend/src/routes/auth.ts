@@ -114,7 +114,7 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id }, key, { expiresIn: '7d' }); // 7 days expiry
-        res.cookie('authToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 7 * 24 * 60 * 60 * 1000 }); // 7 days in milliseconds
+        res.cookie('authToken', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); // Set cookie for 1 day
         return res.status(200).json({ message: `Successfully logged in.` });
     } catch (error) {
         return logStatus(res, 500, 'Server error.');

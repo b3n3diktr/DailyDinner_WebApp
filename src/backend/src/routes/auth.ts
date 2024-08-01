@@ -14,7 +14,7 @@ const key = process.env.JWT_KEY;
 if (!key) {
     throw new Error('JWT_KEY is not set');
 }
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4000';
+const frontendUrl = process.env.FRONTEND_URL || 'http://192.168.178.156';
 
 const encodeQueryParams = (params: { [key: string]: string }) => {
     return Object.keys(params)
@@ -72,6 +72,13 @@ router.post('/register', async (req, res) => {
         return logStatus(res, 400, message);
     }
 
+    let uuid;
+    let exists;
+    do {
+        uuid = crypto.randomUUID();
+        exists = await User.findOne({ uuid });
+    } while (exists);
+
     try {
         const activationToken = jwt.sign({ email }, key, { expiresIn: '1d' });
         const user = new User({
@@ -79,6 +86,7 @@ router.post('/register', async (req, res) => {
             email,
             password,
             isActive: false,
+            uuid,
             activationToken
         });
         await user.save();
@@ -98,6 +106,7 @@ router.post('/register', async (req, res) => {
 // Login User
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -113,10 +122,30 @@ router.post('/login', async (req, res) => {
             return logStatus(res, 401, 'Invalid email or password.');
         }
 
-        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '7d' }); // 7 days expiry
-        res.cookie('authToken', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); // Set cookie for 1 day
-        return res.status(200).json({ message: `Successfully logged in.` });
+        const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            secure: process.env.NODE_ENV === 'production', // Only set secure flag in production
+        });
+        console.log(`Logged in with: ${token}`);
+        return res.status(201).json({token, message: `Successfully logged in.`});
     } catch (error) {
+        return logStatus(res, 500, 'Server error.');
+    }
+});
+
+//Check authToken
+router.get('/auth/:token', async (req, res) => {
+    const { token } = req.params;
+    try{
+        const decoded = jwt.verify(token, key);
+        const user = await User.findOne({ decoded });
+        if(!user) {
+            return logStatus(res, 401, 'Invalid token.');
+        }
+        const userID = user._id
+    }catch(error: any){
         return logStatus(res, 500, 'Server error.');
     }
 });

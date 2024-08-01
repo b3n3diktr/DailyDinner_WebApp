@@ -25,7 +25,6 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
@@ -59,7 +58,6 @@ nav li {
 nav svg {
     height: 100%;
     padding: 0 0.9375rem;
-    fill: var(--theme-icon);
 }
 
 nav a {
@@ -123,6 +121,7 @@ nav li:first-child {
 
     .menu-button {
         display: block;
+        fill: var(--text-color);
     }
 }
 
@@ -227,8 +226,8 @@ nav li:first-child {
     font-size: 0.8rem;
     text-align: center;
     border-top: 1px solid var(--base-color-variant);
-    width: 100%;
     margin: 0;
+    padding: 1rem;
 }
 
 @media (max-width: 41.875rem) {
@@ -261,6 +260,10 @@ nav li:first-child {
     font-weight: 900;
     text-transform: uppercase;
     color: var(--text-color);
+}
+
+.wrapper-auth svg{
+    fill: white;
 }
 
 .wrapper-auth span {

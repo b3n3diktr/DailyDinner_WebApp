@@ -5,6 +5,12 @@ import '../../style.css';
 import { register } from "../../api/api";
 import { AccountIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 
+const encodeQueryParams = (params: { [key: string]: string }) => {
+    return Object.keys(params)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .join('&');
+};
+
 const Register: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -13,7 +19,6 @@ const Register: React.FC = () => {
     const [message, setMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
 
 
     const handleRegister = async (e: React.FormEvent) => {
@@ -28,7 +33,6 @@ const Register: React.FC = () => {
             if (response && response.message) {
                 setMessage(response.message);
                 setSuccess(true);
-                navigate('/login');
             } else {
                 setMessage('Registration failed. Please try again.');
             }

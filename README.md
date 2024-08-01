@@ -12,7 +12,7 @@
 
 
 # Dependencies for Backend:
-1. `npm install express mongoose bcryptjs jsonwebtoken cors dotenv csurf cookie-parser`
+1. `npm install express mongoose bcryptjs jsonwebtoken cors dotenv csurf cookie-parser uuid`
 2. `npm install --save-dev @types/express @types/bcryptjs @types/jsonwebtoken @types/cors @types/node typescript @types/nodemailer @types/express-rate-limit`
 
 

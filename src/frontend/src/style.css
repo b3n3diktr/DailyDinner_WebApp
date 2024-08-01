@@ -55,6 +55,12 @@ nav li {
     height: 50px;
 }
 
+nav svg {
+    height: 100%;
+    padding: 0 15px;
+    fill: var(--theme-icon);
+}
+
 nav a {
     height: 100%;
     padding: 0 30px;
@@ -79,7 +85,7 @@ nav li:first-child {
     height: 100vh;
     width: 250px;
     z-index: 999;
-    background-color: var(--base-color);
+    background-color: var(--base-color-variant);
     backdrop-filter: blur(10px);
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
@@ -89,7 +95,11 @@ nav li:first-child {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    color: #808080;
+}
+
+
+.sidebar li:hover{
+    background-color: var(--base-color-variant);
 }
 
 .sidebar.visible {
@@ -181,22 +191,23 @@ nav li:first-child {
 
 
 
-/* Footer*/
+/* Footer */
 .footer {
     box-sizing: border-box;
     background-color: var(--base-color);
-    height: 25vh;
+    min-height: 25vh;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    gap: 10vw;
-    padding: 5vh;
-    font-size: 12px;
+    gap: 5rem;
+    padding: 2rem 1rem;
+    font-size: 0.8rem;
     color: var(--text-color-variant);
     position: relative;
     margin-top: auto;
+    flex-wrap: wrap;
 }
 
 .footer ul {
@@ -208,27 +219,37 @@ nav li:first-child {
 .footer h1 {
     font-size: 1.2rem;
     font-weight: bolder;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 }
 
 .footer li {
-    font-size: 1rem;
-    margin-bottom: 10px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
 }
 
 .footer li svg {
     fill: var(--text-color-variant);
 }
 
-.copyright{
+.copyright {
     background-color: var(--base-color);
     color: var(--text-color-variant);
-    font-size: 12px;
+    font-size: 0.8rem;
     text-align: center;
-    padding: 10px;
     border-top: 1px solid var(--base-color-variant);
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
+}
+
+@media (max-width: 41.875rem) {
+    .footer {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .footer ul {
+        flex: 0 0 30%;
+        gap: 1rem;
+    }
 }
 
 

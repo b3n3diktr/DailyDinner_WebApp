@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import PasswordStrengthMeter from './PasswordStrengthMeter';
 import '../../style.css';
 import { register } from "../../api/api";
 import { AccountIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
-
-const encodeQueryParams = (params: { [key: string]: string }) => {
-    return Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-        .join('&');
-};
 
 const Register: React.FC = () => {
     const [username, setUsername] = useState('');

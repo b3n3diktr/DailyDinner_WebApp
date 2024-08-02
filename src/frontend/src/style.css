@@ -575,3 +575,32 @@ nav li:first-child {
     background-color: var(--focus-text-color);
     fill: white;
 }
+
+
+
+/* Account */
+
+.account-cnt{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    flex-direction: column;
+}
+
+.account-logout-button{
+    min-width: 164px;
+    padding: 11px 13px;
+    border-radius: 1000px;
+    background-color: var(--accent-color);
+    border: 0;
+    color: #FFF;
+    text-decoration: none;
+    align-items: center;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.account-logout-button:hover {
+    background-color: var(--focus-text-color);
+}

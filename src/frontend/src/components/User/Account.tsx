@@ -42,12 +42,12 @@ const Account: React.FC = () => {
         <div className="wrapper-main">
             <h1>Account Page</h1>
             {isValid ? (
-                <div>
+                <div className="account-cnt">
                     <p>Username: {username}</p>
                     <p>Email: {email}</p>
                     <p>Account Created: {accountCreated}</p>
                     <div>
-                        <button onClick={handleLogout}>Logout</button>
+                        <button className="account-logout-button" type="button" onClick={handleLogout}>Logout</button>
                     </div>
                 </div>
             ) : (

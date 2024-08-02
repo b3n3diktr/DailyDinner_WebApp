@@ -16,11 +16,13 @@ import {redirect} from "@remix-run/router";
 import Home from "./components/Home/Home";
 import Account from "./components/User/Account";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
+import CookieConsent from "./components/CookieConsent/CookieConsent";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
     const sidebarRef = useRef<HTMLUListElement>(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showCookieConsent, setShowCookieConsent] = useState(false);
 
     const showSidebar = () => setSidebarVisible(true);
     const hideSidebar = () => setSidebarVisible(false);
@@ -51,6 +53,11 @@ const App: React.FC = () => {
             console.error('Error logging out:', error);
         }
     };
+
+    const manageCookies = async () =>{
+        Cookies.remove("cookieConsent");
+        window.location.reload();
+    }
 
     return (
         <Router>
@@ -120,7 +127,7 @@ const App: React.FC = () => {
                 </ul>
                 <ul>
                     <h1>Resources</h1>
-                    <li>Cookie Management</li>
+                    <li onClick={manageCookies}>Manage Cookies</li>
                     <li><Link to="/privacy-policy">Privacy Policy</Link></li>
                     <li>Imprint</li>
                 </ul>
@@ -135,6 +142,7 @@ const App: React.FC = () => {
             <div className="copyright">
                 <p>© Benedikt Reich. All right reserved.</p>
             </div>
+            <CookieConsent />
         </Router>
     );
 };

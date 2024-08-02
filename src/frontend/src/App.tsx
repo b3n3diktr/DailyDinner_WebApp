@@ -71,13 +71,13 @@ const App: React.FC = () => {
                 <nav>
                     <ul ref={sidebarRef} className={`sidebar ${isSidebarVisible ? 'visible' : 'hidden'}`}>
                         <li onClick={hideSidebar}>{Close()}</li>
-                        <li><Link to={"/blog"} onClick={hideSidebar}>Blog</Link></li>
-                        <li><Link to={"/about"} onClick={hideSidebar}>About</Link></li>
-                        <li><Link to={"/contact"} onClick={hideSidebar}>Contact</Link></li>
+                        <li><Link onClick={hideSidebar} to={"/blog"}>Blog</Link></li>
+                        <li><Link onClick={hideSidebar} to={"/about"}>About</Link></li>
+                        <li><Link onClick={hideSidebar} to={"/contact"}>Contact</Link></li>
                         {isLoggedIn ? (
-                            <li><Link to={"/account"}>{AccountIcon()}</Link></li>
+                            <li><Link onClick={hideSidebar} to={"/account"}>{AccountIcon()}</Link></li>
                         ) : (
-                            <li><Link to={"/login"}>Login</Link></li>
+                            <li><Link onClick={hideSidebar} to={"/login"}>Login</Link></li>
                         )}
                     </ul>
                     <ul>

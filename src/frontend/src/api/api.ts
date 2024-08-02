@@ -8,10 +8,10 @@ export const register = async (username: string, email: string, password: string
     return response.data;
 };
 
-export const login = async (email: string, password: string) => {
+export const login = async (email: string, password: string, remember: boolean) => {
     const response = await axios.post(`${apiUrl}/auth/login`, { email, password });
     const token = response.data.token;
-    Cookies.set('sessionID', token, { expires: 14 });
+    Cookies.set('sessionID', token, { expires: (remember ? 14: 1) });
     return response.data;
 };
 

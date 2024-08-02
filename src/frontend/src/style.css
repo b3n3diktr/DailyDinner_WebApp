@@ -8,6 +8,7 @@
     --text-color: black;
     --text-color-variant: #777777;
     --theme-icon: #070b1e;
+    --link-theme-color: #56ab6c;
 }
 
 .darkmode {
@@ -503,6 +504,10 @@ nav li:first-child {
     color: var(--accent-color);
 }
 
+.wrapper-auth a:hover {
+    text-decoration: underline;
+}
+
 .wrapper-auth form div.correct label {
     background-color: var(--accent-color);
 }
@@ -574,6 +579,33 @@ nav li:first-child {
 .password-input-wrapper .password-toggle-button:hover {
     background-color: var(--focus-text-color);
     fill: white;
+}
+
+.wrapper-auth form .login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.wrapper-auth form .login-options .remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.wrapper-auth form .login-options .remember-me p{
+    color: var(--text-color);
+    margin-left: 0.5rem;
+}
+
+.wrapper-auth form .login-options .forgot-password {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.wrapper-auth form .login-options .forgot-password:hover {
+    text-decoration: underline;
 }
 
 

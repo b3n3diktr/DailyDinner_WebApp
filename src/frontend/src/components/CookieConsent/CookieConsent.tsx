@@ -16,11 +16,13 @@ const CookieConsent: React.FC = () => {
     const acceptCookies = () => {
         Cookies.set('cookieConsent', 'true', { expires: 14 });
         setVisible(false);
+        window.location.reload();
     };
 
     const declineCookies = () => {
         Cookies.set('cookieConsent', 'false', { expires: 14 });
         setVisible(false);
+        window.location.reload();
     };
 
     return (

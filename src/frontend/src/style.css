@@ -353,6 +353,10 @@ nav li:first-child {
     margin-bottom: 1rem;
 }
 
+.footer li:hover{
+    text-decoration: underline;
+}
+
 .footer li svg {
     fill: var(--text-color-variant);
 }

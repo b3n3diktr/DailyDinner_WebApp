@@ -15,6 +15,7 @@ import {apiUrl} from "./api/api";
 import {redirect} from "@remix-run/router";
 import Home from "./components/Home/Home";
 import Account from "./components/User/Account";
+import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -90,6 +91,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/account" element={<Account/>} />
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<Home/>}/>
@@ -119,7 +121,7 @@ const App: React.FC = () => {
                 <ul>
                     <h1>Resources</h1>
                     <li>Cookie Management</li>
-                    <li>Privacy Policy</li>
+                    <li><Link to="/privacy-policy">Privacy Policy</Link></li>
                     <li>Imprint</li>
                 </ul>
                 <ul>

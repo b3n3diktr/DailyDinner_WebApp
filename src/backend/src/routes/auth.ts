@@ -128,9 +128,8 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
         res.cookie('sessionID', token, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-            secure: process.env.NODE_ENV === 'production', // Only set secure flag in production
-        });
+            maxAge: 24 * 60 * 60 * 1000 * 14,
+            secure: process.env.NODE_ENV === 'production'});
         res.status(201).json({token, message: `Successfully logged in.`});
         console.log(`Logged in with: ${user._id}`);
     } catch (error) {

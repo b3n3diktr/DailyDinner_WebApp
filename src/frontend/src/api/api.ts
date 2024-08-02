@@ -11,7 +11,7 @@ export const register = async (username: string, email: string, password: string
 export const login = async (email: string, password: string) => {
     const response = await axios.post(`${apiUrl}/auth/login`, { email, password });
     const token = response.data.token;
-    Cookies.set('sessionID', token, { expires: 1 }); // expires in 1 day
+    Cookies.set('sessionID', token, { expires: 14 });
     return response.data;
 };
 

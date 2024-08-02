@@ -173,8 +173,8 @@ nav li:first-child {
 
 .wrapper-main {
     background-color: var(--base-color-variant);
-    margin: 20vh 8vw 0 8vw;
-    padding: 10vh;
+    margin: 20vh 0 0 0;
+    padding: 5rem;
     min-height: 90vh;
     color: var(--text-color);
     display: flex;
@@ -183,6 +183,61 @@ nav li:first-child {
     border-radius: 20px 20px 0 0;
 }
 
+@media (max-width: 700px){
+    .wrapper-main {
+        padding: 1rem;
+    }
+}
+
+
+
+/* Privacy Policy */
+.wrapper-pp{
+}
+
+.wrapper-pp h1{
+    font-size: 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.wrapper-pp a{
+    font-weight: lighter;
+    font-style: italic;
+    padding-top: 1.5rem;
+}
+
+.wrapper-pp h2{
+    font-size: 1rem;
+    padding-bottom: 0.25rem;
+}
+
+.wrapper-pp h3{
+    font-size:1.3rem;
+    padding-bottom: 0.8rem;
+}
+
+.wrapper-pp p{
+    font-size: 1rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    font-weight: lighter;
+}
+
+.wrapper-pp p:last-child{
+    padding-bottom: 5rem;
+}
+
+.wrapper-pp li{
+    list-style: none;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    font-weight: lighter;
+}
+
+
+
+/* Footer */
 .footer {
     box-sizing: border-box;
     background-color: var(--base-color);

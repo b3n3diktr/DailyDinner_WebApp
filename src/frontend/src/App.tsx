@@ -8,7 +8,7 @@ import './style.css';
 import About from "./components/About/About";
 import Blog from "./components/Blog/Blog";
 import {handleThemeSwitch} from "./components/Darkmode/Darkmode";
-import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode} from "./icons/icons";
+import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode, AccountIcon} from "./icons/icons";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import {apiUrl} from "./api/api";
@@ -65,7 +65,11 @@ const App: React.FC = () => {
                         <li><Link to={"/blog"} onClick={hideSidebar}>Blog</Link></li>
                         <li><Link to={"/about"} onClick={hideSidebar}>About</Link></li>
                         <li><Link to={"/contact"} onClick={hideSidebar}>Contact</Link></li>
-                        <li><Link to={"/login"} onClick={hideSidebar}>Login</Link></li>
+                        {isLoggedIn ? (
+                            <li><Link to={"/account"}>{AccountIcon()}</Link></li>
+                        ) : (
+                            <li><Link to={"/login"}>Login</Link></li>
+                        )}
                     </ul>
                     <ul>
                         <li><Link to={"/home"}>Daily Dinner</Link></li>
@@ -73,7 +77,7 @@ const App: React.FC = () => {
                         <li className={"hideOnMobile"}><Link to={"/about"}>About</Link></li>
                         <li className={"hideOnMobile"}><Link to={"/contact"}>Contact</Link></li>
                         {isLoggedIn ? (
-                            <li className={"hideOnMobile"}><Link to={"/logout"} onClick={handleLogout}>Logout</Link></li>
+                            <li className={"hideOnMobile"}><Link to={"/account"}>{AccountIcon()}</Link></li>
                         ) : (
                             <li className={"hideOnMobile"}><Link to={"/login"}>Login</Link></li>
                         )}
@@ -107,7 +111,7 @@ const App: React.FC = () => {
                     <h1>Daily Dinner</h1>
                     <li>Home</li>
                     <li>Product</li>
-                    <li>What's new</li>
+                    <li>Blog</li>
                     <li>About us</li>
                 </ul>
                 <ul>

@@ -47,7 +47,7 @@ const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ password 
     const changePasswordColor = () => ({
         width: `${num}%`,
         background: progressColor(),
-        height: '8px',
+        height: '0.5rem',
         borderRadius: '10px 10px 10px 10px',
     });
 

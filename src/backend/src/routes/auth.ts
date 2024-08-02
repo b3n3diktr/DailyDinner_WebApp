@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { sendEmail } from '../utils/emailSender';
 import * as dotenv from 'dotenv';
 import { validatePassword } from "../utils/passwordValidator";
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 dotenv.config();
 
@@ -22,12 +22,12 @@ const encodeQueryParams = (params: { [key: string]: string }) => {
         .join('&');
 };
 
-const logStatus = (res: any, status: number, message: string) => {
-    console.log(`HTTP Response: ${status}, Message: ${message}`);
-    res.status(status).json({ message });
+const logStatus = (res: any, status: number, json: { message: string; [key: string]: any }) => {
+    console.log(`HTTP Response: ${status}, Message: ${json.message}`);
+    res.status(status).json(json);
 };
 
-const logRedirect = (req: any, res: any, errorCode: string, message: string, header: string) => {
+export const logRedirect = (req: any, res: any, errorCode: string, message: string, header: string) => {
     const params = encodeQueryParams({
         errorCode,
         message,
@@ -50,26 +50,26 @@ const sendActivationEmail = async (user: mongoose.Document) => {
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
     if (username.length < 1) {
-        return logStatus(res, 400, 'You need to enter a username.');
+        return logStatus(res, 400, {message: 'You need to enter a username.'});
     }
 
     if (!emailRegex.test(email)) {
-        return logStatus(res, 400, 'Invalid email address.');
+        return logStatus(res, 400, {message: 'Invalid email address.'});
     }
 
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-        return logStatus(res, 409, 'Email address already registered.');
+        return logStatus(res, 409, {message: 'Email address already registered.'});
     }
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-        return logStatus(res, 409, 'Username already exists.');
+        return logStatus(res, 409, {message: 'Username already exists.'});
     }
 
     const { valid, message } = validatePassword(password);
     if (!valid) {
-        return logStatus(res, 400, message);
+        return logStatus(res, 400, {message: message});
     }
 
     let uuid;
@@ -80,6 +80,8 @@ router.post('/register', async (req, res) => {
     } while (exists);
 
     try {
+        const date = new Date();
+        const created = date.toLocaleString();
         const activationToken = jwt.sign({ email }, key, { expiresIn: '1d' });
         const user = new User({
             username,
@@ -87,13 +89,14 @@ router.post('/register', async (req, res) => {
             password,
             isActive: false,
             uuid,
+            created,
             activationToken
         });
         await user.save();
 
         try {
             await sendActivationEmail(user);
-            return logStatus(res, 201, 'Registration successful. Check your email to activate your account.');
+            return logStatus(res, 201, {message: 'Registration successful. Check your email to activate your account.'});
         } catch (error) {
             await User.findByIdAndDelete(user._id);
             return logRedirect(req, res, '500', 'Error sending activation email. Please try again.', 'Error');
@@ -110,43 +113,48 @@ router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return logStatus(res, 401, 'Invalid email or password.');
+            return logStatus(res, 401, {message: 'Invalid email or password.'});
         }
 
         if (!user.isActive) {
-            return logStatus(res, 403, 'Account is not activated. Please check your emails for the activation link.');
+            return logStatus(res, 403, {message: 'Account is not activated. Please check your emails for the activation link.'});
         }
 
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return logStatus(res, 401, 'Invalid email or password.');
+            return logStatus(res, 401, {message: 'Invalid email or password.'});
         }
 
         const token = jwt.sign({ userId: user._id }, key, { expiresIn: '1h' });
-        res.cookie('authToken', token, {
+        res.cookie('sessionID', token, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000, // 1 day
             secure: process.env.NODE_ENV === 'production', // Only set secure flag in production
         });
-        console.log(`Logged in with: ${token}`);
-        return res.status(201).json({token, message: `Successfully logged in.`});
+        res.status(201).json({token, message: `Successfully logged in.`});
+        console.log(`Logged in with: ${user._id}`);
     } catch (error) {
-        return logStatus(res, 500, 'Server error.');
+        logStatus(res, 500, {message: 'Server error.'});
     }
 });
 
-//Check authToken
-router.get('/auth/:token', async (req, res) => {
-    const { token } = req.params;
-    try{
-        const decoded = jwt.verify(token, key);
-        const user = await User.findOne({ decoded });
-        if(!user) {
-            return logStatus(res, 401, 'Invalid token.');
+//Validate sessionID
+router.post('/validate', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return logStatus(res, 401, {message: 'No token provided.'});
+    }
+
+    try {
+        const decoded = jwt.verify(token, key) as { userId: string };
+        const user = await User.findById(decoded.userId);
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid token.' });
         }
-        const userID = user._id
-    }catch(error: any){
-        return logStatus(res, 500, 'Server error.');
+        return logStatus(res, 201, {message: `Successfully validated: ${token}`, username: user.username, email: user.email, accountCreated: user.created});
+    } catch (error) {
+        return res.status(401).json({ message: 'Token validation failed.' });
     }
 });
 

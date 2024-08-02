@@ -14,6 +14,7 @@ import axios from 'axios';
 import {apiUrl} from "./api/api";
 import {redirect} from "@remix-run/router";
 import Home from "./components/Home/Home";
+import Account from "./components/User/Account";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -25,7 +26,7 @@ const App: React.FC = () => {
 
 
     useEffect(() => {
-        const token = Cookies.get('authToken');
+        const token = Cookies.get('sessionID');
         if (token) {
             setIsLoggedIn(true);
         }
@@ -42,7 +43,7 @@ const App: React.FC = () => {
     const handleLogout = async () => {
         try {
             await axios.post(`${apiUrl}/auth/logout`, {}, { withCredentials: true });
-            Cookies.remove('authToken');
+            Cookies.remove('sessionID');
             setIsLoggedIn(false);
             redirect('/login');
         } catch (error) {
@@ -89,6 +90,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/account" element={<Account/>} />
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>

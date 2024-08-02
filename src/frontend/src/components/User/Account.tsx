@@ -33,17 +33,27 @@ const Account: React.FC = () => {
         }
     };
 
+    const handleLogout = async () => {
+        Cookies.remove('sessionID');
+        window.location.href = '/login';
+    }
+
     return (
         <div className="wrapper-main">
             <h1>Account Page</h1>
             {isValid ? (
-                <>
+                <div>
                     <p>Username: {username}</p>
                     <p>Email: {email}</p>
                     <p>Account Created: {accountCreated}</p>
-                </>
+                    <div>
+                        <button onClick={handleLogout}>Logout</button>
+                    </div>
+                </div>
             ) : (
-                <p>Invalid session ID or not logged in. Please try again</p>
+                <div>
+                    <p>Invalid session ID or not logged in. Please try again</p>
+                </div>
             )}
         </div>
     );

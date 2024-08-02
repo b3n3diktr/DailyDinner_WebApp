@@ -17,7 +17,7 @@ const Login: React.FC = () => {
             const response = await login(email, password);
             if (response && response.message) {
                 setMessage(response.message);
-                redirect('/');
+                window.location.href="/account";
             } else {
                 setMessage('Login failed. Please try again.');
             }

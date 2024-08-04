@@ -17,6 +17,7 @@ import Home from "./components/Home/Home";
 import Account from "./components/User/Account";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
+import ForgotPassword from "./components/User/ForgotPassword";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -42,17 +43,6 @@ const App: React.FC = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
-
-    const handleLogout = async () => {
-        try {
-            await axios.post(`${apiUrl}/auth/logout`, {}, { withCredentials: true });
-            Cookies.remove('sessionID');
-            setIsLoggedIn(false);
-            redirect('/login');
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
 
     const manageCookies = async () =>{
         Cookies.remove("cookieConsent");
@@ -98,6 +88,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/account" element={<Account/>} />
                     <Route path="/" element={<Navigate to="/home" />} />

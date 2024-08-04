@@ -18,7 +18,7 @@ const FallbackPage: React.FC = () => {
         navigate('/home', { replace: true });
     };
 
-    const hideErrorCode = ['201'];
+    const hideErrorCode = ['201', '200'];
 
     return (
         <div className="wrapper-main">

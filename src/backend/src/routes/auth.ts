@@ -25,16 +25,6 @@ const encodeQueryParams = (params: { [key: string]: string }) => {
         .join('&');
 };
 
-/*export const logRedirect = (req: any, res: any, errorCode: string, message: string, header: string) => {
-    const params = encodeQueryParams({
-        errorCode,
-        message,
-        header
-    });
-    console.log(`Redirected from: ${frontendUrl}${req.originalUrl} , to ${frontendUrl}/fallback?${params}`);
-    res.redirect(`${frontendUrl}/fallback?${params}`);
-}*/
-
 const sendActivationEmail = async (user: mongoose.Document) => {
     const activationToken = jwt.sign({ email: (user as IUser).email }, key, { expiresIn: '1d' });
     (user as IUser).activationToken = activationToken;
@@ -44,13 +34,12 @@ const sendActivationEmail = async (user: mongoose.Document) => {
     await sendEmail((user as IUser).email, 'Account Activation', `Click the following link to activate your account: ${activationLink}`);
 };
 
-const sendResetPasswordEmail = async (email: mongoose.Document) => {
-    const resetToken = jwt.sign({ email: (email as IResetPassword) }, key, { expiresIn: '1d' });
-    (email as IResetPassword).token = resetToken;
-    await (email as IResetPassword).save();
+const sendResetPasswordEmail = async (email: string) => {
+    const resetToken = jwt.sign({ email }, key, { expiresIn: '1d' });
 
-    const resetLink = `${API_URL}/auth/reset/${resetToken}`;
-    await sendEmail((email as IResetPassword).email, 'Reset Password', `Click the following link to reset your password: ${resetLink}`);
+    const resetLink = `${server.API_URL}/auth/reset/${resetToken}`;
+
+    await sendEmail(email, 'Reset Password', `Click the following link to reset your password: ${resetLink}`);
 };
 
 
@@ -105,7 +94,7 @@ router.post('/register', async (req, res) => {
 
         try {
             await sendActivationEmail(user);
-            logging.info('AUTH[Registration] - USERNAME: [${user.username}]- USERID: [${user._id}] - EMAIL: [${user.email}]');
+            logging.info(`AUTH[Registration] - USERNAME: [${user.username}] - USERID: [${user._id}] - EMAIL: [${user.email}]`);
             return res.status(201).json({message: 'Registration successful. Check your email to activate your account.'}).end();
         } catch (error) {
             await User.findByIdAndDelete(user._id);
@@ -114,6 +103,7 @@ router.post('/register', async (req, res) => {
                 message: 'Error sending activation email. Please try again.',
                 header: 'Error'
             });
+            logging.error(`${error}`);
             return res.redirect(`${frontendUrl}/fallback?${params}`);
         }
     } catch (error: any) {
@@ -122,6 +112,7 @@ router.post('/register', async (req, res) => {
             message: 'Error registering user.',
             header: 'Error'
         });
+        logging.error(`${error}`);
         return res.redirect(`${frontendUrl}/fallback?${params}`);
     }
 });
@@ -131,7 +122,7 @@ router.post('/register', async (req, res) => {
 // Reset Password
 router.post('/reset', async (req, res) => {
     console.log("1");
-    const email = req.body;
+    const {email} = req.body;
     console.log("2");
     try {
         console.log("3");
@@ -152,10 +143,10 @@ router.post('/reset', async (req, res) => {
         const created = date.toLocaleString();
         console.log("9");
         const resetPassword = new ResetPassword({
-            token,
+            token: token,
             userId: user._id,
-            email,
-            created
+            email: email,
+            createdAt: created,
         });
         console.log("10");
         await resetPassword.save();
@@ -169,7 +160,7 @@ router.post('/reset', async (req, res) => {
                 message: 'Reset token was send successfully.',
                 header: 'Success'
             });
-            logging.info('AUTH[Password Reset] - USERNAME: [${user.username}]- USERID: [${user._id}] - EMAIL: [${user.email}]');
+            logging.info(`AUTH[Password Reset] - USERNAME: [${user.username}] - USERID: [${user._id}] - EMAIL: [${user.email}]`);
             return res.redirect(`${frontendUrl}/fallback?${params}`);
         }catch (error: any){
             await ResetPassword.findOneAndDelete({ email });
@@ -178,6 +169,7 @@ router.post('/reset', async (req, res) => {
                 message: 'Error sending password reset email. Please try again.',
                 header: 'Error'
             });
+            logging.error(`${error}`);
             return res.redirect(`${frontendUrl}/fallback?${params}`);
         }
     }catch (error: any) {
@@ -186,6 +178,7 @@ router.post('/reset', async (req, res) => {
             message: 'Error sending password reset email. Please try again.',
             header: 'Error'
         });
+        logging.error(`${error}`);
         return res.redirect(`${frontendUrl}/fallback?${params}`);
     }
 });
@@ -216,9 +209,10 @@ router.post('/login', async (req, res) => {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000 * 14,
             secure: process.env.NODE_ENV === 'production'});
-        logging.info('AUTH[Login] - USERNAME: [${user.username}]- USERID: [${user._id}] - EMAIL: [${user.email}]');
+        logging.info(`AUTH[Login] - USERNAME: [${user.username}] - USERID: [${user._id}] - EMAIL: [${user.email}]`);
         return res.status(201).json({token, message: `Successfully logged in.`, userID: user._id}).end();
     } catch (error) {
+        logging.error(`${error}`);
         return res.status(500).json({message: 'Internal server error.'}).end();
     }
 });
@@ -237,8 +231,10 @@ router.post('/validate', async (req, res) => {
         if (!user) {
             return res.status(401).json({ message: 'Invalid token.' });
         }
+        logging.info(`AUTH[Validate] - USERNAME: [${user.username}] - USERID: [${user._id}] - EMAIL: [${user.email}]`);
         return res.status(201).json({message: `Successfully validated: ${token}`, username: user.username, email: user.email, accountCreated: user.created}).end();
     } catch (error) {
+        logging.error(`${error}`);
         return res.status(401).json({ message: 'Token validation failed.' });
     }
 });
@@ -280,6 +276,7 @@ router.get('/activate/:token', async (req, res) => {
                 message: 'Internal server error.',
                 header: 'Error'
             });
+            logging.error(`${error}`);
             return res.redirect(`${frontendUrl}/fallback?${params}`);
         }
         const params = encodeQueryParams({
@@ -287,9 +284,10 @@ router.get('/activate/:token', async (req, res) => {
             message: 'Account activated successfully.',
             header: 'Success'
         });
-        logging.info("AUTH[Activation] - USERNAME: [${user.username}]- USERID: [${user._id}] - EMAIL: [${user.email}]");
+        logging.info(`AUTH[Activation] - USERNAME: [${user.username}] - USERID: [${user._id}] - EMAIL: [${user.email}]`);
         return res.redirect(`${frontendUrl}/fallback?${params}`);
     } catch (error: any) {
+        logging.error(`${error}`);
         if (error.name === 'TokenExpiredError') {
             const decoded = jwt.decode(token) as { email: string };
             const user = await User.findOne({ email: decoded.email });

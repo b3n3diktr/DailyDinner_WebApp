@@ -1,4 +1,4 @@
-import { TEST } from './config';
+import { PRODUCTION } from './config';
 
 const colours = {
     reset: '\x1b[0m',
@@ -54,11 +54,11 @@ export function getCallingFunction(error: Error) {
 }
 
 export function log(message?: any, ...optionalParams: any[]) {
-    if (!TEST) console.log(`[${new Date().toLocaleString()}]`, colours.fg.magenta, '[SERVER-LOG] ', colours.reset, message, ...optionalParams);
+    if (!PRODUCTION) console.log(`[${new Date().toLocaleString()}]`, colours.fg.magenta, '[SERVER-LOG] ', colours.reset, message, ...optionalParams);
 }
 
 export function info(message?: any, ...optionalParams: any[]) {
-    if (!TEST)
+    if (!PRODUCTION)
         console.info(
             `[${new Date().toLocaleString()}]`,
             colours.fg.cyan,
@@ -73,7 +73,7 @@ export function info(message?: any, ...optionalParams: any[]) {
 }
 
 export function warn(message?: any, ...optionalParams: any[]) {
-    if (!TEST)
+    if (!PRODUCTION)
         console.warn(
             `[${new Date().toLocaleString()}]`,
             colours.fg.yellow,
@@ -88,7 +88,7 @@ export function warn(message?: any, ...optionalParams: any[]) {
 }
 
 export function error(message?: any, ...optionalParams: any[]) {
-    if (!TEST)
+    if (!PRODUCTION)
         console.error(
             `[${new Date().toLocaleString()}]`,
             colours.fg.red,

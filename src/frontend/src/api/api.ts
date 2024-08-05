@@ -24,4 +24,9 @@ export const auth = async (token: string) => {
     return response.data;
 };
 
+export const resetPassword = async (email: string) => {
+    const response = await axios.post(`${apiUrl}/auth/reset`, {email});
+    return response.data;
+}
+
 axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.get('sessionID')}`;

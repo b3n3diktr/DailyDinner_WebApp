@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {login} from '../../api/api';
 import '../../style.css';
 import {PasswordIcon, VisibilityIcon, VisibilityOff} from "../../icons/icons";
-import {redirect} from "@remix-run/router";
 import Cookies from "js-cookie";
 
 const Login: React.FC = () => {
@@ -25,7 +24,7 @@ const Login: React.FC = () => {
                 setMessage('Login failed. Please try again.');
             }
         } catch (error: any) {
-            setMessage(`Login failed: ${error.response?.data?.message || 'Please try again.'}`);
+            setMessage('Login failed. Please try again.');
         }
     };
 

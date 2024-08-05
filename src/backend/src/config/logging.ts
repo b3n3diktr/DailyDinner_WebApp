@@ -54,7 +54,14 @@ export function getCallingFunction(error: Error) {
 }
 
 export function log(message?: any, ...optionalParams: any[]) {
-    if (!PRODUCTION) console.log(`[${new Date().toLocaleString()}]`, colours.fg.magenta, '[SERVER-LOG] ', colours.reset, message, ...optionalParams);
+    if (!PRODUCTION)
+        console.log(
+            `[${new Date().toLocaleString()}]`,
+            colours.fg.magenta,
+            '[LOG] ',
+            colours.reset
+            , message,
+            ...optionalParams);
 }
 
 export function info(message?: any, ...optionalParams: any[]) {

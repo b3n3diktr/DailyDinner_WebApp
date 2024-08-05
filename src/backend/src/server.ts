@@ -27,8 +27,8 @@ export const Main = () => {
     logging.log('----------------------------------------');
     logging.log('Logging & Configuration');
     logging.log('----------------------------------------');
-    application.use(loggingHandler);
     application.use(corsHandler);
+    application.use(loggingHandler);
 
     logging.log('----------------------------------------');
     logging.log('Define Controller Routing');

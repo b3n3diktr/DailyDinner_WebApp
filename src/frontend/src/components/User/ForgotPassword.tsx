@@ -2,21 +2,19 @@ import React from 'react';
 import '../../style.css';
 import {resetPassword} from "../../api/api";
 
-const encodeQueryParams = (params: { [key: string]: string }) => {
-    return Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-        .join('&');
-};
-
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = React.useState('');
     const[message, setMessage] = React.useState('');
 
     const handleForgotPassword = async (e: React.FormEvent) => {
-
         e.preventDefault();
         try {
             const response = await resetPassword(email);
+            if (response && response.message) {
+                setMessage(response.message);
+            } else {
+                setMessage('Password reset failed. Please try again.');
+            }
         }catch (error: any){
             setMessage(`Error: ${error.message || 'Please try again.'}`);
         }

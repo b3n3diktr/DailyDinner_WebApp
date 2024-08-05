@@ -10,14 +10,12 @@ import Blog from "./components/Blog/Blog";
 import {handleThemeSwitch} from "./components/Darkmode/Darkmode";
 import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode, AccountIcon} from "./icons/icons";
 import Cookies from 'js-cookie';
-import axios from 'axios';
-import {apiUrl} from "./api/api";
-import {redirect} from "@remix-run/router";
 import Home from "./components/Home/Home";
 import Account from "./components/User/Account";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import ForgotPassword from "./components/User/ForgotPassword";
+import ResetPassword from "./components/User/ResetPassword";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -88,6 +86,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/reset-password" element={<ResetPassword />}/>
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/account" element={<Account/>} />

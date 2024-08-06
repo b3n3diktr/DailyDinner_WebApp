@@ -4,7 +4,7 @@ import './config/logging';
 import mongoose from 'mongoose';
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
-import authRoutes from './routes/auth';
+import authRoutes from './routes/authRoutes';
 
 import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';

@@ -15,7 +15,7 @@ const Account: React.FC = () => {
         const token = Cookies.get('sessionID');
         if (token) {
             setSessionID(token);
-            validateSessionID(token).catch((err) => {
+            validateSessionID(token).catch((err: unknown) => {
             });
         }
     }, []);
@@ -27,7 +27,7 @@ const Account: React.FC = () => {
             setUsername(response.username);
             setEmail(response.email);
             setAccountCreated(response.accountCreated);
-        } catch (error: any) {
+        } catch (error: unknown) {
             setIsValid(false);
             Cookies.remove('sessionID');
         }

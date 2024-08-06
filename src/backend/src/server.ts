@@ -47,7 +47,7 @@ export const Main = () => {
     logging.log('Connecting to Database');
     logging.log('----------------------------------------');
     mongoose.connect(server.MONGO_URI)
-        .catch(error => logging.error(`MongoDB connection error: ${error}`));
+        .catch(error => { logging.error(`MongoDB connection error: ${error}`); });
 
     logging.log('----------------------------------------');
     logging.log('Starting Server');
@@ -60,6 +60,6 @@ export const Main = () => {
     });
 };
 
-export const Shutdown = (callback: any) => httpServer && httpServer.close(callback);
+export const Shutdown = (callback: any) => httpServer?.close(callback);
 
 Main();

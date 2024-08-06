@@ -5,7 +5,7 @@ import PasswordStrengthMeter from "./PasswordStrengthMeter";
 import {useLocation, useNavigate} from "react-router-dom";
 import {changePassword} from "../../api/api";
 
-const encodeQueryParams = (params: { [key: string]: string }) => {
+const encodeQueryParams = (params: Record<string, string>) => {
     return Object.keys(params)
         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
         .join('&');
@@ -47,12 +47,8 @@ const ResetPassword: React.FC = () => {
         }
         try{
             const response = await changePassword(resetToken, password);
-            if (response && response.message) {
-                setMessage(response.message);
-                setSuccess(true);
-            } else {
-                setMessage('Resetting Password failed. Please try again.');
-            }
+            setMessage(response.message);
+            setSuccess(true);
         }catch (error: any){
             setSuccess(false);
             setMessage(`Resetting Password failed. ${error.response?.data?.message || 'Please try again.'}`);
@@ -83,7 +79,7 @@ const ResetPassword: React.FC = () => {
                     </label>
                     <input type={showPassword ? "text" : "password"} placeholder="Repeat Password"
                            value={confirmPassword}
-                           onChange={(e) => setConfirmPassword(e.target.value)}/>
+                           onChange={(e) => { setConfirmPassword(e.target.value); }}/>
                     <button type="button" className="password-toggle-button" onClick={toggleShowPassword}>
                         {showPassword ? VisibilityOff() : VisibilityIcon()}
                     </button>

@@ -44,7 +44,7 @@ const Login: React.FC = () => {
                         <span>@</span>
                     </label>
                     <input type="email" placeholder="Email" value={email} id={"email-input"}
-                           onChange={(e) => setEmail(e.target.value)}/>
+                           onChange={(e) => { setEmail(e.target.value); }}/>
                 </div>
                 <div className="password-input-wrapper">
                     <label>
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
                 <div className="login-options">
                     {cookies ?
                     <div className="remember-me">
-                        <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}/>
+                        <input type="checkbox" checked={rememberMe} onChange={(e) => { setRememberMe(e.target.checked); }}/>
                         <p>Remember me</p>
                     </div> : null}
                     <a href="/forgot-password" className="forgot-password">Forgot Password?</a>

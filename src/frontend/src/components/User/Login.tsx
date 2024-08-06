@@ -17,14 +17,11 @@ const Login: React.FC = () => {
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
-            if (response && response.message) {
-                setMessage(response.message);
-                window.location.href="/account";
-            } else {
-                setMessage('Login failed. Please try again.');
-            }
+            setMessage(`${response.message}`);
+            window.location.href="/account";
+
         } catch (error: any) {
-            setMessage('Login failed. Please try again.');
+            setMessage(`Login failed: ${error.response.data.message || 'Please try again.'}`);
         }
     };
 

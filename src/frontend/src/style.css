@@ -414,6 +414,7 @@ nav li:first-child {
 .wrapper-auth p {
     text-align: center;
     color: var(--text-color);
+    max-width: 30rem;
 }
 
 .wrapper-auth form {

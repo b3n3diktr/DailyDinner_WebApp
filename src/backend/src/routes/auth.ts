@@ -44,9 +44,8 @@ const sendResetPasswordEmail = async (email: string) => {
     await sendEmail(email, 'Reset Password', `Click the following link to reset your password: ${resetLink}`);
 };
 
-const sendChangePasswordEmail = async (email: string, confirmToken: string) => {
-    const confirmLink = `${backendUrl}/changepassword/${confirmToken}`;
-    await sendEmail(email, 'Confirm Changing your Password', `Click the following link to confirm your password change and reactivate your account: ${confirmLink}`);
+const sendChangePasswordEmail = async (email: string) => {
+    await sendEmail(email, 'Your password changed', `The password of the account with your email has been changed. If this was you, you can just ignore this mail but if not immediately contact us.`);
 }
 
 
@@ -158,6 +157,8 @@ router.post('/login', async (req, res) => {
     }
 });
 
+
+
 //Validate sessionID
 router.post('/validate', async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
@@ -181,6 +182,7 @@ router.post('/validate', async (req, res) => {
 });
 
 
+
 /* Change Password */
 router.post('/changepassword', async (req, res) => {
     const {resetToken, newPassword} = req.body;
@@ -201,19 +203,16 @@ router.post('/changepassword', async (req, res) => {
         }
 
         const email = user.email;
-
-        const confirmToken = crypto.randomBytes(32).toString('hex');
-        resetPasswordModel.newPassword = newPassword;
-        resetPasswordModel.confirmToken = confirmToken;
-        await resetPasswordModel.save();
-
-        user.isActive = false;
+        user.password = newPassword;
         await user.save();
-
-        await sendChangePasswordEmail(email, confirmToken);
+        await ResetPassword.findByIdAndDelete(resetPasswordModel._id);
+        await sendChangePasswordEmail(email);
 
         logging.info(`AUTH[Change Password] - USERNAME: [${user.username}] - USERID: [${user._id}] - EMAIL: [${user.email}]`);
-        return res.status(201).json({message: 'Successfully changed password. You have received an email with a link to confirm your password change. Until you have click on that link, your account will be deactivated!'});
+        const params = encodeQueryParams({
+           message: 'Successfully changed password, you can now login',
+        });
+        return res.status(201).json({message: 'Successfully changed password. You can now login.'});
     }catch (error: any){
         logging.error(`${error}`);
         return res.status(500).json({message: 'Internal server error.'}).end();
@@ -277,9 +276,7 @@ router.post('/forgotpassword', async (req, res) => {
             userId: userID,
             email: email,
             createdAt: created,
-            resetToken: '',
-            newPassword: '',
-            confirmToken: ''
+            resetToken: ''
         });
 
         await resetPassword.save();

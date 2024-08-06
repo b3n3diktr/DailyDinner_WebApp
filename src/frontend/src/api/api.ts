@@ -34,4 +34,4 @@ export const changePassword = async (resetToken: string, newPassword: string) =>
     return response.data;
 }
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.get('sessionID')}`;
+axios.defaults.headers.common.Authorization = `Bearer ${Cookies.get('sessionID')}`;

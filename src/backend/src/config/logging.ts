@@ -53,7 +53,7 @@ export function getCallingFunction(error: Error) {
     }
 }
 
-export function log(message?: any, ...optionalParams: any[]) {
+export function log(message?: unknown, ...optionalParams: any[]) {
     if (!PRODUCTION)
         console.log(
             `[${new Date().toLocaleString()}]`,
@@ -64,7 +64,7 @@ export function log(message?: any, ...optionalParams: any[]) {
             ...optionalParams);
 }
 
-export function info(message?: any, ...optionalParams: any[]) {
+export function info(message?: unknown, ...optionalParams: any[]) {
     if (!PRODUCTION)
         console.info(
             `[${new Date().toLocaleString()}]`,
@@ -79,7 +79,7 @@ export function info(message?: any, ...optionalParams: any[]) {
         );
 }
 
-export function warn(message?: any, ...optionalParams: any[]) {
+export function warn(message?: unknown, ...optionalParams: any[]) {
     if (!PRODUCTION)
         console.warn(
             `[${new Date().toLocaleString()}]`,
@@ -94,7 +94,7 @@ export function warn(message?: any, ...optionalParams: any[]) {
         );
 }
 
-export function error(message?: any, ...optionalParams: any[]) {
+export function error(message?: unknown, ...optionalParams: any[]) {
     if (!PRODUCTION)
         console.error(
             `[${new Date().toLocaleString()}]`,
@@ -121,11 +121,11 @@ const logging = {
 /** Create the global definition */
 declare global {
     var logging: {
-        log: (message?: any, ...optionalParams: any[]) => void;
-        info: (message?: any, ...optionalParams: any[]) => void;
-        warn: (message?: any, ...optionalParams: any[]) => void;
-        warning: (message?: any, ...optionalParams: any[]) => void;
-        error: (message?: any, ...optionalParams: any[]) => void;
+        log: (message?: unknown, ...optionalParams: any[]) => void;
+        info: (message?: unknown, ...optionalParams: any[]) => void;
+        warn: (message?: unknown, ...optionalParams: any[]) => void;
+        warning: (message?: unknown, ...optionalParams: any[]) => void;
+        error: (message?: unknown, ...optionalParams: any[]) => void;
         getCallingFunction: (error: Error) => string;
     };
 }

@@ -10,13 +10,9 @@ const ForgotPassword: React.FC = () => {
         e.preventDefault();
         try {
             const response = await resetPassword(email);
-            if (response && response.message) {
-                setMessage(response.message);
-            } else {
-                setMessage('Password reset failed. Please try again.');
-            }
+            setMessage(`${response.message}`);
         }catch (error: any){
-            setMessage(`Error: ${error.message || 'Please try again.'}`);
+            setMessage(`Password reset failed: ${error.response.data.message || 'Please try again.'}`);
         }
     }
 

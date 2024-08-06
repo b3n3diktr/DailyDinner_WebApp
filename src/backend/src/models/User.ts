@@ -7,6 +7,8 @@ export interface IUser extends Document {
     password: string;
     isActive: boolean;
     activationToken: string;
+    uuid: string;
+    created: string;
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -15,6 +17,8 @@ const UserSchema = new Schema<IUser>({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isActive: { type: Boolean, default: false },
+    uuid: { type: String, required: true, unique: true },
+    created: { type: String, required: true},
     activationToken: { type: String, required: false, unique: true },
 });
 

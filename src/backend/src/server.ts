@@ -1,35 +1,65 @@
+import http from 'http';
 import express from 'express';
+import './config/logging';
 import mongoose from 'mongoose';
-import cors from 'cors';
+import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
 import authRoutes from './routes/auth';
-import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
-dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI;
-if (!MONGO_URI) {
-    throw new Error('MongoDB URI is required.');
-}
+import { corsHandler } from './middleware/corsHandler';
+import { loggingHandler } from './middleware/loggingHandler';
+import { routeNotFound } from './middleware/routeNotFound';
+import { server } from './config/config';
 
-// Apply rate limiting to all requests
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests, please try again later.'
-});
-app.use(limiter);
+export const application = express();
+const limiter = rateLimit({windowMs: 15 * 60 * 1000, max: 100, message: 'Too many requests, please try again later.'});
+export let httpServer: ReturnType<typeof http.createServer>;
 
-app.use(cors());
-app.use(express.json());
+export const Main = () => {
+    logging.log('----------------------------------------');
+    logging.log('Initializing API');
+    logging.log('----------------------------------------');
+    application.use(express.urlencoded({ extended: true }));
+    application.use(express.json());
+    application.use(cookieParser());
+    application.use(limiter);
 
-app.use('/api/auth', authRoutes);
+    logging.log('----------------------------------------');
+    logging.log('Logging & Configuration');
+    logging.log('----------------------------------------');
+    application.use(corsHandler);
+    application.use(loggingHandler);
 
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    logging.log('----------------------------------------');
+    logging.log('Define Controller Routing');
+    logging.log('----------------------------------------');
+    application.get('/main/healthcheck', (req, res, next) => {
+        return res.status(200).json({ hello: 'world!' });
+    });
+    application.use('/api/auth', authRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+    logging.log('----------------------------------------');
+    logging.log('Define Routing Error');
+    logging.log('----------------------------------------');
+    application.use(routeNotFound);
+
+    logging.log('----------------------------------------');
+    logging.log('Connecting to Database');
+    logging.log('----------------------------------------');
+    mongoose.connect(server.MONGO_URI)
+        .catch(error => { logging.error(`MongoDB connection error: ${error}`); });
+
+    logging.log('----------------------------------------');
+    logging.log('Starting Server');
+    logging.log('----------------------------------------');
+    httpServer = http.createServer(application);
+    httpServer.listen(server.SERVER_PORT, () => {
+        logging.log('----------------------------------------');
+        logging.log(`Server started on ${server.SERVER_HOSTNAME}:${server.SERVER_PORT}`);
+        logging.log('----------------------------------------');
+    });
+};
+
+export const Shutdown = (callback: any) => httpServer?.close(callback);
+
+Main();

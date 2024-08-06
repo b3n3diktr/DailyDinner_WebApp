@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import PasswordStrengthMeter from './PasswordStrengthMeter';
 import '../../style.css';
 import { register } from "../../api/api";
@@ -13,9 +12,10 @@ const Register: React.FC = () => {
     const [message, setMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
 
-    const handleRegister = async () => {
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (password !== confirmPassword) {
             setMessage('Passwords do not match.');
             setSuccess(false);
@@ -23,11 +23,11 @@ const Register: React.FC = () => {
         }
         try {
             const response = await register(username, email, password);
-            setMessage(`${response.message}`);
+            setMessage(response.message);
             setSuccess(true);
         } catch (error: any) {
             setSuccess(false);
-            setMessage(`${error.response.data.message}`);
+            setMessage(`Registration failed: ${error.response.data.message || 'Please try again.'}`);
         }
     };
 
@@ -36,7 +36,7 @@ const Register: React.FC = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className="wrapper-auth">
             <h1>Register</h1>
             <p className={success ? 'correct-message' : 'error-message'}>{message}</p>
             <form id="form">

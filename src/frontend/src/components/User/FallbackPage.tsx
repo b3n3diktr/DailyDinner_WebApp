@@ -15,19 +15,19 @@ const FallbackPage: React.FC = () => {
     const header = query.get('header') ?? 'Error';
 
     const handleGoBack = () => {
-        navigate('/', { replace: true });
+        navigate('/home', { replace: true });
     };
 
-    const hideErrorCode = ['201'];
+    const hideErrorCode = ['201', '200'];
 
     return (
-        <div className="fallback-container">
-            <h1 className="fallback-header">{header}</h1>
-            <p className="fallback-message">{message}</p>
+        <div className="wrapper-main">
+            <h1>{header}</h1>
+            <p>{message}</p>
             {errorCode && !hideErrorCode.includes(errorCode) && (
-                <p className="fallback-error-code">Error Code: {errorCode}</p>
+                <p >Error Code: {errorCode}</p>
             )}
-            <button className="fallback-button" onClick={handleGoBack}>
+            <button onClick={handleGoBack}>
                 Go Back
             </button>
         </div>

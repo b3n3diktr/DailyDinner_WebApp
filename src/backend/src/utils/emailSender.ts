@@ -1,5 +1,9 @@
 import nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import {IUser} from "../models/User";
+import {IResetPassword} from "../models/ResetPassword";
 
 dotenv.config();
 

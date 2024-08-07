@@ -3,7 +3,7 @@ import '../../style.css';
 import { auth } from "../../api/api";
 import Cookies from "js-cookie";
 
-const Account: React.FC = () => {
+const MyAccount: React.FC = () => {
     const [sessionID, setSessionID] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [username, setUsername] = useState('');
@@ -59,4 +59,4 @@ const Account: React.FC = () => {
     );
 };
 
-export default Account;
+export default MyAccount;

@@ -11,12 +11,13 @@ import {handleThemeSwitch} from "./components/Darkmode/Darkmode";
 import { HamMenu, Close , XLogo, InstagramLogo, YoutubeLogo, GitHubLogo, LightMode, DarkMode, AccountIcon} from "./icons/icons";
 import Cookies from 'js-cookie';
 import Home from "./components/Home/Home";
-import Account from "./components/User/Account";
+import MyAccount from "./components/User/MyAccount";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
 import ToS from "./components/ToS/ToS";
+import NotFound from "./components/NotFound/NotFound";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -64,7 +65,7 @@ const App: React.FC = () => {
                         <li><Link onClick={hideSidebar} to={"/about"}>About</Link></li>
                         <li><Link onClick={hideSidebar} to={"/contact"}>Contact</Link></li>
                         {isLoggedIn ? (
-                            <li><Link onClick={hideSidebar} to={"/account"}>{AccountIcon()}</Link></li>
+                            <li><Link onClick={hideSidebar} to={"/myaccount"}>{AccountIcon()}</Link></li>
                         ) : (
                             <li><Link onClick={hideSidebar} to={"/login"}>Login</Link></li>
                         )}
@@ -75,7 +76,7 @@ const App: React.FC = () => {
                         <li className={"hideOnMobile"}><Link to={"/about"}>About</Link></li>
                         <li className={"hideOnMobile"}><Link to={"/contact"}>Contact</Link></li>
                         {isLoggedIn ? (
-                            <li className={"hideOnMobile"}><Link to={"/account"}>{AccountIcon()}</Link></li>
+                            <li className={"hideOnMobile"}><Link to={"/myaccount"}>{AccountIcon()}</Link></li>
                         ) : (
                             <li className={"hideOnMobile"}><Link to={"/login"}>Login</Link></li>
                         )}
@@ -91,7 +92,7 @@ const App: React.FC = () => {
                     <Route path="/reset-password" element={<ResetPassword />}/>
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/account" element={<Account/>} />
+                    <Route path="/myaccount" element={<MyAccount/>} />
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
@@ -100,7 +101,8 @@ const App: React.FC = () => {
                     <Route path="/contact" element={<Contact/>}/>
                     <Route path="/about" element={<About/>}/>
                     <Route path="/blog" element={<Blog/>}/>
-                    <Route element={<FallbackPage/>}/>
+                    <Route path="/fallback" element={<FallbackPage/>}/>
+                    <Route path="*" element={<NotFound/>}/>
                 </Routes>
             </div>
             <footer className="footer">

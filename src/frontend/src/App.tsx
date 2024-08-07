@@ -16,6 +16,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
+import ToS from "./components/ToS/ToS";
 
 const App: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -86,6 +87,7 @@ const App: React.FC = () => {
                     </ul>
                 </nav>
                 <Routes>
+                    <Route path="/tos" element={<ToS/>}/>
                     <Route path="/reset-password" element={<ResetPassword />}/>
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -120,6 +122,7 @@ const App: React.FC = () => {
                     <li onClick={manageCookies}>Manage Cookies</li>
                     <li><Link to="/privacy-policy">Privacy Policy</Link></li>
                     <li>Imprint</li>
+                    <li><Link to="/tos">Terms of Services</Link></li>
                 </ul>
                 <ul>
                     <h1>Social</h1>

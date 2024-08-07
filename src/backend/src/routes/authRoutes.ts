@@ -11,7 +11,7 @@ const service = new authService(backendUrl);
 
 const encodeQueryParams = (params: { [key: string]: string }) => {
     return Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
 };
 
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
 router.get('/activate/:token', async (req, res) => {
     const { token } = req.params;
     try {
-        const user = await service.activateUser(token);
+        await service.activateUser(token);
         const params = encodeQueryParams({
             errorCode: '200',
             message: 'Account activated successfully.',

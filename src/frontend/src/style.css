@@ -53,12 +53,15 @@ nav ul {
 }
 
 nav li {
-    height: 3.125rem;
+    height: 3.5rem;
+}
+
+nav li:last-child {
+    padding: 0;
 }
 
 nav svg {
     height: 100%;
-    padding: 0 0.9375rem;
 }
 
 nav a {

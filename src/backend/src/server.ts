@@ -10,6 +10,7 @@ import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';
 import { routeNotFound } from './middleware/routeNotFound';
 import { server } from './config/config';
+import {helmetHandler} from "./middleware/helmetHandler";
 
 export const application = express();
 const limiter = rateLimit({windowMs: 15 * 60 * 1000, max: 100, message: 'Too many requests, please try again later.'});
@@ -23,6 +24,11 @@ export const Main = () => {
     application.use(express.json());
     application.use(cookieParser());
     application.use(limiter);
+
+    logging.log('----------------------------------------');
+    logging.log('Security Headers');
+    logging.log('----------------------------------------');
+    application.use(helmetHandler);
 
     logging.log('----------------------------------------');
     logging.log('Logging & Configuration');

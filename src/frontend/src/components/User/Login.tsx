@@ -18,7 +18,7 @@ const Login: React.FC = () => {
         try {
             const response = await login(email, password, rememberMe);
             setMessage(`${response.message}`);
-            window.location.href="/account";
+            window.location.href="/myaccount";
 
         } catch (error: any) {
             setMessage(`Login failed: ${error.response.data.message || 'Please try again.'}`);

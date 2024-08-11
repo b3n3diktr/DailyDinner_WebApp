@@ -1,3 +1,6 @@
+import React from "react";
+import {DarkMode, LightMode} from "../../icons/icons";
+
 let currentTheme = localStorage.getItem("theme");
 
 const themeSwitch = document.getElementById("theme-switch");
@@ -31,3 +34,16 @@ export const handleThemeSwitch = () => {
         enableDarkMode();
     }
 }
+
+const DarkmodeButton = () =>{
+    return (
+        <div>
+            <button id="theme-switch" onClick={handleThemeSwitch}>
+                {DarkMode()}
+                {LightMode()}
+            </button>
+        </div>
+    );
+}
+
+export default DarkmodeButton;

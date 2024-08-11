@@ -82,7 +82,10 @@ const Register: React.FC = () => {
                 </div>
                 <button type="button" onClick={handleRegister}>Register</button>
             </form>
-            <p>Already have an account? <a href="/login">login</a></p>
+            <p style={{ padding: '1rem' }}>Already have an account? <a href="/login">login</a></p>
+            <div className="auth-tos">
+                <p>By creating an account you agree to our <a href="/tos">Terms of Service </a>and <a href="/privacy-policy">Privacy Policy</a></p>
+            </div>
         </div>
     );
 };

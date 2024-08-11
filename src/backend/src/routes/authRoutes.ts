@@ -11,7 +11,7 @@ const service = new authService(backendUrl);
 
 const encodeQueryParams = (params: { [key: string]: string }) => {
     return Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
 };
 
@@ -20,10 +20,12 @@ router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
     try {
         await service.registerUser(username, email, password);
-        return res.status(201).json({ message: 'Registration successful. Check your email to activate your account.' }).end();
+        res.status(201).json({ message: 'Registration successful. Check your email to activate your account.' }).end();
+        return;
     } catch (error: any) {
         logging.error(`${error}`);
-        return res.status(400).json({ message: error.message }).end();
+        res.status(400).json({ message: error.message }).end();
+        return;
     }
 });
 
@@ -33,13 +35,14 @@ router.post('/register', async (req, res) => {
 router.get('/activate/:token', async (req, res) => {
     const { token } = req.params;
     try {
-        const user = await service.activateUser(token);
+        await service.activateUser(token);
         const params = encodeQueryParams({
             errorCode: '200',
             message: 'Account activated successfully.',
             header: 'Success'
         });
-        return res.redirect(`${frontendUrl}/fallback?${params}`);
+        res.redirect(`${frontendUrl}/fallback?${params}`);
+        return;
     } catch (error: any) {
         if (error.name === 'TokenExpiredError') {
             await service.resendActivationEmail(token)
@@ -48,21 +51,24 @@ router.get('/activate/:token', async (req, res) => {
                 message: 'Activate Token Expired, creating a new one.',
                 header: 'Error'
             });
-            return res.redirect(`${frontendUrl}/fallback?${params}`);
+            res.redirect(`${frontendUrl}/fallback?${params}`);
+            return;
         } else if (error.name === 'JsonWebTokenError') {
             const params = encodeQueryParams({
                 errorCode: '400',
                 message: 'Invalid web token.',
                 header: 'Error'
             });
-            return res.redirect(`${frontendUrl}/fallback?${params}`);
+            res.redirect(`${frontendUrl}/fallback?${params}`);
+            return;
         } else {
             const params = encodeQueryParams({
                 errorCode: '400',
                 message: `Error: ${error.message}`,
                 header: 'Error'
             });
-            return res.redirect(`${frontendUrl}/fallback?${params}`);
+            res.redirect(`${frontendUrl}/fallback?${params}`);
+            return;
         }
     }
 });
@@ -79,10 +85,12 @@ router.post('/login', async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 * 14,
             secure: process.env.NODE_ENV === 'production'
         });
-        return res.status(201).json({ token, message: 'Successfully logged in.', userID: userId }).end();
+        res.status(201).json({ token, message: 'Successfully logged in.', userID: userId }).end();
+        return;
     } catch (error: any) {
         logging.error(`${error}`);
-        return res.status(400).json({ message: error.message }).end();
+        res.status(400).json({ message: error.message }).end();
+        return;
     }
 });
 
@@ -92,16 +100,19 @@ router.post('/login', async (req, res) => {
 router.post('/validate', async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-        return res.status(401).json({ message: 'No token provided.' }).end();
+        res.status(401).json({ message: 'No token provided.' }).end();
+        return;
     }
 
     try {
         const uuid = verifySessionID(token).uuid;
         const user = await service.validateSession(uuid);
-        return res.status(201).json({ message: `Successfully validated: ${token}`, username: user.username, email: user.email, accountCreated: user.created }).end();
+        res.status(201).json({ message: `Successfully validated: ${token}`, username: user.username, email: user.email, accountCreated: user.created }).end();
+        return;
     } catch (error: any) {
         logging.error(`${error}`);
-        return res.status(401).json({ message: 'Token validation failed.' }).end();
+        res.status(401).json({ message: 'Token validation failed.' }).end();
+        return;
     }
 });
 
@@ -111,10 +122,12 @@ router.post('/changepassword', async (req, res) => {
     const { resetToken, newPassword } = req.body;
     try {
         await service.changePassword(resetToken, newPassword);
-        return res.status(201).json({ message: 'Successfully changed password. You can now login.' }).end();
+        res.status(201).json({ message: 'Successfully changed password. You can now login.' }).end();
+        return;
     } catch (error: any) {
         logging.error(`${error}`);
-        return res.status(400).json({ message: error.message }).end();
+        res.status(400).json({ message: error.message }).end();
+        return;
     }
 });
 
@@ -124,7 +137,8 @@ router.get('/resetpassword/:token', async (req, res) => {
     const { token } = req.params;
     try {
         const resetToken = await service.resetPassword(token);
-        return res.redirect(`${frontendUrl}/reset-password?resetToken=${resetToken}`);
+        res.redirect(`${frontendUrl}/reset-password?resetToken=${resetToken}`);
+        return;
     } catch (error: any) {
         logging.error(`${error}`);
         const params = encodeQueryParams({
@@ -132,7 +146,8 @@ router.get('/resetpassword/:token', async (req, res) => {
             message: `Error: ${error.message}`,
             header: 'Error'
         });
-        return res.redirect(`${frontendUrl}/fallback?${params}`);
+        res.redirect(`${frontendUrl}/fallback?${params}`);
+        return;
     }
 });
 
@@ -143,10 +158,12 @@ router.post('/forgotpassword', async (req, res) => {
     const { email } = req.body;
     try {
         await service.forgotPassword(email);
-        return res.status(201).json({ message: 'Reset token was sent successfully.' }).end();
+        res.status(201).json({ message: 'Reset token was sent successfully.' }).end();
+        return;
     } catch (error: any) {
         logging.error(`${error}`);
-        return res.status(400).json({ message: error.message }).end();
+        res.status(400).json({ message: error.message }).end();
+        return;
     }
 });
 

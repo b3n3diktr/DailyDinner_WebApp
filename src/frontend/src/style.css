@@ -53,12 +53,15 @@ nav ul {
 }
 
 nav li {
-    height: 3.125rem;
+    height: 3.5rem;
+}
+
+nav li:last-child {
+    padding: 0;
 }
 
 nav svg {
     height: 100%;
-    padding: 0 0.9375rem;
 }
 
 nav a {
@@ -364,9 +367,9 @@ nav li:first-child {
 .copyright {
     background-color: var(--base-color);
     color: var(--text-color-variant);
+    border-top: 1px solid var(--base-color-variant);
     font-size: 0.8rem;
     text-align: center;
-    border-top: 1px solid var(--base-color-variant);
     margin: 0;
     padding: 1rem;
 }
@@ -383,6 +386,9 @@ nav li:first-child {
     }
 }
 
+
+
+/* Auth */
 .wrapper-auth {
     box-sizing: border-box;
     background-color: var(--base-color-variant);
@@ -613,9 +619,19 @@ nav li:first-child {
     text-decoration: underline;
 }
 
+.auth-tos{
+    padding: 1rem;
+    color: var(--text-color-variant);
+    border-top: 1px solid;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    max-width: 20rem;
+}
 
 
-/* Account */
+
+/* MyAccount */
 
 .account-cnt{
     display: flex;

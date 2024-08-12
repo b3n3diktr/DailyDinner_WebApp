@@ -8,14 +8,14 @@ import React from 'react';
 import './style.css';
 
 const App: React.FC = () => {
-
-
     return (
         <Router>
-            <DarkmodeButton/>
-            <NavBar/>
-            <Footer/>
-            <Copyright/>
+            <DarkmodeButton />
+            <div className="bg-white dark:bg-black min-h-screen">
+                <NavBar />
+                <Footer />
+                <Copyright />
+            </div>
             <CookieConsent />
         </Router>
     );

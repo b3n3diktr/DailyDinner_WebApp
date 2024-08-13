@@ -3,7 +3,7 @@ import { login } from '../../api/api';
 import { EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 import Cookies from "js-cookie";
 
-const Login: React.FC = () => {
+const SignIn: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -13,7 +13,7 @@ const Login: React.FC = () => {
     const [cookies, setCookies] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
-        console.log("Login!");
+        console.log("SignIn!");
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
@@ -36,9 +36,9 @@ const Login: React.FC = () => {
     }, []);
 
     return (
-        <div className="bg-base-variant dark:bg-darkmode-base-variant h-screen w-[max(40%,_37.5rem)] p-4 text-text flex flex-col items-center justify-center rounded-r-xl">
+        <div className="bg-base-variant dark:bg-darkmode-base-variant h-screen w-[max(40%,_37.5rem)] p-4 text-text flex flex-col items-center justify-center rounded-r-xl ">
             <div className="bg-base dark:bg-darkmode-base shadow-md rounded-lg p-8 w-full max-w-md">
-                <h1 className="text-3xl font-bold mb-6 text-left text-text dark:text-darkmode-text">Login</h1>
+                <h1 className="text-3xl font-bold mb-6 text-left text-text dark:text-darkmode-text">Sign In</h1>
                 <p className={`${success ? 'text-accent' : 'text-error'} mb-4`}>{message}</p>
                 <form id="form" className="space-y-6">
                     <div className="relative">
@@ -105,4 +105,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default SignIn;

@@ -23,7 +23,7 @@ module.exports = {
         'darkmode-theme-icon': '#ffffff',
       },
       fontFamily: {
-        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'], // Add your font stack here
+        sans: ['sans-serif'], // Add your font stack here
       },
       borderRadius: {
         'xl': '20px',

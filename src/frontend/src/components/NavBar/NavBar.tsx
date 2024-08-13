@@ -7,7 +7,7 @@ import ForgotPassword from "../User/ForgotPassword";
 import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
 import MyAccount from "../User/MyAccount";
 import Home from "../Home/Home";
-import Login from "../User/Login";
+import SignIn from "../User/SignIn";
 import Register from "../User/Register";
 import FallbackPage from "../User/FallbackPage";
 import Contact from "../Contact/Contact";
@@ -64,7 +64,7 @@ const NavBar = () => {
                         </li>
                     ) : (
                         <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
-                            <Link onClick={hideSidebar} to="/login">Login</Link>
+                            <Link onClick={hideSidebar} to="/signin">Sign in</Link>
                         </li>
                     )}
                 </ul>
@@ -87,7 +87,7 @@ const NavBar = () => {
                         </li>
                     ) : (
                         <li className="hidden md:block p-4">
-                            <Link to="/login">Login</Link>
+                            <Link to="/signin">Sign in</Link>
                         </li>
                     )}
                     <li className="md:hidden p-4">
@@ -106,7 +106,7 @@ const NavBar = () => {
                     <Route path="/myaccount" element={<MyAccount />} />
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/signin" element={<SignIn />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/fallback" element={<FallbackPage />} />
                     <Route path="/contact" element={<Contact />} />

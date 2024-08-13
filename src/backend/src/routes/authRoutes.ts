@@ -5,7 +5,7 @@ import { server } from "../config/config";
 import {verifySessionID } from "../core/auth/tokenGenerator";
 
 const backendUrl = `http://${server.SERVER_HOSTNAME}:${server.SERVER_PORT}/api/auth`;
-const frontendUrl = 'http://192.168.178.156';
+const frontendUrl = 'http://100.124.248.156:80/';
 const router = Router();
 const service = new authService(backendUrl);
 

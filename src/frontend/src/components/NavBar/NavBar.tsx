@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from "react";
-import {AccountIcon, Close, HamMenu} from "../../icons/icons";
-import {Link, Navigate, Route, Routes} from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { AccountIcon, Close, HamMenu } from "../../icons/icons";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 import ToS from "../ToS/ToS";
 import ResetPassword from "../User/ResetPassword";
 import ForgotPassword from "../User/ForgotPassword";
 import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
 import MyAccount from "../User/MyAccount";
 import Home from "../Home/Home";
-import Login from "../User/Login";
+import SignIn from "../User/SignIn";
 import Register from "../User/Register";
 import FallbackPage from "../User/FallbackPage";
 import Contact from "../Contact/Contact";
@@ -40,55 +40,83 @@ const NavBar = () => {
     }, []);
 
     return (
-        <div className="wrapper">
-            <nav>
-                <ul ref={sidebarRef} className={`sidebar ${isSidebarVisible ? 'visible' : 'hidden'}`}>
-                    <li onClick={hideSidebar}>{Close()}</li>
-                    <li><Link onClick={hideSidebar} to={"/blog"}>Blog</Link></li>
-                    <li><Link onClick={hideSidebar} to={"/about"}>About</Link></li>
-                    <li><Link onClick={hideSidebar} to={"/contact"}>Contact</Link></li>
+        <div className="min-h-16 flex flex-col font-bold text-text dark:text-darkmode-text fill-text dark:fill-darkmode-text">
+            <nav className="fixed top-0 left-0 w-full bg-base dark:bg-darkmode-base shadow-md z-50">
+                <ul
+                    ref={sidebarRef}
+                    className={`fixed top-0 right-0 h-vh-100 w-full [@media(min-width:28rem)]:w-sidebar z-50 bg-base-variant dark:bg-darkmode-base-variant backdrop-blur-lg shadow-lg transform transition-transform duration-300 ease-in-out ${isSidebarVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'} flex flex-col items-start justify-start`}
+                >
+                    <li onClick={hideSidebar} className="p-4 cursor-pointer fill-current text-text dark:text-darkmode-text">
+                        <Close/>
+                    </li>
+                    <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
+                        <Link onClick={hideSidebar} to="/blog">Blog</Link>
+                    </li>
+                    <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
+                        <Link onClick={hideSidebar} to="/about">About</Link>
+                    </li>
+                    <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
+                        <Link onClick={hideSidebar} to="/contact">Contact</Link>
+                    </li>
                     {isLoggedIn ? (
-                        <li><Link onClick={hideSidebar} to={"/myaccount"}>{AccountIcon()}</Link></li>
+                        <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
+                            <Link onClick={hideSidebar} to="/myaccount">{AccountIcon()}</Link>
+                        </li>
                     ) : (
-                        <li><Link onClick={hideSidebar} to={"/login"}>Login</Link></li>
+                        <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
+                            <Link onClick={hideSidebar} to="/signin">Sign in</Link>
+                        </li>
                     )}
                 </ul>
-                <ul>
-                    <li><Link to={"/home"}>Daily Dinner</Link></li>
-                    <li className={"hideOnMobile"}><Link to={"/blog"}>Blog</Link></li>
-                    <li className={"hideOnMobile"}><Link to={"/about"}>About</Link></li>
-                    <li className={"hideOnMobile"}><Link to={"/contact"}>Contact</Link></li>
+                <ul className="flex justify-end items-center w-full list-none">
+                    <li className="mr-auto p-4">
+                        <Link to="/home">Daily Dinner</Link>
+                    </li>
+                    <li className="hidden md:block p-4">
+                        <Link to="/blog">Blog</Link>
+                    </li>
+                    <li className="hidden md:block p-4">
+                        <Link to="/about">About</Link>
+                    </li>
+                    <li className="hidden md:block p-4">
+                        <Link to="/contact">Contact</Link>
+                    </li>
                     {isLoggedIn ? (
-                        <li className={"hideOnMobile"}><Link to={"/myaccount"}>{AccountIcon()}</Link></li>
+                        <li className="hidden md:block p-4 fill-text dark:fill-darkmode-text">
+                            <Link to="/myaccount"><AccountIcon/></Link>
+                        </li>
                     ) : (
-                        <li className={"hideOnMobile"}><Link to={"/login"}>Login</Link></li>
+                        <li className="hidden md:block p-4">
+                            <Link to="/signin">Sign in</Link>
+                        </li>
                     )}
-                    <li className={"menu-button"}>
+                    <li className="md:hidden p-4">
                         <a onClick={showSidebar}>
                             {HamMenu()}
                         </a>
                     </li>
                 </ul>
             </nav>
-            <Routes>
-                <Route path="/tos" element={<ToS/>}/>
-                <Route path="/reset-password" element={<ResetPassword/>}/>
-                <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
-                <Route path="/myaccount" element={<MyAccount/>}/>
-                <Route path="/" element={<Navigate to="/home"/>}/>
-                <Route path="/home" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/register" element={<Register/>}/>
-                <Route path="/fallback" element={<FallbackPage/>}/>
-                <Route path="/contact" element={<Contact/>}/>
-                <Route path="/about" element={<About/>}/>
-                <Route path="/blog" element={<Blog/>}/>
-                <Route path="/fallback" element={<FallbackPage/>}/>
-                <Route path="*" element={<NotFound/>}/>
-            </Routes>
+            <div>
+                <Routes>
+                    <Route path="/tos" element={<ToS />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/myaccount" element={<MyAccount />} />
+                    <Route path="/" element={<Navigate to="/home" />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/fallback" element={<FallbackPage />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </div>
         </div>
     );
-}
+};
 
 export default NavBar;

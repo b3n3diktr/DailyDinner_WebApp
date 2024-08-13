@@ -17,9 +17,7 @@ const SignIn: React.FC = () => {
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
-            setMessage(`${response.message}`);
             window.location.href = "/myaccount";
-            success = true;
         } catch (error: any) {
             setMessage(`${error.response.data.message || 'Please try again.'}`);
             success = false;
@@ -39,7 +37,7 @@ const SignIn: React.FC = () => {
         <div className="bg-base-variant dark:bg-darkmode-base-variant h-screen w-[max(40%,_37.5rem)] p-4 text-text flex flex-col items-center justify-center rounded-r-xl ">
             <div className="bg-base dark:bg-darkmode-base shadow-md rounded-lg p-8 w-full max-w-md">
                 <h1 className="text-3xl font-bold mb-6 text-left text-text dark:text-darkmode-text">Sign In</h1>
-                <p className={`${success ? 'text-accent' : 'text-error'} mb-4`}>{message}</p>
+                <p className="text-error mb-4">{message}</p>
                 <form id="form" className="space-y-6">
                     <div className="relative">
                         <label className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">

@@ -37,7 +37,7 @@ const ForgotPassword: React.FC = () => {
                             id="email-input"
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                         />
                     </div>
                     <button

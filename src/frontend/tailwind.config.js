@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
   content: [
@@ -22,6 +21,9 @@ module.exports = {
         'darkmode-text': '#ffffff',
         'darkmode-text-variant': '#334075',
         'darkmode-theme-icon': '#ffffff',
+      },
+      fontFamily: {
+        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'], // Add your font stack here
       },
       borderRadius: {
         'xl': '20px',
@@ -47,6 +49,18 @@ module.exports = {
       boxShadow: {
         'md': '0.1875rem 0.1875rem 0.3125rem rgba(0, 0, 0, 0.1)',
         'lg': '-0.625rem 0 0.625rem rgba(0, 0, 0, 0.1)',
+      },
+      fontSize: {
+        sm: '0.8rem',
+        base: '1rem',
+        xl: '1.25rem',
+        '2xl': '1.563rem',
+        '3xl': '1.953rem',
+        '4xl': '2.441rem',
+        '5xl': '3.052rem',
+      },
+      backgroundImage: {
+        'placeholder': "url('/src/pictures/placeholder.jpg')",
       },
     },
   },

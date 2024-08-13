@@ -44,9 +44,9 @@ const DarkmodeButton = () => {
             <button
                 id="theme-switch-button"
                 onClick={toggleTheme}
-                className={"h-12 w-12 p-0 rounded-full border-0 dark:bg-darkmode-base-variant bg-base-variant fixed bottom-5 right-5 flex justify-center items-center z-10 shadow-lg transition-colors duration-300"}
+                className={"h-12 w-12 p-0 rounded-full border-0 dark:bg-darkmode-base-variant bg-base-variant fixed bottom-5 right-5 flex justify-center items-center z-10 drop-shadow-md transition-colors duration-300"}
             >
-                <div className={`${isDarkMode ? 'fill-white' : 'fill-black'} transition-colors duration-300`}>
+                <div className={`${isDarkMode ? 'fill-darkmode-text' : 'fill-text'} transition-colors duration-300`}>
                     {isDarkMode ? <LightMode /> : <DarkMode />}
                 </div>
             </button>

@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {login} from '../../api/api';
-import '../../style.css';
-import {PasswordIcon, VisibilityIcon, VisibilityOff} from "../../icons/icons";
+import React, { useEffect, useState } from 'react';
+import { login } from '../../api/api';
+import { EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 import Cookies from "js-cookie";
 
 const Login: React.FC = () => {
@@ -10,18 +9,20 @@ const Login: React.FC = () => {
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const success = useState(false);
+    let success: boolean = false;
     const [cookies, setCookies] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
+        console.log("Login!");
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
             setMessage(`${response.message}`);
-            window.location.href="/account";
-
+            window.location.href = "/myaccount";
+            success = true;
         } catch (error: any) {
-            setMessage(`Login failed: ${error.response.data.message || 'Please try again.'}`);
+            setMessage(`${error.response.data.message || 'Please try again.'}`);
+            success = false;
         }
     };
 
@@ -35,38 +36,71 @@ const Login: React.FC = () => {
     }, []);
 
     return (
-        <div className="wrapper-auth">
-            <h1>Login</h1>
-            <p className={success ? 'correct-message' : 'error-message'}>{message}</p>
-            <form id={"form"}>
-                <div>
-                    <label>
-                        <span>@</span>
-                    </label>
-                    <input type="email" placeholder="Email" value={email} id={"email-input"}
-                           onChange={(e) => { setEmail(e.target.value); }}/>
-                </div>
-                <div className="password-input-wrapper">
-                    <label>
-                        {PasswordIcon()}
-                    </label>
-                    <input type={showPassword ? "text" : "password"} placeholder="Password" value={password}
-                           onChange={(e) => setPassword(e.target.value)}/>
-                    <button type="button" className="password-toggle-button" onClick={toggleShowPassword}>
-                        {showPassword ? VisibilityOff() : VisibilityIcon()}
+        <div className="bg-base-variant dark:bg-darkmode-base-variant h-screen w-[max(40%,_37.5rem)] p-4 text-text flex flex-col items-center justify-center rounded-r-xl">
+            <div className="bg-base dark:bg-darkmode-base shadow-md rounded-lg p-8 w-full max-w-md">
+                <h1 className="text-3xl font-bold mb-6 text-left text-text dark:text-darkmode-text">Login</h1>
+                <p className={`${success ? 'text-accent' : 'text-error'} mb-4`}>{message}</p>
+                <form id="form" className="space-y-6">
+                    <div className="relative">
+                        <label className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
+                            {EmailIcon()}
+                        </label>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            id="email-input"
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                        />
+                    </div>
+                    <div className="relative">
+                        <label className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
+                            {PasswordIcon()}
+                        </label>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                        />
+                        <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-variant dark:text-darkmode-text-variant"
+                            onClick={toggleShowPassword}
+                        >
+                            {showPassword ? VisibilityOff() : VisibilityIcon()}
+                        </button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                        {cookies && (
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                    className="h-4 w-4 text-accent border-input rounded focus:ring-focus-text"
+                                />
+                                <p className="ml-2 text-sm text-text dark:text-darkmode-text">Remember me</p>
+                            </div>
+                        )}
+                        <a href="/forgot-password"
+                           className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</a>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={handleLogin}
+                        className="w-full py-3 bg-accent text-white rounded-lg hover:bg-focus-text focus:outline-none"
+                    >
+                        Login
                     </button>
-                </div>
-                <div className="login-options">
-                    {cookies ?
-                    <div className="remember-me">
-                        <input type="checkbox" checked={rememberMe} onChange={(e) => { setRememberMe(e.target.checked); }}/>
-                        <p>Remember me</p>
-                    </div> : null}
-                    <a href="/forgot-password" className="forgot-password">Forgot Password?</a>
-                </div>
-                <button type="button" onClick={handleLogin}>Login</button>
-            </form>
-            <p>New here? <a href={"/register"}>Create an Account</a></p>
+                </form>
+                <p className="mt-6 text-left text-text dark:text-darkmode-text">
+                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create
+                    an Account</a>
+                </p>
+            </div>
         </div>
     );
 };

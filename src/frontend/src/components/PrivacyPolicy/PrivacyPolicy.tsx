@@ -3,7 +3,8 @@ import '../../style.css';
 
 const PrivacyPolicy: React.FC = () => {
     return (
-        <div className="wrapper-main">
+        <div
+            className="bg-base-variant dark:bg-darkmode-base-variant mt-[20vh] pt-20 pb-0 px-0 min-h-[90vh] flex flex-col items-center rounded-t-xl md:pb-0 md:px-4 text-text dark:text-darkmode-text">
             <div className="wrapper-pp">
                 <a> Effective Date: August 2. 2024 </a>
                 <h1>Privacy Policy</h1>
@@ -18,7 +19,7 @@ const PrivacyPolicy: React.FC = () => {
                 <h3>Why do we use cookies?</h3>
                 <p>We use cookies to:</p>
                 <ul>
-                    <li>1. Automatically log you in </li>
+                    <li>1. Automatically log you in</li>
                     <li>2. Store your Theme preference</li>
                 </ul>
 

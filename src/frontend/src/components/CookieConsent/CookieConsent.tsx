@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import '../../style.css';
-
 
 const CookieConsent: React.FC = () => {
     const [visible, setVisible] = useState(false);
+
     useEffect(() => {
         const consent = Cookies.get('cookieConsent');
         if (!consent) {
@@ -27,22 +26,27 @@ const CookieConsent: React.FC = () => {
 
     return (
         visible && (
-            <div className="cookie-consent">
-                <div className="cookie-consent-inner">
-                    <div className="cookie-consent-copy">
-                        <h1>THIS WEBSITE USES COOKIES</h1>
-                        <p>
+            <div className="fixed bottom-0 left-0 z-[2147483645] w-full box-border py-8 bg-gray-100 dark:bg-gray-900">
+                <div className="max-w-[1000px] mx-auto px-4">
+                    <div className="mb-4 text-text dark:text-darkmode-text">
+                        <h1 className="leading-6 mb-2">THIS WEBSITE USES COOKIES</h1>
+                        <p className="leading-6">
                             We use cookies to improve your experience. By continuing to use our site, you accept our use of cookies.
-                            Read more in our <Link to="/privacy-policy">Privacy Policy</Link>.
+                            Read more in our <Link to="/privacy-policy" className="underline">Privacy Policy</Link>.
                         </p>
                     </div>
-
-                    <div className="cookie-consent-actions">
-                        <button className="cookie-consent-accept" onClick={acceptCookies}>
+                    <div className="flex justify-between">
+                        <button
+                            className="min-w-[164px] py-2.5 px-3.5 rounded-full bg-green-500 text-white text-center text-base leading-5 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
+                            onClick={acceptCookies}
+                        >
                             OK
                         </button>
 
-                        <button className="cookie-consent-decline" onClick={declineCookies}>
+                        <button
+                            className="min-w-[164px] py-2.5 px-3.5 rounded-full border border-gray-400 dark:border-gray-600 bg-transparent text-green-500 dark:text-green-400 text-center text-base leading-5 hover:border-gray-500 dark:hover:border-gray-500 hover:text-green-600 dark:hover:text-green-500"
+                            onClick={declineCookies}
+                        >
                             Decline
                         </button>
                     </div>

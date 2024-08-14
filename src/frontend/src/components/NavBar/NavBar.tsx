@@ -5,7 +5,7 @@ import ToS from "../ToS/ToS";
 import ResetPassword from "../User/ResetPassword";
 import ForgotPassword from "../User/ForgotPassword";
 import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
-import MyAccount from "../User/MyAccount";
+import MyAccount from "../User/MyAccount/MyAccount";
 import Home from "../Home/Home";
 import SignIn from "../User/SignIn";
 import Register from "../User/Register";

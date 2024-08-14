@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import {auth, getProfilePicture, uploadProfilePicture} from "../../../api/api";
 import {response} from "express";
+import ProfilePicture from "./utils/ProfilPicture";
 
 const Profile: React.FC = () => {
     const [sessionID, setSessionID] = useState('');
@@ -73,12 +74,13 @@ const Profile: React.FC = () => {
         <div className="bg-base-variant dark:bg-darkmode-base-variant text-text dark:text-darkmode-text p-8 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
             <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
                 {/* Profile Picture */}
-                <div className="w-32 h-32 relative">
-                    <img
-                        className="w-full h-full rounded-full object-cover border-2 border-text-variant dark:border-darkmode-text-variant"
+                <div className="w-32 h-32 relative rounded-full">
+{/*                    <img
+                        className="w-full h-full rounded-full object-cover border-text-variant dark:border-darkmode-text-variant"
                         src={profilePictureUrl}
                         alt="Profile"
-                    />
+                    />*/}
+                    <ProfilePicture imageUrl={profilePictureUrl || ""} size="150px" />
                     <div className="absolute bottom-0 right-0">
                         <input type="file" accept="image/*" onChange={handleFileChange} />
                         <button

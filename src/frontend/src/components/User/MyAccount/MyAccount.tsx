@@ -8,6 +8,8 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import Billing from "./Billing";
 import Payments from "./Payments";
+import ProfilePicture from "./utils/ProfilPicture";
+import ProfilPicture from "./utils/ProfilPicture";
 
 const MyAccount: React.FC = () => {
     const [sessionID, setSessionID] = useState('');
@@ -16,7 +18,7 @@ const MyAccount: React.FC = () => {
     const [email, setEmail] = useState('');
     const [uuid, setUuid] = useState('');
     const [accountCreated, setAccountCreated] = useState('');
-    const [profilePictureURL, setProfilePictureUrl] = useState<string | undefined>();
+    const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>();
 
     const location = useLocation();
     const currentHash = location.hash;
@@ -66,15 +68,16 @@ const MyAccount: React.FC = () => {
             {isValid ? (
                 <div className="flex w-full">
                     {/* Sidebar */}
-                    <div className="flex flex-col p-8 pl-2 h-[51.5vh] w-[250px] bg-base dark:bg-darkmode-base rounded-r-lg shadow-lg border-[1px] border-text-variant dark:border-darkmode-text-variant">
+                    <div className="flex flex-col p-8 pl-2 h-[57vh] w-[250px] bg-base dark:bg-darkmode-base rounded-r-lg shadow-lg border-[1px] border-text-variant dark:border-darkmode-text-variant">
                         <div className="flex flex-col items-center justify-center space-y-4 overflow-hidden">
-                            <div>
+{/*                            <div className="w-24 h-24 relative">
                                 <img
-                                    className="w-16 h-16 rounded-full border-2 border-black"
+                                    className="w-24 h-24 rounded-full border-2 border-black"
                                     src={profilePictureURL}
                                     alt="Profile"
                                 />
-                            </div>
+                            </div>*/}
+                            <ProfilePicture imageUrl={profilePictureUrl || ""} size="150px" />
                             <div className="text-center">
                                 <p className="text-sm font-bold">{username}</p>
                                 <p className="text-xs mt-0.5 font-light">{email}</p>

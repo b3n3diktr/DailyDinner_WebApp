@@ -3,6 +3,7 @@ import {validatePassword} from "../../utils/auth/passwordValidator";
 import crypto from "crypto";
 import {generateTokenEmail} from "./utils/tokenGenerator";
 import {sendActivationEmail} from "./utils/emailService";
+import {setupUserDirectoryAndProfilePicture} from "../../routes/user/uploadRoutes";
 
 
 export class registerService {
@@ -52,9 +53,11 @@ export class registerService {
             uuid,
             created,
             activationToken,
-            profilePicture: ""
         });
         await user.save();
+
+        const userId = user._id;
+        await setupUserDirectoryAndProfilePicture(uuid);
 
         const activationLink = `${this.backendUrl}/activate/${activationToken}`;
         await sendActivationEmail(email, activationLink);

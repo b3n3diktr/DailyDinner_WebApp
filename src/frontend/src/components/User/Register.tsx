@@ -22,8 +22,8 @@ const Register: React.FC = () => {
         }
         try {
             const response = await register(username, email, password);
-            setMessage(response.message);
             success = true;
+            setMessage(response.message);
         } catch (error: any) {
             success = false;
             setMessage(`${error.response.data.message || 'Please try again.'}`);

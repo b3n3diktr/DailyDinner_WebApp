@@ -118,7 +118,7 @@ router.post('/validate', async (req, res) => {
     try {
         const uuid = verifySessionID(token).uuid;
         const user = await validateSessionID.validateSession(uuid);
-        res.status(201).json({ message: `Successfully validated: ${token}`, username: user.username, email: user.email, accountCreated: user.created }).end();
+        res.status(201).json({ message: `Successfully validated: ${token}`, uuid: user.uuid, userId: user._id ,username: user.username, email: user.email, accountCreated: user.created }).end();
         return;
     } catch (error: any) {
         logging.error(`${error}`);

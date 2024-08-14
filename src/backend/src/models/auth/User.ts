@@ -9,7 +9,6 @@ export interface IUser extends Document {
     activationToken: string;
     uuid: string;
     created: string;
-    profilePicture: string;
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -21,7 +20,6 @@ const UserSchema = new Schema<IUser>({
     uuid: { type: String, required: true, unique: true },
     created: { type: String, required: true},
     activationToken: { type: String, required: false, unique: true },
-    profilePicture: { type: String, required: true },
 });
 
 UserSchema.pre('save', async function (next) {

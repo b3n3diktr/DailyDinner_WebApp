@@ -47,16 +47,6 @@ export const Main = () => {
     application.use('/api/auth', authRoutes);
     application.use('/api/user/', uploadRoutes);
 
-    application.use(session({
-    // @ts-ignore Because secret can be null
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            maxAge: 14 * 24 * 60 * 60 * 1000 // 14 days
-        }
-    }));
-
     logging.log('----------------------------------------');
     logging.log('Define Routing Error');
     logging.log('----------------------------------------');

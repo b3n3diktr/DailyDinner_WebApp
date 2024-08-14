@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../../style.css';
-import { auth } from "../../../api/api";
+import {auth, getProfilePicture} from "../../../api/api";
 import Cookies from "js-cookie";
 import { DashboardIcon, AccountIcon, PaymentsIcon, LogoutIcon, BillingIcon } from "../../../icons/icons";
 import { useLocation } from 'react-router-dom';
@@ -14,7 +14,9 @@ const MyAccount: React.FC = () => {
     const [isValid, setIsValid] = useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [uuid, setUuid] = useState('');
     const [accountCreated, setAccountCreated] = useState('');
+    const [profilePictureURL, setProfilePictureUrl] = useState<string | undefined>();
 
     const location = useLocation();
     const currentHash = location.hash;
@@ -25,7 +27,6 @@ const MyAccount: React.FC = () => {
             setSessionID(token);
             validateSessionID(token).catch((err: unknown) => { });
         } else {
-            // Redirect to signin if no sessionID is found
             window.location.href = '/signin';
         }
     }, []);
@@ -37,10 +38,21 @@ const MyAccount: React.FC = () => {
             setUsername(response.username);
             setEmail(response.email);
             setAccountCreated(response.accountCreated);
+            setUuid(response.uuid);
+            await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
             setIsValid(false);
             Cookies.remove('sessionID');
             window.location.href = '/signin';
+        }
+    };
+
+    const loadProfilePicture = async (uuid: string) => {
+        try {
+            const response = await getProfilePicture(uuid);
+            setProfilePictureUrl(response);
+        } catch (error) {
+            console.error('Failed to load profile picture', error);
         }
     };
 
@@ -57,7 +69,11 @@ const MyAccount: React.FC = () => {
                     <div className="flex flex-col p-8 pl-2 h-[51.5vh] w-[250px] bg-base dark:bg-darkmode-base rounded-r-lg shadow-lg border-[1px] border-text-variant dark:border-darkmode-text-variant">
                         <div className="flex flex-col items-center justify-center space-y-4 overflow-hidden">
                             <div>
-                                <img className="w-16 h-16 rounded-full border-2 border-black" alt="Profile" />
+                                <img
+                                    className="w-16 h-16 rounded-full border-2 border-black"
+                                    src={profilePictureURL}
+                                    alt="Profile"
+                                />
                             </div>
                             <div className="text-center">
                                 <p className="text-sm font-bold">{username}</p>

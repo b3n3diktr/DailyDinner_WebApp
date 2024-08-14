@@ -71,25 +71,12 @@ const Profile: React.FC = () => {
     };
 
     return (
-        <div className="bg-base-variant dark:bg-darkmode-base-variant text-text dark:text-darkmode-text p-8 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
+        <div
+            className="bg-base-variant dark:bg-darkmode-base-variant text-text dark:text-darkmode-text p-8 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
             <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
                 {/* Profile Picture */}
                 <div className="w-32 h-32 relative rounded-full">
-{/*                    <img
-                        className="w-full h-full rounded-full object-cover border-text-variant dark:border-darkmode-text-variant"
-                        src={profilePictureUrl}
-                        alt="Profile"
-                    />*/}
-                    <ProfilePicture imageUrl={profilePictureUrl || ""} size="150px" />
-                    <div className="absolute bottom-0 right-0">
-                        <input type="file" accept="image/*" onChange={handleFileChange} />
-                        <button
-                            onClick={handleUpload}
-                            className="bg-blue-500 text-white px-2 py-1 rounded mt-2"
-                        >
-                            Upload
-                        </button>
-                    </div>
+                    <ProfilePicture imageUrl={profilePictureUrl || ""} size="150px"/>
                 </div>
 
                 {/* Basic Information */}
@@ -102,6 +89,15 @@ const Profile: React.FC = () => {
                         <p className="text-sm">Account Created: {accountCreated}</p>
                     </div>
                 </div>
+            </div>
+
+            <div className="mt-8">
+                <input type="file" accept="image/*" onChange={handleFileChange}/>
+                <button
+                    onClick={handleUpload}
+                    className="bg-blue-500 text-white px-2 py-1 rounded mt-2">
+                    Upload
+                </button>
             </div>
 
             {/* Additional Details */}
@@ -122,6 +118,7 @@ const Profile: React.FC = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

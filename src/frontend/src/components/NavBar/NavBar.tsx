@@ -97,7 +97,7 @@ const NavBar = () => {
                     </li>
                 </ul>
             </nav>
-            <div>
+            <div className="mt-14">
                 <Routes>
                     <Route path="/tos" element={<ToS />} />
                     <Route path="/reset-password" element={<ResetPassword />} />

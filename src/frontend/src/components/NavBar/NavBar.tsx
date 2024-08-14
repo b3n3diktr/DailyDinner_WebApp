@@ -60,7 +60,7 @@ const NavBar = () => {
                     </li>
                     {isLoggedIn ? (
                         <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
-                            <Link onClick={hideSidebar} to="/myaccount">{AccountIcon()}</Link>
+                            <Link onClick={hideSidebar} to="/myaccount#dashboard">Dashbaord</Link>
                         </li>
                     ) : (
                         <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
@@ -83,7 +83,7 @@ const NavBar = () => {
                     </li>
                     {isLoggedIn ? (
                         <li className="hidden md:block p-4 fill-text dark:fill-darkmode-text">
-                            <Link to="/myaccount"><AccountIcon/></Link>
+                            <Link to="/myaccount#dashboard">Dashboard</Link>
                         </li>
                     ) : (
                         <li className="hidden md:block p-4">

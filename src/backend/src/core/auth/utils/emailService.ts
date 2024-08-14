@@ -1,4 +1,4 @@
-import { sendEmail } from '../../utils/auth/emailSender';
+import { sendEmail } from '../../../utils/auth/emailSender';
 
 export const sendActivationEmail = async (email: string, activationLink: string) => {
     await sendEmail(email, 'Account Activation', `Click the following link to activate your account: ${activationLink}`);

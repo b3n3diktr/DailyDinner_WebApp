@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import {server} from "../../config/config";
+import {server} from "../../../config/config";
 import {jwtDecode} from "jwt-decode";
 
 const key = server.JWT_SECRET;

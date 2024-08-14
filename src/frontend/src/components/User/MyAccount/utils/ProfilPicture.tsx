@@ -8,7 +8,7 @@ interface ProfilePictureProps {
 const ProfilePicture: React.FC<ProfilePictureProps> = ({ imageUrl, size = '150' }) => {
     return (
         <div
-            className="rounded-full overflow-hidden border-2 border-gray-300">
+            className={`w-[${size}] h-[${size}] rounded-full overflow-hidden border-2 border-black shadow-lg`}>
             <img
                 src={imageUrl}
                 alt="Profile"

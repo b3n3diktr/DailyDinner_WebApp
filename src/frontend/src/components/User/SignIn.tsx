@@ -9,29 +9,31 @@ const SignIn: React.FC = () => {
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    let success: boolean = false;
     const [cookies, setCookies] = useState(false);
 
+    useEffect(() => {
+        const sessionID = Cookies.get('sessionID');
+        const cookieConsent = Cookies.get('cookieConsent');
+        setCookies(cookieConsent === 'true');
+
+        if (sessionID) {
+            window.location.href = '/myaccount#dashboard';
+        }
+    }, []);
+
     const handleLogin = async (e: React.FormEvent) => {
-        console.log("SignIn!");
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
-            window.location.href = "/myaccount";
+            window.location.href = "/myaccount#dashboard";
         } catch (error: any) {
             setMessage(`${error.response.data.message || 'Please try again.'}`);
-            success = false;
         }
     };
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
-    useEffect(() => {
-        const cookieConsent = Cookies.get('cookieConsent');
-        setCookies(cookieConsent === 'true');
-    }, []);
 
     return (
         <div className="bg-base-variant dark:bg-darkmode-base-variant h-screen w-[max(40%,_37.5rem)] p-4 text-text flex flex-col items-center justify-center rounded-r-xl ">
@@ -83,8 +85,7 @@ const SignIn: React.FC = () => {
                                 <p className="ml-2 text-sm text-text dark:text-darkmode-text">Remember me</p>
                             </div>
                         )}
-                        <a href="/forgot-password"
-                           className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</a>
+                        <a href="/forgot-password" className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</a>
                     </div>
                     <button
                         type="button"
@@ -95,8 +96,7 @@ const SignIn: React.FC = () => {
                     </button>
                 </form>
                 <p className="mt-6 text-left text-text dark:text-darkmode-text">
-                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create
-                    an Account</a>
+                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create an Account</a>
                 </p>
             </div>
         </div>

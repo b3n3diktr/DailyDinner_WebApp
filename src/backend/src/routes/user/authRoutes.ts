@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import logging from '../config/logging';
-import { server } from "../config/config";
-import {verifySessionID } from "../core/auth/utils/tokenGenerator";
-import {registerService} from "../core/auth/registerService";
-import {activateUserService} from "../core/auth/activateUserService";
-import {changePasswordService} from "../core/auth/changePasswordService";
-import {forgotPasswordService} from "../core/auth/forgotPasswordService";
-import {loginService} from "../core/auth/loginService";
-import {resendActivationEmailService} from "../core/auth/resendActivationEmailService";
-import {resetPasswordService} from "../core/auth/resetPasswordService";
-import {validateSessionIdService} from "../core/auth/validateSessionIdService";
+import logging from '../../config/logging';
+import { server } from "../../config/config";
+import {verifySessionID } from "../../core/auth/utils/tokenGenerator";
+import {registerService} from "../../core/auth/registerService";
+import {activateUserService} from "../../core/auth/activateUserService";
+import {changePasswordService} from "../../core/auth/changePasswordService";
+import {forgotPasswordService} from "../../core/auth/forgotPasswordService";
+import {loginService} from "../../core/auth/loginService";
+import {resendActivationEmailService} from "../../core/auth/resendActivationEmailService";
+import {resetPasswordService} from "../../core/auth/resetPasswordService";
+import {validateSessionIdService} from "../../core/auth/validateSessionIdService";
 
 const backendUrl = `http://${server.SERVER_HOSTNAME}:${server.SERVER_PORT}/api/auth`;
 const frontendUrl = 'http://100.124.248.156:80/';

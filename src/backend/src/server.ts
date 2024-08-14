@@ -4,13 +4,15 @@ import './config/logging';
 import mongoose from 'mongoose';
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
-import authRoutes from './routes/authRoutes';
+import authRoutes from './routes/user/authRoutes';
 
 import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';
 import { routeNotFound } from './middleware/routeNotFound';
 import { server } from './config/config';
 import {helmetHandler} from "./middleware/helmetHandler";
+import uploadRoutes from "./routes/user/uploadRoutes";
+import session from "express-session";
 
 export const application = express();
 const limiter = rateLimit({windowMs: 15 * 60 * 1000, max: 100, message: 'Too many requests, please try again later.'});
@@ -43,6 +45,17 @@ export const Main = () => {
         return res.status(200).json({ hello: 'world!' });
     });
     application.use('/api/auth', authRoutes);
+    application.use('/api/user/', uploadRoutes);
+
+    application.use(session({
+    // @ts-ignore Because secret can be null
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 14 * 24 * 60 * 60 * 1000 // 14 days
+        }
+    }));
 
     logging.log('----------------------------------------');
     logging.log('Define Routing Error');

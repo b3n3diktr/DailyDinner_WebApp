@@ -38,9 +38,9 @@ export const changePassword = async (resetToken: string, newPassword: string) =>
     return response.data;
 }
 
-export const uploadProfilePicture = async (userId: string, profilePicture: File) => {
+export const uploadProfilePicture = async (uuid: string, profilePicture: File) => {
     const formData = new FormData();
-    formData.append('userId', userId);
+    formData.append('uuid', uuid);
     formData.append('profile', profilePicture);
 
     const response = await axios.post(`${apiUrl}/user/upload-profile-picture`, formData, {

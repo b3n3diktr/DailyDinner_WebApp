@@ -91,7 +91,7 @@ const Profile: React.FC = () => {
                 </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 ">
                 <input type="file" accept="image/*" onChange={handleFileChange}/>
                 <button
                     onClick={handleUpload}

@@ -11,7 +11,7 @@ import { loggingHandler } from './middleware/loggingHandler';
 import { routeNotFound } from './middleware/routeNotFound';
 import { server } from './config/config';
 import {helmetHandler} from "./middleware/helmetHandler";
-import uploadRoutes from "./routes/user/uploadRoutes";
+import uploadRoutes from "./routes/user/uploadProfilePictureRoutes";
 import session from "express-session";
 
 export const application = express();

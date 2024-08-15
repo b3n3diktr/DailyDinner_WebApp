@@ -3,7 +3,7 @@ import {validatePassword} from "../../utils/auth/passwordValidator";
 import crypto from "crypto";
 import {generateTokenEmail} from "./utils/tokenGenerator";
 import {sendActivationEmail} from "./utils/emailService";
-import {setupUserDirectoryAndProfilePicture} from "../../routes/user/uploadRoutes";
+import {setupUserDirectoryAndProfilePicture} from "../../routes/user/uploadProfilePictureRoutes";
 
 
 export class registerService {

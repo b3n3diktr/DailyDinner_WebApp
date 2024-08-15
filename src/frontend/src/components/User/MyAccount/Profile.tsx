@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '../../../style.css';
-import { useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import {auth, getProfilePicture, uploadProfilePicture} from "../../../api/api";
-import {response} from "express";
 import ProfilePicture from "./utils/ProfilPicture";
 
 const Profile: React.FC = () => {
-    const [sessionID, setSessionID] = useState('');
-    const [isValid, setIsValid] = useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [uuid, setUuid] = useState('');
@@ -16,12 +12,9 @@ const Profile: React.FC = () => {
     const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-    const location = useLocation();
-
     useEffect(() => {
         const token = Cookies.get('sessionID');
         if (token) {
-            setSessionID(token);
             validateSessionID(token).catch((err) => { console.log(err); });
         } else {
             window.location.href = '/signin';
@@ -31,14 +24,12 @@ const Profile: React.FC = () => {
     const validateSessionID = async (sessionID: string) => {
         try {
             const response = await auth(sessionID);
-            setIsValid(true);
             setUsername(response.username);
             setEmail(response.email);
             setAccountCreated(response.accountCreated);
             setUuid(response.uuid);
             await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
-            setIsValid(false);
             Cookies.remove('sessionID');
             window.location.href = '/signin';
         }

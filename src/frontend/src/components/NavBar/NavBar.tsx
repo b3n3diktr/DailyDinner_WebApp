@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AccountIcon, Close, HamMenu } from "../../icons/icons";
+import { Close, HamMenu } from "../../icons/icons";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import ToS from "../ToS/ToS";
 import ResetPassword from "../User/ResetPassword";

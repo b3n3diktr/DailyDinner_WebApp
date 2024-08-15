@@ -9,15 +9,11 @@ import Profile from "./Profile";
 import Billing from "./Billing";
 import Payments from "./Payments";
 import ProfilePicture from "./utils/ProfilPicture";
-import ProfilPicture from "./utils/ProfilPicture";
 
 const MyAccount: React.FC = () => {
-    const [sessionID, setSessionID] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [uuid, setUuid] = useState('');
-    const [accountCreated, setAccountCreated] = useState('');
     const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>();
 
     const location = useLocation();
@@ -26,8 +22,7 @@ const MyAccount: React.FC = () => {
     useEffect(() => {
         const token = Cookies.get('sessionID');
         if (token) {
-            setSessionID(token);
-            validateSessionID(token).catch((err: unknown) => { });
+            validateSessionID(token).catch((err: unknown) => { console.log(err); });
         } else {
             window.location.href = '/signin';
         }
@@ -39,8 +34,6 @@ const MyAccount: React.FC = () => {
             setIsValid(true);
             setUsername(response.username);
             setEmail(response.email);
-            setAccountCreated(response.accountCreated);
-            setUuid(response.uuid);
             await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
             setIsValid(false);

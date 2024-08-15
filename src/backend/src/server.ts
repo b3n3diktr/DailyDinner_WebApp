@@ -12,7 +12,6 @@ import { routeNotFound } from './middleware/routeNotFound';
 import { server } from './config/config';
 import {helmetHandler} from "./middleware/helmetHandler";
 import uploadRoutes from "./routes/user/uploadProfilePictureRoutes";
-import session from "express-session";
 
 export const application = express();
 const limiter = rateLimit({windowMs: 15 * 60 * 1000, max: 100, message: 'Too many requests, please try again later.'});

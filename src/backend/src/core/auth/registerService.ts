@@ -56,7 +56,6 @@ export class registerService {
         });
         await user.save();
 
-        const userId = user._id;
         await setupUserDirectoryAndProfilePicture(uuid);
 
         const activationLink = `${this.backendUrl}/activate/${activationToken}`;

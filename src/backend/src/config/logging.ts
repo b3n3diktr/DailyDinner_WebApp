@@ -121,11 +121,11 @@ const logging = {
 /** Create the global definition */
 declare global {
     var logging: {
-        log: (message?: unknown, ...optionalParams: any[]) => void;
-        info: (message?: unknown, ...optionalParams: any[]) => void;
-        warn: (message?: unknown, ...optionalParams: any[]) => void;
-        warning: (message?: unknown, ...optionalParams: any[]) => void;
-        error: (message?: unknown, ...optionalParams: any[]) => void;
+        log: (message?: unknown, ...optionalParams: unknown[]) => void;
+        info: (message?: unknown, ...optionalParams: unknown[]) => void;
+        warn: (message?: unknown, ...optionalParams: unknown[]) => void;
+        warning: (message?: unknown, ...optionalParams: unknown[]) => void;
+        error: (message?: unknown, ...optionalParams: unknown[]) => void;
         getCallingFunction: (error: Error) => string;
     };
 }

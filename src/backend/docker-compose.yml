@@ -6,10 +6,11 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"  # Map the port dynamically based on the environment variable
     environment:
       - MONGO_URI=${MONGO_URI}  # Use environment variable from the .env file
-      - SECRET_KEY=${SECRET_KEY}  # Load secret key from .env file
+      - JWT_SECRET=${JWT_SECRET}  # Load secret key from .env file
       - SERVER_PORT=${SERVER_PORT}  # Use the SERVER_PORT from the .env file
     volumes:
       - uploads:/src/uploads  # Persist the uploads folder
+      - ~/.aws:/root/.aws  # Mount the AWS credentials and config
     depends_on:
       - mongo  # Ensure mongo starts before the backend
 

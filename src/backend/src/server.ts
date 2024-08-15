@@ -18,6 +18,7 @@ const limiter = rateLimit({windowMs: 15 * 60 * 1000, max: 100, message: 'Too man
 export let httpServer: ReturnType<typeof http.createServer>;
 
 export const Main = () => {
+
     logging.log('----------------------------------------');
     logging.log('Initializing API');
     logging.log('----------------------------------------');

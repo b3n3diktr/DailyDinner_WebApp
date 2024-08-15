@@ -5,13 +5,13 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "module": "commonjs",
-    "target": "es5",
+    "module": "commonjs",  // Updated to support top-level await
+    "target": "es2020",  // Updated to support top-level await
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "lib": ["es6", "dom"],
+    "lib": ["es2020", "DOM"],
     "allowSyntheticDefaultImports": true
   },
   "include": [

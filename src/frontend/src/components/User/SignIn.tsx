@@ -9,20 +9,25 @@ const SignIn: React.FC = () => {
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    let success: boolean = false;
     const [cookies, setCookies] = useState(false);
 
+    useEffect(() => {
+        const sessionID = Cookies.get('sessionID');
+        const cookieConsent = Cookies.get('cookieConsent');
+        setCookies(cookieConsent === 'true');
+
+        if (sessionID) {
+            window.location.href = '/myaccount#dashboard';
+        }
+    }, []);
+
     const handleLogin = async (e: React.FormEvent) => {
-        console.log("SignIn!");
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
-            setMessage(`${response.message}`);
-            window.location.href = "/myaccount";
-            success = true;
+            window.location.href = "/myaccount#dashboard";
         } catch (error: any) {
             setMessage(`${error.response.data.message || 'Please try again.'}`);
-            success = false;
         }
     };
 
@@ -30,16 +35,11 @@ const SignIn: React.FC = () => {
         setShowPassword(!showPassword);
     };
 
-    useEffect(() => {
-        const cookieConsent = Cookies.get('cookieConsent');
-        setCookies(cookieConsent === 'true');
-    }, []);
-
     return (
         <div className="bg-base-variant dark:bg-darkmode-base-variant h-screen w-[max(40%,_37.5rem)] p-4 text-text flex flex-col items-center justify-center rounded-r-xl ">
             <div className="bg-base dark:bg-darkmode-base shadow-md rounded-lg p-8 w-full max-w-md">
                 <h1 className="text-3xl font-bold mb-6 text-left text-text dark:text-darkmode-text">Sign In</h1>
-                <p className={`${success ? 'text-accent' : 'text-error'} mb-4`}>{message}</p>
+                <p className="text-error mb-4">{message}</p>
                 <form id="form" className="space-y-6">
                     <div className="relative">
                         <label className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
@@ -51,7 +51,7 @@ const SignIn: React.FC = () => {
                             value={email}
                             id="email-input"
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                         />
                     </div>
                     <div className="relative">
@@ -63,7 +63,7 @@ const SignIn: React.FC = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                            className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                         />
                         <button
                             type="button"
@@ -85,8 +85,7 @@ const SignIn: React.FC = () => {
                                 <p className="ml-2 text-sm text-text dark:text-darkmode-text">Remember me</p>
                             </div>
                         )}
-                        <a href="/forgot-password"
-                           className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</a>
+                        <a href="/forgot-password" className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</a>
                     </div>
                     <button
                         type="button"
@@ -97,8 +96,7 @@ const SignIn: React.FC = () => {
                     </button>
                 </form>
                 <p className="mt-6 text-left text-text dark:text-darkmode-text">
-                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create
-                    an Account</a>
+                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create an Account</a>
                 </p>
             </div>
         </div>

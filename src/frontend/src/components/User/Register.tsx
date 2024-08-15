@@ -22,8 +22,8 @@ const Register: React.FC = () => {
         }
         try {
             const response = await register(username, email, password);
-            setMessage(response.message);
             success = true;
+            setMessage(response.message);
         } catch (error: any) {
             success = false;
             setMessage(`${error.response.data.message || 'Please try again.'}`);
@@ -50,7 +50,7 @@ const Register: React.FC = () => {
                         value={username}
                         id="user-input"
                         onChange={(e) => setUsername(e.target.value)}
-                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                     />
                 </div>
                 <div className="relative">
@@ -64,7 +64,7 @@ const Register: React.FC = () => {
                         value={email}
                         id="email-input"
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                     />
                 </div>
                 <div className="relative">
@@ -77,7 +77,7 @@ const Register: React.FC = () => {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                     />
                     <button
                         type="button"
@@ -97,7 +97,7 @@ const Register: React.FC = () => {
                         placeholder="Repeat Password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text"
+                        className="w-full pl-12 pr-3 py-3 border-2 border-input dark:border-darkmode-base rounded-lg bg-input dark:bg-darkmode-base-variant text-text dark:text-darkmode-text focus:outline-none focus:border-focus-text hover:border-accent"
                     />
                     <button
                         type="button"
@@ -121,14 +121,6 @@ const Register: React.FC = () => {
             </div>
             </div>
         </div>
-
-        /*    padding: 1rem;
-    color: var(--text-color-variant);
-    border-top: 1px solid;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-align: center;
-    max-width: 20rem;*/
     );
 };
 

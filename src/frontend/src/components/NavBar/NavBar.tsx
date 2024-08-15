@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AccountIcon, Close, HamMenu } from "../../icons/icons";
+import { Close, HamMenu } from "../../icons/icons";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import ToS from "../ToS/ToS";
 import ResetPassword from "../User/ResetPassword";
 import ForgotPassword from "../User/ForgotPassword";
 import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
-import MyAccount from "../User/MyAccount";
+import MyAccount from "../User/MyAccount/MyAccount";
 import Home from "../Home/Home";
 import SignIn from "../User/SignIn";
 import Register from "../User/Register";
@@ -60,7 +60,7 @@ const NavBar = () => {
                     </li>
                     {isLoggedIn ? (
                         <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
-                            <Link onClick={hideSidebar} to="/myaccount">{AccountIcon()}</Link>
+                            <Link onClick={hideSidebar} to="/myaccount#dashboard">Dashbaord</Link>
                         </li>
                     ) : (
                         <li className="p-4 hover:bg-base-variant dark:hover:bg-darkmode-base">
@@ -83,7 +83,7 @@ const NavBar = () => {
                     </li>
                     {isLoggedIn ? (
                         <li className="hidden md:block p-4 fill-text dark:fill-darkmode-text">
-                            <Link to="/myaccount"><AccountIcon/></Link>
+                            <Link to="/myaccount#dashboard">Dashboard</Link>
                         </li>
                     ) : (
                         <li className="hidden md:block p-4">
@@ -97,7 +97,7 @@ const NavBar = () => {
                     </li>
                 </ul>
             </nav>
-            <div>
+            <div className="mt-14">
                 <Routes>
                     <Route path="/tos" element={<ToS />} />
                     <Route path="/reset-password" element={<ResetPassword />} />

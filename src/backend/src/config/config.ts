@@ -27,7 +27,7 @@ export class SecretsManager {
                 this.secrets = JSON.parse(response.SecretString);
                 console.log("Secrets loaded successfully");
             } else {
-                throw new Error("SecretString is empty");
+                console.log("SecretString is empty");
             }
         } catch (error) {
             console.error("Error retrieving secret:", error);

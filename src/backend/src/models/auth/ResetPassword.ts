@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-import bcrypt from "bcryptjs";
 
 export interface IResetPassword extends Document {
     token: string;

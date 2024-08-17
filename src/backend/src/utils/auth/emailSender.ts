@@ -1,11 +1,4 @@
 import nodemailer from 'nodemailer';
-import * as dotenv from 'dotenv';
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import {IUser} from "../../models/auth/User";
-import {IResetPassword} from "../../models/auth/ResetPassword";
-
-dotenv.config();
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',

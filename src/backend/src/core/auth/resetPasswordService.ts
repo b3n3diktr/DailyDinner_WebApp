@@ -4,11 +4,6 @@ import crypto from "crypto";
 
 
 export class resetPasswordService {
-    private readonly backendUrl: string;
-
-    constructor(backendUrl: string) {
-        this.backendUrl = backendUrl;
-    }
 
     async resetPassword(token: string) {
         const resetPasswordModel = await ResetPassword.findOne({token: token});

@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import {server} from "../../../config/config";
+import {JWT_SECRET} from "../../../config/config";
 
-const key = server.JWT_SECRET;
+const key = JWT_SECRET;
 
 if (!key) {
     throw new Error('JWT_KEY is not set');

@@ -2,11 +2,6 @@ import User from "../../models/auth/User";
 
 
 export class validateSessionIdService {
-    private readonly backendUrl: string;
-
-    constructor(backendUrl: string) {
-        this.backendUrl = backendUrl;
-    }
 
     async validateSession(uuid: string) {
         const user = await User.findOne({uuid: uuid});

@@ -5,11 +5,6 @@ import User from "../../models/auth/User";
 import ResetPassword from "../../models/auth/ResetPassword";
 
 export class changePasswordService {
-    private readonly backendUrl: string;
-
-    constructor(backendUrl: string) {
-        this.backendUrl = backendUrl;
-    }
 
     async changePassword(resetToken: string, newPassword: string) {
         const resetPasswordModel = await ResetPassword.findOne({resetToken});

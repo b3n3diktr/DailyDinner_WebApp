@@ -1,11 +1,6 @@
 import User from "../../models/auth/User";
 
 export class activateUserService {
-    private readonly backendUrl: string;
-
-    constructor(backendUrl: string) {
-        this.backendUrl = backendUrl;
-    }
 
     async activateUser(token: string) {
         const user = await User.findOne({activationToken: token});

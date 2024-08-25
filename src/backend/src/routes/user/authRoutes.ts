@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import logging from '../../config/logging';
-import { server } from "../../config/config";
+import { SERVER_HOSTNAME, SERVER_PORT, PRODUCTION } from "../../config/config";
 import {verifySessionID } from "../../core/auth/utils/tokenGenerator";
 import {registerService} from "../../core/auth/registerService";
 import {activateUserService} from "../../core/auth/activateUserService";
@@ -11,18 +11,18 @@ import {resendActivationEmailService} from "../../core/auth/resendActivationEmai
 import {resetPasswordService} from "../../core/auth/resetPasswordService";
 import {validateSessionIdService} from "../../core/auth/validateSessionIdService";
 
-const backendUrl = `http://${server.SERVER_HOSTNAME}:${server.SERVER_PORT}/api/auth`;
-const frontendUrl = 'http://100.124.248.156:80/';
+const backendUrl = `http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/auth`;
+const frontendUrl = 'http://localhost:80/';
 const router = Router();
 
-const activateUser = new activateUserService(backendUrl);
-const changePassword = new changePasswordService(backendUrl);
+const activateUser = new activateUserService();
+const changePassword = new changePasswordService();
 const forgotPassword = new forgotPasswordService(backendUrl);
-const login = new loginService(backendUrl);
+const login = new loginService();
 const register = new registerService(backendUrl);
 const resendActivationEmail = new resendActivationEmailService(backendUrl);
-const resetPassword = new resetPasswordService(backendUrl);
-const validateSessionID = new validateSessionIdService(backendUrl);
+const resetPassword = new resetPasswordService();
+const validateSessionID = new validateSessionIdService();
 
 const encodeQueryParams = (params: { [key: string]: string }) => {
     return Object.keys(params)
@@ -94,7 +94,7 @@ router.post('/login', async (req, res) => {
         res.cookie('sessionID', token, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000 * 14,
-            secure: process.env.NODE_ENV === 'production'
+            secure: PRODUCTION
         });
         res.status(201).json({ token, message: 'Successfully logged in.', userID: userId }).end();
         return;

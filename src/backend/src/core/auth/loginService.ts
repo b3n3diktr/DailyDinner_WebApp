@@ -2,11 +2,6 @@ import {generateSessionID} from "./utils/tokenGenerator";
 import User from "../../models/auth/User";
 
 export class loginService {
-    private readonly backendUrl: string;
-
-    constructor(backendUrl: string) {
-        this.backendUrl = backendUrl;
-    }
 
     async loginUser(email: string, password: string, remember: boolean) {
         const user = await User.findOne({ email: email });

@@ -45,11 +45,12 @@
     "webpack": "^5.93.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.15.2",
+    "webpack-merge": "^6.0.1",
     "zxcvbn": "^4.4.2"
   },
   "scripts": {
-    "start": "webpack serve --mode development --config webpack.config.js",
-    "build": "webpack --mode production --config webpack.config.js"
+    "start": "webpack serve --mode development --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "eslintConfig": {
     "extends": [

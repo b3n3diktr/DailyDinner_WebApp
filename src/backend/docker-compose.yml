@@ -1,25 +1,28 @@
 version: "3"
 services:
   backend:
-    build: .
+    image: b3n3dkt/dailydinner_backend:latest
     ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"  # Map the port dynamically based on the environment variable
-    environment:
-      - MONGO_URI=${MONGO_URI}  # Use environment variable from the .env file
-      - JWT_SECRET=${JWT_SECRET}  # Load secret key from .env file
-      - SERVER_PORT=${SERVER_PORT}  # Use the SERVER_PORT from the .env file
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
     volumes:
-      - uploads:/src/uploads  # Persist the uploads folder
-      - ~/.aws:/root/.aws  # Mount the AWS credentials and config
+      - uploads:/src/uploads
+      - ~/.aws:/root/.aws
     depends_on:
-      - mongo  # Ensure mongo starts before the backend
-
+      - mongo
+  frontend:
+    image: b3n3dkt/dailydinner_frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
   mongo:
     image: mongo:latest
     ports:
-      - "27017:27017"  # Expose MongoDB's default port
+      - "27017:27017"
     volumes:
-      - mongo-data:/data/db  # Persist MongoDB data
+      - mongo-data:/data/db
 
 volumes:
   uploads:

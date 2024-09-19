@@ -8,8 +8,8 @@ import authRoutes from './routes/user/authRoutes';
 import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';
 import { routeNotFound } from './middleware/routeNotFound';
-import { loadSecrets } from './config/config'; // Import the new loadSecrets function
 import { helmetHandler } from "./middleware/helmetHandler";
+import { SERVER_HOSTNAME, SERVER_PORT, MONGO_URI } from "./config/config";
 import uploadRoutes from "./routes/user/uploadProfilePictureRoutes";
 
 export const application = express();
@@ -21,7 +21,7 @@ const limiter = rateLimit({
 
 export let httpServer: ReturnType<typeof http.createServer>;
 
-export const Main = async (serverConfig: any) => {
+export const Main = async () => {
     logging.log('----------------------------------------');
     logging.log('Initializing API');
     logging.log('----------------------------------------');
@@ -58,26 +58,18 @@ export const Main = async (serverConfig: any) => {
     logging.log('----------------------------------------');
     logging.log('Connecting to Database');
     logging.log('----------------------------------------');
-    mongoose.connect(serverConfig.MONGO_URI)
+    await mongoose.connect(MONGO_URI)
         .catch(error => { logging.error(`MongoDB connection error: ${error}`); });
 
     logging.log('----------------------------------------');
     logging.log('Starting Server');
     logging.log('----------------------------------------');
     httpServer = http.createServer(application);
-    httpServer.listen(serverConfig.SERVER_PORT, () => {
+    httpServer.listen(SERVER_PORT, () => {
         logging.log('----------------------------------------');
-        logging.log(`Server started on ${serverConfig.SERVER_HOSTNAME}:${serverConfig.SERVER_PORT}`);
+        logging.log(`Server started on ${SERVER_HOSTNAME}:${SERVER_PORT}`);
         logging.log('----------------------------------------');
     });
 };
 
-// Execute the secrets loading and then start the server
-(async () => {
-    try {
-        const serverConfig = await loadSecrets(); // Load secrets from the config
-        await Main(serverConfig); // Pass the loaded secrets to the Main function
-    } catch (error) {
-        console.error('Failed to start server due to configuration error:', error);
-    }
-})();
+Main();

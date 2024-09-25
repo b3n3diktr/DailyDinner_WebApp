@@ -15,7 +15,6 @@ const useQuery = () => {
 };
 
 const ResetPassword: React.FC = () => {
-    console.log("test");
     const [message, setMessage] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

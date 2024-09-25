@@ -1,4 +1,4 @@
-FROM arm64v8/node:22-slim
+FROM node:22-slim
 
 WORKDIR /src
 

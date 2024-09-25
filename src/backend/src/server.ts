@@ -49,6 +49,7 @@ export const Main = async () => {
     });
     application.use('/api/auth', authRoutes);
     application.use('/api/user/', uploadRoutes);
+    application.set('trust proxy', 1);
 
     logging.log('----------------------------------------');
     logging.log('Define Routing Error');

@@ -1,0 +1,79 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed to fetch all history for versioning
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Extract Current Version
+        id: get_version
+        run: |
+          VERSION=$(cat VERSION)
+          echo "Current version: $VERSION"
+          echo "::set-output name=current_version::$VERSION"
+
+      - name: Increment Version
+        id: increment_version
+        run: |
+          CURRENT_VERSION=${{ steps.get_version.outputs.current_version }}
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          PATCH=${VERSION_PARTS[2]}
+          PATCH=$((PATCH + 1))
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH"
+          echo "New version: $NEW_VERSION"
+          echo "::set-output name=new_version::$NEW_VERSION"
+          echo "$NEW_VERSION" > VERSION
+
+      - name: Commit New Version
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add VERSION
+          git commit -m "Bump version to ${{ steps.increment_version.outputs.new_version }}"
+          git push
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./src/frontend
+          push: true
+          tags: |
+            b3n3dkt/dailydinner_frontend:latest
+            b3n3dkt/dailydinner_frontend:${{ steps.increment_version.outputs.new_version }}
+
+      - name: Build and Push Backend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./src/backend
+          push: true
+          tags: |
+            b3n3dkt/dailydinner_backend:latest
+            b3n3dkt/dailydinner_backend:${{ steps.increment_version.outputs.new_version }}
+
+      - name: Create Git Tag
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git tag -a "v${{ steps.increment_version.outputs.new_version }}" -m "Version ${{ steps.increment_version.outputs.new_version }}"
+          git push origin "v${{ steps.increment_version.outputs.new_version }}"

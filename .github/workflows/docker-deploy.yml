@@ -4,18 +4,25 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'VERSION'
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-    
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 
-          
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Extract Current Version
         id: get_version
         run: |
@@ -26,7 +33,7 @@ jobs:
           fi
           echo "Current version: $VERSION"
           echo "current_version=$VERSION" >> $GITHUB_OUTPUT
-          
+
       - name: Increment Version
         id: increment_version
         run: |
@@ -49,7 +56,6 @@ jobs:
           git add VERSION
           git commit -m "Bump version to ${{ steps.increment_version.outputs.new_version }}"
           git push
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -61,6 +67,7 @@ jobs:
         with:
           context: ./src/frontend
           push: true
+          platforms: linux/arm64
           tags: |
             b3n3dkt/dailydinner_frontend:latest
             b3n3dkt/dailydinner_frontend:${{ steps.increment_version.outputs.new_version }}
@@ -70,10 +77,11 @@ jobs:
         with:
           context: ./src/backend
           push: true
+          platforms: linux/arm64
           tags: |
             b3n3dkt/dailydinner_backend:latest
             b3n3dkt/dailydinner_backend:${{ steps.increment_version.outputs.new_version }}
-            
+
       - name: Create Git Tag
         if: github.ref == 'refs/heads/main'
         run: |

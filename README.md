@@ -8,7 +8,7 @@
 
 - **Frontend:** React, TailwindCSS
 - **Backend:** Express, Node.js, MongoDB (NoSQL)
-- **Hosting:** Local Raspberry Pi 5, tunneled with Cloudflare
+- **Hosting:** Local Raspberry Pi 5, tunneled with Cloudflare, reverse Proxy (Nginx)
 - **Security:** Managed by Cloudflare
 
 ## Hosting and Networking

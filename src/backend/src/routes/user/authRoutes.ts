@@ -12,7 +12,7 @@ import {resetPasswordService} from "../../core/auth/resetPasswordService";
 import {validateSessionIdService} from "../../core/auth/validateSessionIdService";
 
 const backendUrl = `http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/auth`;
-const frontendUrl = 'http://localhost:80/';
+const frontendUrl = 'https://daily-dinner.com';
 const router = Router();
 
 const activateUser = new activateUserService();
@@ -92,9 +92,10 @@ router.post('/login', async (req, res) => {
     try {
         const { token, userId } = await login.loginUser(email, password, remember);
         res.cookie('sessionID', token, {
-            httpOnly: true,
+            httpOnly: false,
+            secure: true,
             maxAge: 24 * 60 * 60 * 1000 * 14,
-            secure: PRODUCTION
+            path: "/",
         });
         res.status(201).json({ token, message: 'Successfully logged in.', userID: userId }).end();
         return;

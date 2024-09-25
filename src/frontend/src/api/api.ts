@@ -5,8 +5,6 @@ export const apiUrl = "https://daily-dinner.com/api";
 
 export const register = async (username: string, email: string, password: string) => {
     const response = await axios.post(`${apiUrl}/auth/register`, { username, email, password });
-    console.log(response.data);
-    console.log(response);
     return response.data;
 };
 
@@ -14,8 +12,6 @@ export const login = async (email: string, password: string, remember: boolean) 
     const response = await axios.post(`${apiUrl}/auth/login`, { email, password, remember });
     const token = response.data.token;
     Cookies.set('sessionID', token, { expires: (remember ? 14: 1) });
-    console.log(response.data);
-    console.log(response);
     return response.data;
 };
 

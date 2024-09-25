@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Needed to fetch all history for versioning
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -25,18 +25,20 @@ jobs:
         run: |
           VERSION=$(cat VERSION)
           echo "Current version: $VERSION"
-          echo "::set-output name=current_version::$VERSION"
+          echo "current_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Increment Version
         id: increment_version
         run: |
           CURRENT_VERSION=${{ steps.get_version.outputs.current_version }}
           IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
           PATCH=$((PATCH + 1))
-          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH"
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
           echo "New version: $NEW_VERSION"
-          echo "::set-output name=new_version::$NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "$NEW_VERSION" > VERSION
 
       - name: Commit New Version

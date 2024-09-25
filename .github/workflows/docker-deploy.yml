@@ -10,23 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-
+          fetch-depth: 0 
+          
       - name: Extract Current Version
         id: get_version
         run: |
-          VERSION=$(cat VERSION)
+          if [ -f VERSION ]; then
+            VERSION=$(cat VERSION)
+          else
+            VERSION="0.0.0"
+          fi
           echo "Current version: $VERSION"
           echo "current_version=$VERSION" >> $GITHUB_OUTPUT
-
+          
       - name: Increment Version
         id: increment_version
         run: |
@@ -73,7 +73,7 @@ jobs:
           tags: |
             b3n3dkt/dailydinner_backend:latest
             b3n3dkt/dailydinner_backend:${{ steps.increment_version.outputs.new_version }}
-
+            
       - name: Create Git Tag
         if: github.ref == 'refs/heads/main'
         run: |

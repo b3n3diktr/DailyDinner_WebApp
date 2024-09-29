@@ -35,7 +35,7 @@ router.post('/upload-profile-picture', upload.single('profile'), async (req: Req
         }
 
         if (!allowedMimeTypes.includes(req.file.mimetype)) {
-            return res.status(400).json({ message: 'Invalid file type. Only JPEG and PNG files are allowed.' });
+            return res.status(415).json({ message: 'Invalid file type. Only JPEG and PNG files are allowed.' });
         }
 
         const uploadPath = path.join(__dirname, '../../../uploads/users', uuid);

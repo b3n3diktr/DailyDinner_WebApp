@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 export function corsHandler(req: Request, res: Response, next: NextFunction) {
-    const allowedOrigins = ['http://192.168.178.169', 'https://192.168.178.169', 'http://daily-dinner.com', 'https://daily-dinner.com'];
+    const allowedOrigins = ['http://192.168.178.169', 'https://192.168.178.169', 'http://daily-dinner.com', 'https://daily-dinner.com', 'http://localhost:8080'];
     const origin = req.headers.origin as string;
 
     if (allowedOrigins.includes(origin) || !origin) {

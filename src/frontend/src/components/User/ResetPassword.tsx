@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../style.css';
 import { PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
-import { useLocation } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { changePassword } from "../../api/api";
 
 const encodeQueryParams = (params: Record<string, string>) => {
@@ -15,6 +15,7 @@ const useQuery = () => {
 };
 
 const ResetPassword: React.FC = () => {
+    const navigate = useNavigate();
     const [message, setMessage] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,7 +30,7 @@ const ResetPassword: React.FC = () => {
             message: 'Invalid token.',
             header: 'Error.'
         });
-        window.location.href = `/fallback?${params}`;
+        navigate('/fallback?${params}');
         return;
     }
 

@@ -3,7 +3,7 @@ import '../../../style.css';
 import {auth, getProfilePicture} from "../../../api/api";
 import Cookies from "js-cookie";
 import { DashboardIcon, AccountIcon, PaymentsIcon, LogoutIcon, BillingIcon } from "../../../icons/icons";
-import { useLocation } from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import Billing from "./Billing";
@@ -11,6 +11,7 @@ import Payments from "./Payments";
 import ProfilePicture from "./utils/ProfilPicture";
 
 const MyAccount: React.FC = () => {
+    const navigate = useNavigate();
     const [isValid, setIsValid] = useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ const MyAccount: React.FC = () => {
         if (token) {
             validateSessionID(token).catch((err: unknown) => { console.log(err); });
         } else {
-            window.location.href = '/signin';
+            navigate('/signin');
         }
     }, []);
 
@@ -38,7 +39,7 @@ const MyAccount: React.FC = () => {
         } catch (error: unknown) {
             setIsValid(false);
             Cookies.remove('sessionID');
-            window.location.href = '/signin';
+            navigate('/signin');
         }
     };
 
@@ -53,7 +54,7 @@ const MyAccount: React.FC = () => {
 
     const handleLogout = async () => {
         Cookies.remove('sessionID');
-        window.location.href = '/signin';
+        navigate('/signin');
     }
 
     return (
@@ -79,28 +80,28 @@ const MyAccount: React.FC = () => {
                         <hr className="my-6 w-full border-text-variant dark:border-darkmode-text-variant" />
                         <ul className="divide-y divide-text-variant dark:divide-darkmode-text-variant">
                             <li className="hover:bg-base-variant dark:hover:bg-darkmode-base-variant rounded-tr-lg">
-                                <a href="#dashboard" className="text-sm flex items-center px-4 py-3 transition-all">
+                                <Link to="#dashboard" className="text-sm flex items-center px-4 py-3 transition-all">
                                     <span className="mr-4">{DashboardIcon()}</span>
                                     <span>Dashboard</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="hover:bg-base-variant dark:hover:bg-darkmode-base-variant">
-                                <a href="#profile" className="text-sm flex items-center px-4 py-3 transition-all">
+                                <Link to="#profile" className="text-sm flex items-center px-4 py-3 transition-all">
                                     <span className="mr-4">{AccountIcon()}</span>
                                     <span>Profile</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="hover:bg-base-variant dark:hover:bg-darkmode-base-variant">
-                                <a href="#billing" className="text-sm flex items-center px-4 py-3 transition-all">
+                                <Link to="#billing" className="text-sm flex items-center px-4 py-3 transition-all">
                                     <span className="mr-4">{BillingIcon()}</span>
                                     <span>Billing</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="hover:bg-base-variant dark:hover:bg-darkmode-base-variant">
-                                <a href="#payments" className="text-sm flex items-center px-4 py-3 transition-all">
+                                <Link to="#payments" className="text-sm flex items-center px-4 py-3 transition-all">
                                     <span className="mr-4">{PaymentsIcon()}</span>
                                     <span>Payments</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="hover:bg-base-variant dark:hover:bg-darkmode-base-variant rounded-br-lg">
                                 <a onClick={handleLogout} className="text-sm flex items-center px-4 py-3 transition-all rounded-br-lg cursor-pointer">

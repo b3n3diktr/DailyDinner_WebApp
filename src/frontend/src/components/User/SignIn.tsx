@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { login } from '../../api/api';
 import { EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 import Cookies from "js-cookie";
+import {Link, useNavigate} from "react-router-dom";
 
 const SignIn: React.FC = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -17,7 +19,7 @@ const SignIn: React.FC = () => {
         setCookies(cookieConsent === 'true');
 
         if (sessionID) {
-            window.location.href = '/myaccount#dashboard';
+            navigate('/myaccount#dashboard');
         }
     }, []);
 
@@ -25,7 +27,7 @@ const SignIn: React.FC = () => {
         e.preventDefault();
         try {
             const response = await login(email, password, rememberMe);
-            window.location.href = "/myaccount#dashboard";
+            navigate("/myaccount#dashboard");
         } catch (error: any) {
             setMessage(`${error.response.data.message || 'Please try again.'}`);
         }
@@ -42,7 +44,8 @@ const SignIn: React.FC = () => {
                 <p className="text-error mb-4">{message}</p>
                 <form id="form" className="space-y-6">
                     <div className="relative">
-                        <label className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
+                        <label
+                            className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
                             {EmailIcon()}
                         </label>
                         <input
@@ -55,7 +58,8 @@ const SignIn: React.FC = () => {
                         />
                     </div>
                     <div className="relative">
-                        <label className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
+                        <label
+                            className="absolute inset-y-0 left-0 flex items-center pl-3 text-text dark:text-darkmode-text">
                             {PasswordIcon()}
                         </label>
                         <input
@@ -85,7 +89,7 @@ const SignIn: React.FC = () => {
                                 <p className="ml-2 text-sm text-text dark:text-darkmode-text">Remember me</p>
                             </div>
                         )}
-                        <a href="/forgot-password" className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</a>
+                        <Link to="/forgot-password" className="text-sm text-link-theme hover:underline dark:text-link-theme">Forgot Password?</Link>
                     </div>
                     <button
                         type="button"
@@ -96,7 +100,7 @@ const SignIn: React.FC = () => {
                     </button>
                 </form>
                 <p className="mt-6 text-left text-text dark:text-darkmode-text">
-                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create an Account</a>
+                    New here? <Link to="/register" className="text-link-theme hover:underline dark:text-link-theme">Create an Account</Link>
                 </p>
             </div>
         </div>

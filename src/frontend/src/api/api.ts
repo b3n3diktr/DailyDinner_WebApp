@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-//export const apiUrl = "https://daily-dinner.com/api";
-export const apiUrl = "http://localhost:1337/api";
+export const apiUrl = "https://daily-dinner.com/api";
+//export const apiUrl = "http://localhost:1337/api";
 
 // Register user
 export const register = async (username: string, email: string, password: string) => {

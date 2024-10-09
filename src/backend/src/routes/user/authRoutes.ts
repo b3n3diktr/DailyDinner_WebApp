@@ -11,8 +11,10 @@ import {resendActivationEmailService} from "../../core/auth/resendActivationEmai
 import {resetPasswordService} from "../../core/auth/resetPasswordService";
 import {validateSessionIdService} from "../../core/auth/validateSessionIdService";
 
-const backendUrl = `http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/auth`;
+const backendUrl = `https://daily-dinner.com/api/auth`;
+//const backendUrl = `http://localhost:1337/api/auth`;
 const frontendUrl = 'https://daily-dinner.com';
+//const frontendUrl = 'http://localhost:8080';
 const router = Router();
 
 const activateUser = new activateUserService();

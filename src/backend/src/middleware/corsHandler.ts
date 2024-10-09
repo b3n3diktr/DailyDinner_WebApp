@@ -9,7 +9,7 @@ export function corsHandler(req: Request, res: Response, next: NextFunction) {
     ];
     const origin = req.headers.origin as string;
 
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin) || !origin) {
         res.header('Access-Control-Allow-Origin', origin); // Set the specific allowed origin
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
         res.header('Access-Control-Allow-Credentials', 'true');

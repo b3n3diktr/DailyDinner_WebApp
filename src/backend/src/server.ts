@@ -3,7 +3,6 @@ import express from 'express';
 import './config/logging';
 import mongoose from 'mongoose';
 import cookieParser from "cookie-parser";
-import rateLimit from "express-rate-limit";
 import authRoutes from './routes/user/authRoutes';
 import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';
@@ -13,33 +12,27 @@ import { SERVER_HOSTNAME, SERVER_PORT, MONGO_URI } from "./config/config";
 import uploadRoutes from "./routes/user/uploadProfilePictureRoutes";
 
 export const application = express();
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: 'Too many requests, please try again later.'
-});
 
 export let httpServer: ReturnType<typeof http.createServer>;
 
 export const Main = async () => {
+    application.use(corsHandler);
+    logging.log('----------------------------------------');
+    logging.log('Logging & Configuration');
+    logging.log('----------------------------------------');
+    application.use(loggingHandler);
+
     logging.log('----------------------------------------');
     logging.log('Initializing API');
     logging.log('----------------------------------------');
     application.use(express.urlencoded({ extended: true }));
     application.use(express.json());
     application.use(cookieParser());
-    application.use(limiter);
 
     logging.log('----------------------------------------');
     logging.log('Security Headers');
     logging.log('----------------------------------------');
     application.use(helmetHandler);
-
-    logging.log('----------------------------------------');
-    logging.log('Logging & Configuration');
-    logging.log('----------------------------------------');
-    application.use(corsHandler);
-    application.use(loggingHandler);
 
     logging.log('----------------------------------------');
     logging.log('Define Controller Routing');

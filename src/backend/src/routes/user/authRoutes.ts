@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import logging from '../../config/logging';
-import { SERVER_HOSTNAME, SERVER_PORT, PRODUCTION } from "../../config/config";
+import { SERVER_HOSTNAME, SERVER_PORT } from "../../config/config";
 import {verifySessionID } from "../../core/auth/utils/tokenGenerator";
 import {registerService} from "../../core/auth/registerService";
 import {activateUserService} from "../../core/auth/activateUserService";
@@ -11,8 +11,10 @@ import {resendActivationEmailService} from "../../core/auth/resendActivationEmai
 import {resetPasswordService} from "../../core/auth/resetPasswordService";
 import {validateSessionIdService} from "../../core/auth/validateSessionIdService";
 
-const backendUrl = `http://${SERVER_HOSTNAME}:${SERVER_PORT}/api/auth`;
+const backendUrl = `https://daily-dinner.com/api/auth`;
+//const backendUrl = `http://localhost:1337/api/auth`;
 const frontendUrl = 'https://daily-dinner.com';
+//const frontendUrl = 'http://localhost:8080';
 const router = Router();
 
 const activateUser = new activateUserService();
@@ -39,7 +41,7 @@ router.post('/register', async (req, res) => {
         return;
     } catch (error: any) {
         logging.error(`${error}`);
-        res.status(400).json({ message: error.message }).end();
+        res.status(500).json({ message: error.message }).end();
         return;
     }
 });
@@ -60,7 +62,7 @@ router.get('/activate/:token', async (req, res) => {
         if (error.name === 'TokenExpiredError') {
             await resendActivationEmail.resendActivationEmail(token)
             const params = encodeQueryParams({
-                errorCode: '400',
+                errorCode: '401',
                 message: 'Activate Token Expired, creating a new one.',
                 header: 'Error'
             });
@@ -76,7 +78,7 @@ router.get('/activate/:token', async (req, res) => {
             return;
         } else {
             const params = encodeQueryParams({
-                errorCode: '400',
+                errorCode: '500',
                 message: `Error: ${error.message}`,
                 header: 'Error'
             });
@@ -97,16 +99,14 @@ router.post('/login', async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 * 14,
             path: "/",
         });
-        res.status(201).json({ token, message: 'Successfully logged in.', userID: userId }).end();
+        res.status(200).json({ token, message: 'Successfully logged in.', userID: userId }).end();
         return;
     } catch (error: any) {
         logging.error(`${error}`);
-        res.status(400).json({ message: error.message }).end();
+        res.status(401).json({ message: 'Invalid email or password.' }).end();
         return;
     }
 });
-
-
 
 // Validate sessionID
 router.post('/validate', async (req, res) => {
@@ -119,7 +119,7 @@ router.post('/validate', async (req, res) => {
     try {
         const uuid = verifySessionID(token).uuid;
         const user = await validateSessionID.validateSession(uuid);
-        res.status(201).json({ message: `Successfully validated: ${token}`, uuid: user.uuid, userId: user._id ,username: user.username, email: user.email, accountCreated: user.created }).end();
+        res.status(200).json({ message: `Successfully validated: ${token}`, uuid: user.uuid, userId: user._id ,username: user.username, email: user.email, accountCreated: user.created }).end();
         return;
     } catch (error: any) {
         logging.error(`${error}`);
@@ -128,21 +128,19 @@ router.post('/validate', async (req, res) => {
     }
 });
 
-
 // Change Password
 router.post('/changepassword', async (req, res) => {
     const { resetToken, newPassword } = req.body;
     try {
         await changePassword.changePassword(resetToken, newPassword);
-        res.status(201).json({ message: 'Successfully changed password. You can now login.' }).end();
+        res.status(200).json({ message: 'Successfully changed password. You can now login.' }).end();
         return;
     } catch (error: any) {
         logging.error(`${error}`);
-        res.status(400).json({ message: error.message }).end();
+        res.status(401).json({ message: 'Invalid or expired reset token.' }).end();
         return;
     }
 });
-
 
 // Reset Password
 router.get('/resetpassword/:token', async (req, res) => {
@@ -154,7 +152,7 @@ router.get('/resetpassword/:token', async (req, res) => {
     } catch (error: any) {
         logging.error(`${error}`);
         const params = encodeQueryParams({
-            errorCode: '400',
+            errorCode: '401',
             message: `Error: ${error.message}`,
             header: 'Error'
         });
@@ -163,21 +161,18 @@ router.get('/resetpassword/:token', async (req, res) => {
     }
 });
 
-
-
 // Forgot Password
 router.post('/forgotpassword', async (req, res) => {
     const { email } = req.body;
     try {
         await forgotPassword.forgotPassword(email);
-        res.status(201).json({ message: 'Reset token was sent successfully.' }).end();
+        res.status(200).json({ message: 'Reset token was sent successfully.' }).end();
         return;
     } catch (error: any) {
         logging.error(`${error}`);
-        res.status(400).json({ message: error.message }).end();
+        res.status(500).json({ message: error.message }).end();
         return;
     }
 });
 
 export default router;
-

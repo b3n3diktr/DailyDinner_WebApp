@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../style.css';
 import { register } from "../../api/api";
 import {AccountIcon, EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff} from "../../icons/icons";
+import {Link} from "react-router-dom";
 
 const Register: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -9,7 +10,7 @@ const Register: React.FC = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
-    let success: boolean = false;
+    const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
 
@@ -17,15 +18,15 @@ const Register: React.FC = () => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setMessage('Passwords do not match.');
-            success = false;
+            setSuccess(false);
             return;
         }
         try {
             const response = await register(username, email, password);
-            success = true;
+            setSuccess(true);
             setMessage(response.message);
         } catch (error: any) {
-            success = false;
+            setSuccess(false);
             setMessage(`${error.response.data.message || 'Please try again.'}`);
         }
     };
@@ -114,10 +115,10 @@ const Register: React.FC = () => {
                     Register
                 </button>
             </form>
-            <p className="p-4 font-bold" >Already have an account? <a href="/signin" className="underline text-accent">Sign in</a></p>
+            <p className="p-4 font-bold" >Already have an account? <Link to="/signin" className="underline text-accent">Sign in</Link></p>
             <div className="p-4 text-text-variant border-t-[1px] text-sm text-center max-w-[20rem]">
-                <p>By creating an account you agree to our <a href="/tos" className="underline text-accent">Terms of Service </a>and <a
-                    href="/privacy-policy" className="underline text-accent">Privacy Policy</a></p>
+                <p>By creating an account you agree to our <Link to="/tos" className="underline text-accent">Terms of Service </Link>and <Link
+                    to="/privacy-policy" className="underline text-accent">Privacy Policy</Link></p>
             </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import '../../style.css';
 import { resetPassword } from "../../api/api";
 import { EmailIcon } from "../../icons/icons";
+import {Link} from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = React.useState('');
@@ -49,7 +50,7 @@ const ForgotPassword: React.FC = () => {
                     </button>
                 </form>
                 <p className="mt-6 text-left text-text dark:text-darkmode-text">
-                    New here? <a href="/register" className="text-link-theme hover:underline dark:text-link-theme">Create an Account</a>
+                    New here? <Link to="/register" className="text-link-theme hover:underline dark:text-link-theme">Create an Account</Link>
                 </p>
             </div>
         </div>

@@ -3,8 +3,10 @@ import '../../../style.css';
 import Cookies from "js-cookie";
 import {auth, getProfilePicture, uploadProfilePicture} from "../../../api/api";
 import ProfilePicture from "./utils/ProfilPicture";
+import {useNavigate} from "react-router-dom";
 
 const Profile: React.FC = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [uuid, setUuid] = useState('');
@@ -17,7 +19,7 @@ const Profile: React.FC = () => {
         if (token) {
             validateSessionID(token).catch((err) => { console.log(err); });
         } else {
-            window.location.href = '/signin';
+            navigate('/signin');
         }
     }, []);
 
@@ -31,7 +33,7 @@ const Profile: React.FC = () => {
             await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
             Cookies.remove('sessionID');
-            window.location.href = '/signin';
+            navigate('/signin');
         }
     };
 

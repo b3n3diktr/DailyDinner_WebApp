@@ -10,6 +10,8 @@ module.exports = merge(common, {
             logging: 'info',
             overlay: true,
         },
-        historyApiFallback: true
+        historyApiFallback: true,
+        liveReload: true,
+        hot: true,
     },
 });

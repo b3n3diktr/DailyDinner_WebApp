@@ -10,6 +10,7 @@ import { routeNotFound } from './middleware/routeNotFound';
 import { helmetHandler } from "./middleware/helmetHandler";
 import { SERVER_HOSTNAME, SERVER_PORT, MONGO_URI } from "./config/config";
 import uploadRoutes from "./routes/user/uploadProfilePictureRoutes";
+import recipesRoutes from "./routes/recipes/recipesRoutes";
 
 export const application = express();
 
@@ -42,6 +43,7 @@ export const Main = async () => {
     });
     application.use('/api/auth', authRoutes);
     application.use('/api/user/', uploadRoutes);
+    application.use('/api/recipes/', recipesRoutes);
     application.set('trust proxy', 1);
 
     logging.log('----------------------------------------');

@@ -3,7 +3,7 @@ import { Close, HamMenu } from "../../icons/icons";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import ToS from "../ToS/ToS";
 import ResetPassword from "../User/ResetPassword";
-import ForgotPassword from "../User/ForgotPassword";
+import RequestPasswordReset from "../User/RequestPasswordReset";
 import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
 import MyAccount from "../User/MyAccount/MyAccount";
 import Home from "../Home/Home";
@@ -17,6 +17,7 @@ import NotFound from "../NotFound/NotFound";
 import Cookies from "js-cookie";
 import Recipe from "../User/Recipes/Recipe";
 import NewRecipe from "../User/Recipes/NewRecipe";
+import ActivateAccount   from "../User/ActivateAccount";
 
 const NavBar = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -27,7 +28,7 @@ const NavBar = () => {
     const hideSidebar = () => setSidebarVisible(false);
 
     useEffect(() => {
-        const token = Cookies.get('sessionID');
+        const token = Cookies.get('SESSIONID');
         if (token) {
             setIsLoggedIn(true);
         }
@@ -111,11 +112,12 @@ const NavBar = () => {
             </nav>
             <div className="mt-14">
                 <Routes>
+                    <Route path="/activate" element={<ActivateAccount />}/>
                     <Route path="/recipes" element={<Recipe />}/>
                     <Route path="/recipes/new" element={<NewRecipe />}/>
                     <Route path="/tos" element={<ToS />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/forgot-password" element={<RequestPasswordReset />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/myaccount" element={<MyAccount />} />
                     <Route path="/" element={<Navigate to="/home" />} />

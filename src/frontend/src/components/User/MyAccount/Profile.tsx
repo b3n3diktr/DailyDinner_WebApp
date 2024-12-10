@@ -15,7 +15,7 @@ const Profile: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     useEffect(() => {
-        const token = Cookies.get('sessionID');
+        const token = Cookies.get('SESSIONID');
         if (token) {
             validateSessionID(token).catch((err) => { console.log(err); });
         } else {
@@ -30,9 +30,9 @@ const Profile: React.FC = () => {
             setEmail(response.email);
             setAccountCreated(response.accountCreated);
             setUuid(response.uuid);
-            await loadProfilePicture(response.uuid);
+            //await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
-            Cookies.remove('sessionID');
+            Cookies.remove('SESSIONID');
             navigate('/signin');
         }
     };

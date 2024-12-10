@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../style.css';
 import { PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 import {useLocation, useNavigate} from "react-router-dom";
-import { changePassword } from "../../api/api";
+import { resetPassword } from "../../api/api";
 
 const encodeQueryParams = (params: Record<string, string>) => {
     return Object.keys(params)
@@ -23,8 +23,8 @@ const ResetPassword: React.FC = () => {
     let success: boolean = false;
 
     const query = useQuery();
-    const resetToken = query.get('resetToken');
-    if (!resetToken) {
+    const token = query.get('token');
+    if (!token) {
         const params = encodeQueryParams({
             errorCode: '400',
             message: 'Invalid token.',
@@ -46,7 +46,7 @@ const ResetPassword: React.FC = () => {
             return;
         }
         try {
-            const response = await changePassword(resetToken, password);
+            const response = await resetPassword(token, password);
             setMessage(response.message);
             success = true;
         } catch (error: any) {

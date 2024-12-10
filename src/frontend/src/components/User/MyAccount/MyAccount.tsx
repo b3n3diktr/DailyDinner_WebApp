@@ -21,11 +21,13 @@ const MyAccount: React.FC = () => {
     const currentHash = location.hash;
 
     useEffect(() => {
-        const token = Cookies.get('sessionID');
+        const token = Cookies.get('SESSIONID');
+        console.log(token);
         if (token) {
             validateSessionID(token).catch((err: unknown) => { console.log(err); });
         } else {
             navigate('/signin');
+            window.location.reload();
         }
     }, []);
 
@@ -35,11 +37,12 @@ const MyAccount: React.FC = () => {
             setIsValid(true);
             setUsername(response.username);
             setEmail(response.email);
-            await loadProfilePicture(response.uuid);
+            //await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
             setIsValid(false);
-            Cookies.remove('sessionID');
+            Cookies.remove('SESSIONID');
             navigate('/signin');
+            window.location.reload();
         }
     };
 
@@ -53,8 +56,9 @@ const MyAccount: React.FC = () => {
     };
 
     const handleLogout = async () => {
-        Cookies.remove('sessionID');
+        Cookies.remove('SESSIONID');
         navigate('/signin');
+        window.location.reload();
     }
 
     return (

@@ -1,17 +1,17 @@
 import React from 'react';
 import '../../style.css';
-import { resetPassword } from "../../api/api";
+import {requestPasswordReset, resetPassword} from "../../api/api";
 import { EmailIcon } from "../../icons/icons";
 import {Link} from "react-router-dom";
 
-const ForgotPassword: React.FC = () => {
+const RequestPasswordReset: React.FC = () => {
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
 
     const handleForgotPassword = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await resetPassword(email);
+            const response = await requestPasswordReset(email);
             setMessage(`${response.message}`);
         } catch (error: any) {
             setMessage(`Password reset failed: ${error.response?.data?.message || 'Please try again.'}`);
@@ -57,4 +57,4 @@ const ForgotPassword: React.FC = () => {
     );
 };
 
-export default ForgotPassword;
+export default RequestPasswordReset;

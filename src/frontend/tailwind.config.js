@@ -17,7 +17,7 @@ module.exports = {
         'theme-icon': '#070b1e',
         'link-theme': '#56ab6c',
         'darkmode-base': '#070b1d',
-        'darkmode-base-variant': '#101425',
+        'darkmode-base-variant': '#181e38',
         'darkmode-text': '#ffffff',
         'darkmode-text-variant': '#334075',
         'darkmode-theme-icon': '#ffffff',

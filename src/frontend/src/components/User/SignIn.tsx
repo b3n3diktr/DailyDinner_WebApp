@@ -14,20 +14,22 @@ const SignIn: React.FC = () => {
     const [cookies, setCookies] = useState(false);
 
     useEffect(() => {
-        const sessionID = Cookies.get('sessionID');
+        const sessionID = Cookies.get('SESSIONID');
         const cookieConsent = Cookies.get('cookieConsent');
         setCookies(cookieConsent === 'true');
 
-        if (sessionID) {
+        if (sessionID != null) {
             navigate('/myaccount#dashboard');
+            window.location.reload();
         }
     }, []);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await login(email, password, rememberMe);
+            await login(email, password);
             navigate("/myaccount#dashboard");
+            window.location.reload();
         } catch (error: any) {
             setMessage(`${error.response.data.message || 'Please try again.'}`);
         }

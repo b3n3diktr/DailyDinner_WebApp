@@ -77,18 +77,6 @@ jobs:
             b3n3dkt/dailydinner_frontend:latest
             b3n3dkt/dailydinner_frontend:${{ steps.increment_version.outputs.new_version }}
 
-      - name: Build and Push Backend
-        uses: docker/build-push-action@v4
-        with:
-          context: ./src/backend
-          push: true
-          platforms: linux/arm64
-          build-args: |
-            BUILDKIT_INLINE_CACHE=1
-          tags: |
-            b3n3dkt/dailydinner_backend:latest
-            b3n3dkt/dailydinner_backend:${{ steps.increment_version.outputs.new_version }}
-
       - name: Create Git Tag
         if: github.ref == 'refs/heads/master'
         run: |

@@ -14,13 +14,12 @@ const SignIn: React.FC = () => {
     const [cookies, setCookies] = useState(false);
 
     useEffect(() => {
-        const sessionID = Cookies.get('SESSIONID');
+        const loggedIn = Cookies.get('loggedIn');
         const cookieConsent = Cookies.get('cookieConsent');
         setCookies(cookieConsent === 'true');
 
-        if (sessionID != null) {
+        if (loggedIn == "true") {
             navigate('/myaccount#dashboard');
-            window.location.reload();
         }
     }, []);
 
@@ -29,7 +28,6 @@ const SignIn: React.FC = () => {
         try {
             await login(email, password);
             navigate("/myaccount#dashboard");
-            window.location.reload();
         } catch (error: any) {
             setMessage(`${error.response.data.message || 'Please try again.'}`);
         }

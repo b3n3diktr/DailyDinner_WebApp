@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../../style.css';
-import {auth, getProfilePicture} from "../../../api/api";
+import {apiUrl, auth, getProfilePicture, logout} from "../../../api/api";
 import Cookies from "js-cookie";
 import { DashboardIcon, AccountIcon, PaymentsIcon, LogoutIcon, BillingIcon } from "../../../icons/icons";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import Billing from "./Billing";
 import Payments from "./Payments";
 import ProfilePicture from "./utils/ProfilPicture";
+import axios from 'axios';
 
 const MyAccount: React.FC = () => {
     const navigate = useNavigate();
@@ -21,26 +22,26 @@ const MyAccount: React.FC = () => {
     const currentHash = location.hash;
 
     useEffect(() => {
-        const token = Cookies.get('SESSIONID');
-        console.log(token);
-        if (token) {
-            validateSessionID(token).catch((err: unknown) => { console.log(err); });
+        const loggedIn = Cookies.get('loggedIn');
+        if (loggedIn == "true") {
+            validateSessionID().catch((err: unknown) => { console.log("error:" + err); });
         } else {
             navigate('/signin');
             window.location.reload();
         }
     }, []);
 
-    const validateSessionID = async (sessionID: string) => {
+    const validateSessionID = async () => {
         try {
-            const response = await auth(sessionID);
+            const response = await auth();
             setIsValid(true);
             setUsername(response.username);
             setEmail(response.email);
-            //await loadProfilePicture(response.uuid);
+            await loadProfilePicture(response.uuid);
         } catch (error: unknown) {
             setIsValid(false);
             Cookies.remove('SESSIONID');
+            Cookies.set("loggedIn", "false");
             navigate('/signin');
             window.location.reload();
         }
@@ -56,7 +57,7 @@ const MyAccount: React.FC = () => {
     };
 
     const handleLogout = async () => {
-        Cookies.remove('SESSIONID');
+        await logout();
         navigate('/signin');
         window.location.reload();
     }

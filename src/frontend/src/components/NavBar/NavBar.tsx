@@ -28,8 +28,9 @@ const NavBar = () => {
     const hideSidebar = () => setSidebarVisible(false);
 
     useEffect(() => {
-        const token = Cookies.get('SESSIONID');
-        if (token) {
+        const loggedIn = Cookies.get('loggedIn');
+
+        if (loggedIn == "true") {
             setIsLoggedIn(true);
         }
 

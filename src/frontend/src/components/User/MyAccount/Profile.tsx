@@ -15,27 +15,11 @@ const Profile: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     useEffect(() => {
-        const token = Cookies.get('SESSIONID');
-        if (token) {
-            validateSessionID(token).catch((err) => { console.log(err); });
-        } else {
+        const loggedIn = Cookies.get('loggedIn');
+        if (loggedIn != "true") {
             navigate('/signin');
         }
     }, []);
-
-    const validateSessionID = async (sessionID: string) => {
-        try {
-            const response = await auth(sessionID);
-            setUsername(response.username);
-            setEmail(response.email);
-            setAccountCreated(response.accountCreated);
-            setUuid(response.uuid);
-            //await loadProfilePicture(response.uuid);
-        } catch (error: unknown) {
-            Cookies.remove('SESSIONID');
-            navigate('/signin');
-        }
-    };
 
     const loadProfilePicture = async (uuid: string) => {
         try {

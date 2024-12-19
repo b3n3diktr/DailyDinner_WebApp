@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const apiUrl = "https://daily-dinner.com/api";
-//export const apiUrl = "http://192.168.178.194:3000/api";
+//export const apiUrl = "http://localhost:3000/api";
 
 // Register user
 export const register = async (username: string, email: string, password: string) => {
@@ -25,36 +25,30 @@ export const activate = async (token: string) => {
 
 // Login user and store session token
 export const login = async (email: string, password: string) => {
-    try {
         const response = await axios.post(
             `${apiUrl}/users/login`,
             { email, password },
             { withCredentials: true }
         );
-
-        const sessionId = response.data?.data;
-
-        if (!sessionId) {
-            throw new Error("Session ID not found in response");
-        }
-        Cookies.set('SESSIONID', sessionId, { secure: true, sameSite: 'strict' });
+        Cookies.set('loggedIn', "true", { expires: 7 });
 
         return response.data;
-    } catch (error) {
-        console.error("Login failed:", error);
-        throw error;
-    }
 };
 
+//Logout user
+export const logout = async () => {
+    const response = await axios.post(
+        `${apiUrl}/users/logout`,
+        { withCredentials: true }
+    );
+    return response.data;
+};
 
 // Validate user session with session ID
-export const auth = async (sessionId: string) => {
-    if (!sessionId) {
-        throw new Error("Session ID is undefined or empty");
-    }
+export const auth = async () => {
     const response = await axios.post(
         `${apiUrl}/users/validate-session`,
-        { sessionId },
+        {},
         { withCredentials: true },
     );
     return response.data;

@@ -9,7 +9,7 @@ const Profile: React.FC = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [uuid, setUuid] = useState('');
+    const [uuid, setUuid] = Cookies.get('uuid') || "null";
     const [accountCreated, setAccountCreated] = useState('');
     const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -23,8 +23,10 @@ const Profile: React.FC = () => {
 
     const loadProfilePicture = async (uuid: string) => {
         try {
-            const response = await getProfilePicture(uuid);
-            setProfilePictureUrl(response);
+            if(uuid != "null"){
+                const response = await getProfilePicture(uuid);
+                setProfilePictureUrl(response);
+            }
         } catch (error) {
             console.error('Failed to load profile picture', error);
         }

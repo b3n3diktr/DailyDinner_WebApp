@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-export const apiUrl = "https://daily-dinner.com/api";
-//export const apiUrl = "http://localhost:3000/api";
+//export const apiUrl = "https://daily-dinner.com/api";
+export const apiUrl = "http://localhost:3000/api";
 
 // Register user
 export const register = async (username: string, email: string, password: string) => {
@@ -31,7 +31,6 @@ export const login = async (email: string, password: string) => {
             { withCredentials: true }
         );
         Cookies.set('loggedIn', "true", { expires: 7 });
-
         return response.data;
 };
 
@@ -39,8 +38,10 @@ export const login = async (email: string, password: string) => {
 export const logout = async () => {
     const response = await axios.post(
         `${apiUrl}/users/logout`,
+        {},
         { withCredentials: true }
     );
+    Cookies.remove('uuid');
     return response.data;
 };
 
@@ -51,6 +52,7 @@ export const auth = async () => {
         {},
         { withCredentials: true },
     );
+    Cookies.set('uuid', response.data.data.id, { expires: 7 });
     return response.data;
 };
 
@@ -84,7 +86,7 @@ export const uploadProfilePicture = async (uuid: string, profilePicture: File) =
     formData.append('profile', profilePicture);
 
     const response = await axios.post(
-        `${apiUrl}/user/upload-profile-picture`,
+        `${apiUrl}/users/upload-profile-picture`,
         formData,
         {
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -98,7 +100,7 @@ export const uploadProfilePicture = async (uuid: string, profilePicture: File) =
 export const getProfilePicture = async (uuid: string): Promise<string> => {
     try {
         const response = await axios.get(
-            `${apiUrl}/user/profile-picture/${uuid}`,
+            `${apiUrl}/users/profile-picture/${uuid}`,
             {
                 responseType: 'blob',
                 withCredentials: true

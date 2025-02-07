@@ -37,7 +37,7 @@ const MyAccount: React.FC = () => {
             setIsValid(true);
             setUsername(response.username);
             setEmail(response.email);
-            await loadProfilePicture(response.uuid);
+            await loadProfilePicture(response.data.id);
         } catch (error: unknown) {
             setIsValid(false);
             Cookies.remove('SESSIONID');

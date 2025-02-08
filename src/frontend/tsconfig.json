@@ -5,18 +5,17 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "module": "commonjs",  // Updated to support top-level await
-    "target": "es2020",  // Updated to support top-level await
-    "jsx": "react",
+    "module": "esnext",
+    "target": "es2020",
+    "jsx": "react-jsx",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "lib": ["es2020", "DOM"],
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
-    "./src/**/*.tsx",
-    "./src/**/*.ts"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules"

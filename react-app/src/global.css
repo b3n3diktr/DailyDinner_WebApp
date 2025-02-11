@@ -56,5 +56,5 @@
     --font-size-4xl: 2.441rem;
     --font-size-5xl: 3.052rem;
 
-    --background-image-placeholder: url('../../react_app_old/src/pictures/placeholder.jpg');
+    --background-image-placeholder: url('./pictures/placeholder.jpg');
 }

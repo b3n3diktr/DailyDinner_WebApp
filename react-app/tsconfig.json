@@ -13,6 +13,7 @@
     "skipLibCheck": true,
     "lib": ["es2020", "DOM"],
     "allowSyntheticDefaultImports": true,
+    "allowJs": true
   },
   "include": [
     "./src/**/*"

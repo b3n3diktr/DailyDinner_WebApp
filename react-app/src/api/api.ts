@@ -14,7 +14,7 @@ export const register = async (username: string, email: string, password: string
     return response.data;
 };
 
-//Activate Account
+//Activate Login_Registration
 export const activate = async (token: string) => {
     const response = await axios.get(
         `${apiUrl}/users/activate/${token}`,
@@ -41,6 +41,7 @@ export const logout = async () => {
         {},
         { withCredentials: true }
     );
+    Cookies.remove('loggedIn');
     Cookies.remove('uuid');
     return response.data;
 };

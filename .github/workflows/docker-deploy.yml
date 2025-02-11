@@ -68,7 +68,7 @@ jobs:
       - name: Build and Push Frontend
         uses: docker/build-push-action@v4
         with:
-          context: ./src/frontend
+          context: ./react-app
           push: true
           platforms: linux/arm64
           build-args: |

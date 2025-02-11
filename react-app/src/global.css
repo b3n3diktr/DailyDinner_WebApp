@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-primary: #38e4ae; /* Aquamarine */
+    --color-primary-variant: #2cb59b; /* Darker Aquamarine */
+    --color-secondary: #aedcc0; /* Celadon */
+    --color-secondary-variant: #607466; /* Hooker's Green */
+    --color-accent: #7bd389; /* Emerald */
+    --color-background: #ffffff; /* White */
+    --color-background-variant-1: #e0f7f4; /* Light Aquamarine */
+    --color-background-variant-2: #d1e7e0; /* Pale Celadon */
+    --color-text: #333333; /* Dark Gray */
+    --color-neutral-light: #f5f5f5; /* Light Gray */
+    --color-neutral-dark: #e0e0e0; /* Gray */
+
+    --color-darkmode-primary: #38e4ae; /* Aquamarine */
+    --color-darkmode-primary-variant: #2cb59b; /* Darker Aquamarine */
+    --color-darkmode-secondary: #aedcc0; /* Celadon */
+    --color-darkmode-secondary-variant: #607466; /* Hooker's Green */
+    --color-darkmode-accent: #7bd389; /* Emerald */
+    --color-darkmode-background: #1a1c1b; /* Very Dark Gray */
+    --color-darkmode-background-variant-1: #2a2d2c; /* Dark Gray */
+    --color-darkmode-background-variant-2: #1f2221; /* Charcoal */
+    --color-darkmode-text: #ffffff; /* White */
+    --color-darkmode-neutral-light: #2c2f2e; /* Dark Gray */
+    --color-darkmode-neutral-dark: #343e3d; /* Onyx */
+
+    --color-error: #f06272;
+    --color-success: #7eff9c;
+
+    --font-primary: sans-serif;
+
+    --border-radius-xl: 20px;
+    --border-radius-2xl: 1000px;
+
+    --padding-p-1: 1rem;
+    --padding-p-2: 0.5rem;
+    --padding-p-3: 3.125rem;
+    --padding-p-4: 5rem;
+
+    --width-auth: max(40%, 37.5rem);
+    --width-auth-sm: min(37.5rem, 100%);
+    --width-input: 25rem;
+    --width-sidebar: 15.625rem;
+
+    --box-shadow-md: 0.1875rem 0.1875rem 0.3125rem rgba(0, 0, 0, 0.1);
+    --box-shadow-lg: -0.625rem 0 0.625rem rgba(0, 0, 0, 0.1);
+
+    --font-size-sm: 0.8rem;
+    --font-size-base: 1rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.563rem;
+    --font-size-3xl: 1.953rem;
+    --font-size-4xl: 2.441rem;
+    --font-size-5xl: 3.052rem;
+
+    --background-image-placeholder: url('../../react_app_old/src/pictures/placeholder.jpg');
+}

@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+    ],
     "outDir": "./dist",
     "rootDir": "./src",
     "sourceMap": true,
@@ -11,12 +14,15 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "lib": ["es2020", "DOM"],
+    "lib": [
+      "es2020",
+      "DOM"
+    ],
     "allowSyntheticDefaultImports": true,
     "allowJs": true
   },
   "include": [
-    "./src/**/*"
+    "./src"
   ],
   "exclude": [
     "node_modules"

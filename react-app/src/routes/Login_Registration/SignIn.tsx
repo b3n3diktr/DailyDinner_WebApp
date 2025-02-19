@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from '../../icons/icons';
-import { login } from "../../api/api";
+import { ApiUsers } from "../../api/apiUsers";
 
 const SignIn: React.FC = () => {
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ const SignIn: React.FC = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await login(email, password);
+            await ApiUsers.login(email, password);
             navigate('/myaccount');
             window.location.reload();
         } catch (error: any) {

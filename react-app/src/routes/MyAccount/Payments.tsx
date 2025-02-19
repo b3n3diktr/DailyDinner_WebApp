@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { auth } from '../../api/api';
+import { ApiUsers } from '../../api/apiUsers';
 
 const Payments: React.FC = () => {
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Payments: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                const response = await auth();
+                const response = await ApiUsers.auth();
                 setUsername(response.username);
             } catch (error) {
                 navigate('/signin');

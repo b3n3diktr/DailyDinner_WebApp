@@ -1,48 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from "js-cookie";
-import { auth, getProfilePicture, uploadProfilePicture } from "../../api/api";
+import { ApiUsers } from "../../api/apiUsers";
 import ProfilePicture from "./utils/ProfilPicture";
 import { useNavigate } from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
 
-const Profile: React.FC = () => {
+interface ProfileProps {
+    username: string;
+    email: string;
+    uuid: string;
+    imageUrl?: string;
+}
+
+const Profile: React.FC<ProfileProps> = ({username, email, uuid, imageUrl}) => {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [uuid] = useState(Cookies.get('uuid') || "null");
-    const [accountCreated, setAccountCreated] = useState('');
-    const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-    useEffect(() => {
-        if (Cookies.get('loggedIn') !== "true") {
-            navigate('/signin');
-        } else {
-            loadProfileData();
-        }
-    }, []);
-
-    const loadProfileData = async () => {
-        try {
-            const response = await auth();
-            setUsername(response.username);
-            setEmail(response.email);
-            setAccountCreated(response.accountCreated);
-            await loadProfilePicture(uuid);
-        } catch (error) {
-            console.error("Failed to load profile data", error);
-        }
-    };
-
-    const loadProfilePicture = async (uuid: string) => {
-        try {
-            if (uuid !== "null") {
-                const response = await getProfilePicture(uuid);
-                setProfilePictureUrl(response);
-            }
-        } catch (error) {
-            console.error('Failed to load profile picture', error);
-        }
-    };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -53,8 +25,8 @@ const Profile: React.FC = () => {
     const handleUpload = async () => {
         if (selectedFile) {
             try {
-                await uploadProfilePicture(uuid, selectedFile);
-                await loadProfilePicture(uuid);
+                await ApiUsers.uploadProfilePicture(uuid, selectedFile);
+                await ApiUsers.getProfilePicture(uuid);
                 setSelectedFile(null);
             } catch (error) {
                 console.error('Failed to upload profile picture', error);
@@ -68,14 +40,14 @@ const Profile: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
                 {/* Profile Picture */}
                 <div className="relative w-32 h-32">
-                    <ProfilePicture imageUrl={profilePictureUrl || ""} size="128px" />
+                    <ProfilePicture imageUrl={imageUrl || ""} size="128px" />
                 </div>
 
                 {/* User Information */}
                 <div className="text-center md:text-left">
                     <h2 className="text-2xl font-bold">{username}</h2>
                     <p className="text-sm text-text dark:text-darkmode-text">{email}</p>
-                    <p className="text-sm mt-2">Account Created: {accountCreated}</p>
+                    <p className="text-sm mt-2">Account Created: 01.01.2000</p>
                 </div>
             </div>
 

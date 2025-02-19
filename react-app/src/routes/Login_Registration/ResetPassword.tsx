@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { requestPasswordReset, resetPassword } from "../../api/api";
+import { ApiUsers } from "../../api/apiUsers";
 
 const encodeQueryParams = (params: Record<string, string>) => {
     return Object.keys(params)
@@ -40,7 +40,7 @@ const PasswordReset: React.FC = () => {
         }
 
         try {
-            const response = await resetPassword(token, password);
+            const response = await ApiUsers.resetPassword(token, password);
             setMessage(response.message);
             setSuccess(true);
         } catch (error: any) {
@@ -52,7 +52,7 @@ const PasswordReset: React.FC = () => {
     const handleForgotPassword = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await requestPasswordReset(email);
+            const response = await ApiUsers.requestPasswordReset(email);
             setMessage(response.message);
             setSuccess(true);
         } catch (error: any) {

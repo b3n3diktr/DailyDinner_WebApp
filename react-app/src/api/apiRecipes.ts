@@ -48,8 +48,8 @@ export interface Recipe {
 }
 
 export class ApiRecipe {
-    private static readonly BASE_URL = 'http://localhost:3000/api/recipes';
-
+    //private static readonly BASE_URL = 'http://localhost:3000/api/recipes';
+    private static readonly BASE_URL =  'https://daily-dinner.com/api/recipes';
     static async getRandomRecipes(count: number) {
         const response = await apiClient.post('/getrandomrecipes', { count });
         return response.data;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { activate } from "../../api/api";
+import { ApiUsers } from "../../api/apiUsers";
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -34,7 +34,7 @@ const ActivateAccount: React.FC = () => {
         try {
             setMessage("Activating your account...");
             await new Promise((resolve) => setTimeout(resolve, 500));
-            const response = await activate(activationToken || "");
+            const response = await ApiUsers.activate(activationToken || "");
             setSuccess(true);
             setMessage(response.message);
         } catch (error: any) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { register } from "../../api/api";
+import { ApiUsers } from "../../api/apiUsers";
 import { AccountIcon, EmailIcon, PasswordIcon, VisibilityIcon, VisibilityOff } from "../../icons/icons";
 import { Link } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const Register: React.FC = () => {
             return;
         }
         try {
-            const response = await register(username, email, password);
+            const response = await ApiUsers.register(username, email, password);
             setSuccess(true);
             setMessage(response.message);
         } catch (error: any) {

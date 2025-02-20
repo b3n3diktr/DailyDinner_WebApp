@@ -16,6 +16,7 @@ import PrivacyPolicy from "./routes/PrivacyPolicy";
 import MyAccount from "./routes/MyAccount/MyAccount";
 import NewRecipe from "./routes/Recipe/NewRecipe";
 import Recipes from "./routes/Recipe/Recipes";
+import RecipeDetailPage from "./routes/Recipe/RecipeDetailPage";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/activate" element={<ActivateAccount/>}/>_
                 <Route path="/myaccount" element={<MyAccount/>} />
                 <Route path="/recipes" element={<Recipes />} />
+                <Route path="/recipes/:id" element={<RecipeDetailPage />} />
                 <Route path="recipes/new" element={<NewRecipe/>}/>
                 <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
                 <Route path="*" element={<NotFoundPage/>}/>

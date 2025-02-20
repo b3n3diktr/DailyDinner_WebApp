@@ -1,45 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { ApiRecipe, Recipe } from "../../api/apiRecipes";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+
+interface RecipeResponse {
+    data: Recipe[];
+}
 
 const RecipeComponent: React.FC = () => {
     const navigate = useNavigate();
-    const PAGE_SIZE = 6;
-    const [page, setPage] = useState(0);
-    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+    const PAGE_SIZE = 16;
 
     const {
         data,
         isLoading,
         isError,
         isFetching,
-        refetch
-    } = useQuery({
-        queryKey: ['recipes', page],
-        queryFn: () => ApiRecipe.getPaginatedRecipes(page, PAGE_SIZE),
+        refetch,
+        hasNextPage,
+        fetchNextPage
+    } = useInfiniteQuery({
+        queryKey: ['recipes'] as const,
+        queryFn: async ({ pageParam }) => {
+            return ApiRecipe.getPaginatedRecipes(pageParam as number, PAGE_SIZE);
+        },
+        initialPageParam: 0 as number,
+        getNextPageParam: (lastPage: RecipeResponse, allPages: RecipeResponse[]) => {
+            if (lastPage.data.length === PAGE_SIZE) {
+                return allPages.length;
+            }
+            return undefined;
+        },
+        gcTime: 10 * 60 * 1000,
+        staleTime: 5 * 60 * 1000,
     });
 
-    // Update allRecipes when new data comes in
-    useEffect(() => {
-        if (data?.data) {
-            if (page === 0) {
-                // Reset the list if we're on the first page
-                setAllRecipes(data.data);
-            } else {
-                // Append new recipes to existing ones
-                setAllRecipes(prev => [...prev, ...data.data]);
-            }
-        }
-    }, [data, page]);
-
-    const hasMore = data?.data && data.data.length === PAGE_SIZE;
+    const allRecipes = data?.pages.flatMap(page => page.data) ?? [];
 
     const loadMore = () => {
-        setPage(prev => prev + 1);
+        fetchNextPage();
     };
 
-    // Helper function to render recipe categories as badges
+    const isEmptyOrNull = (value: string | null | undefined) => {
+        return value === null ||
+            value === undefined ||
+            value === '' ||
+            value === 'null' ||
+            (typeof value === 'string' && value.trim() === '');
+    };
+
     const renderCategoryBadges = (categories: Recipe['categories']) => {
         if (!categories || categories.length === 0) return null;
 
@@ -92,7 +101,11 @@ const RecipeComponent: React.FC = () => {
 
                     {/* Description */}
                     <p className="text-secondary-variant dark:text-darkmode-secondary-variant mt-2 text-sm line-clamp-2 flex-grow">
-                        {recipe.description}
+                        {!isEmptyOrNull(recipe?.description) ? (
+                            recipe.description
+                        ) : (
+                            <span className="italic">No Description</span>
+                        )}
                     </p>
 
                     {/* Time and Servings Info */}
@@ -156,7 +169,7 @@ const RecipeComponent: React.FC = () => {
             </div>
 
             {/* Loading State for Initial Load */}
-            {isLoading && page === 0 && (
+            {isLoading && (
                 <div className="flex justify-center items-center w-full py-12">
                     <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                     <span className="ml-3">Loading recipes...</span>
@@ -179,12 +192,12 @@ const RecipeComponent: React.FC = () => {
             {/* Recipes Grid */}
             {!isLoading && allRecipes.length > 0 && (
                 <>
-                    <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-auto gap-6">
+                    <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-auto gap-6">
                         {allRecipes.map(renderRecipeCard)}
                     </div>
 
                     {/* Load More Button */}
-                    {hasMore && (
+                    {hasNextPage && (
                         <div className="mt-8 text-center">
                             <button
                                 onClick={loadMore}
@@ -204,7 +217,7 @@ const RecipeComponent: React.FC = () => {
                     )}
 
                     {/* End of Content Message */}
-                    {!hasMore && (
+                    {!hasNextPage && allRecipes.length > 0 && (
                         <p className="mt-8 text-secondary-variant dark:text-darkmode-secondary-variant text-center">
                             You've reached the end of the recipes!
                         </p>
@@ -220,10 +233,7 @@ const RecipeComponent: React.FC = () => {
                     </p>
                     <button
                         className="px-4 py-2 bg-primary text-text dark:text-darkmode-text rounded-lg hover:bg-primary-variant transition-all duration-200"
-                        onClick={() => {
-                            setPage(0);
-                            refetch();
-                        }}
+                        onClick={() => refetch()}
                     >
                         Refresh
                     </button>

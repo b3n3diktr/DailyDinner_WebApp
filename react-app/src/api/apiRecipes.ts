@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // API client configuration
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3000/api/recipes',
+    //baseURL: 'http://localhost:3000/api/recipes',
+    baseURL: "https://daily-dinner.com/api/recipes",
     timeout: 5000,
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true
